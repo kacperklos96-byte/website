@@ -1,5 +1,18 @@
 # My Website — Authentication, Firestore and custom avatars
 
+## NEW: Feature 3 — Settings Page
+
+[Open your settings](https://kacperklos96-byte.github.io/website/settings.html) after logging in.
+
+Settings now offers theme choices (saved in the existing preference cookie), private/public profile status, email verification, password changes for email/password accounts, password-reset emails, account information, logout and a local download of your saved profile data. Google-only accounts don't have a website password, so the password form is hidden for them. Sensitive password changes require the current password and Firebase reauthentication.
+
+**No extra Firebase rules are required for Settings.** The optional public profile feature still requires its updated Firestore rules from the previous stage.
+
+Notes: This page doesn't change your account email or delete accounts yet. The JSON export contains your private profile and limited Firebase Auth metadata; it is not an export of all Firebase project data.
+
+---
+
+
 ## NEW: Feature 2 — Profile system
 
 Your `main` branch now has editable profiles.
