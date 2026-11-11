@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Dashboard | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=profiles-2">
-  <link rel="stylesheet" href="dashboard.css?v=profiles-2">
+  <link rel="stylesheet" href="styles.css?v=settings-1">
+  <link rel="stylesheet" href="dashboard.css?v=settings-1">
 </head>
 <body data-page="dashboard">
   <header>
@@ -37,7 +37,10 @@
           <h1>Welcome back, <span id="dash-first-name">there</span><span class="blue-period">.</span></h1>
           <p class="intro">Here's a quick overview of your account and what's happening.</p>
         </div>
-        <a class="button-primary dash-heading-action" href="profile.html">Edit profile <span aria-hidden="true">↗</span></a>
+        <div class="dash-heading-actions">
+          <a class="button-primary dash-heading-action" href="profile.html">Edit profile <span aria-hidden="true">↗</span></a>
+          <a class="button-secondary dash-heading-action" href="settings.html">Settings <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
 
       <div class="dash-columns">
@@ -89,17 +92,17 @@
         <section class="dash-panel roadmap-panel" aria-labelledby="roadmap-heading">
           <div class="panel-top"><h2 id="roadmap-heading">What's coming next</h2><span class="small-tag">ROADMAP</span></div>
           <div class="roadmap-row"><span class="roadmap-number">02</span><div><strong>Profile system</strong><p>Customize your username, bio and public profile.</p></div><span class="phase-label">Built</span></div>
-          <div class="roadmap-row"><span class="roadmap-number">03</span><div><strong>Account settings</strong><p>Personal preferences and account controls.</p></div></div>
-          <div class="roadmap-row"><span class="roadmap-number">04</span><div><strong>More features</strong><p>Admin, notifications, messages, search and activity.</p></div></div>
-          <div class="build-progress"><span>Build progress</span><strong>2 of 8</strong></div>
-          <div class="progress-track" role="progressbar" aria-label="Website feature roadmap" aria-valuenow="2" aria-valuemin="0" aria-valuemax="8"><span></span></div>
+          <div class="roadmap-row"><span class="roadmap-number">03</span><div><strong>Account settings</strong><p>Appearance, privacy, verification and password management.</p></div><span class="phase-label">Built</span></div>
+          <div class="roadmap-row"><span class="roadmap-number">04</span><div><strong>Admin panel</strong><p>Roles and secure website administration.</p></div><span class="phase-label">Next</span></div>
+          <div class="build-progress"><span>Build progress</span><strong>3 of 8</strong></div>
+          <div class="progress-track" role="progressbar" aria-label="Website feature roadmap" aria-valuenow="3" aria-valuemin="0" aria-valuemax="8"><span></span></div>
         </section>
       </div>
       <p class="dashboard-error" id="dash-error" role="alert" hidden></p>
     </section>
   </main>
   <footer>© 2026 My Website</footer>
-  <script type="module" src="auth-nav.js?v=profiles-2"></script>
-  <script type="module" src="dashboard.js?v=profiles-2"></script>
+  <script type="module" src="auth-nav.js?v=settings-1"></script>
+  <script type="module" src="dashboard.js?v=settings-1"></script>
 </body>
 </html>
