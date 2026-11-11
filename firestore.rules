@@ -1,134 +1,266 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isOwner(uid) {
-      return request.auth != null && request.auth.uid == uid;
-    }
+    function signedIn() { return request.auth != null; }
+    function owner(uid) { return signedIn() && request.auth.uid == uid; }
+    // Only a trusted Firebase Admin SDK can issue this custom claim.
+    // There is intentionally no client-side admin role field.
+    function admin() { return signedIn() && request.auth.token.admin == true; }
+    function userPath(uid) { return /databases/$(database)/documents/users/$(uid); }
+    function publicPath(uid) { return /databases/$(database)/documents/publicProfiles/$(uid); }
+    function threadPath(tid) { return /databases/$(database)/documents/threads/$(tid); }
+    function messagePath(tid, mid) { return /databases/$(database)/documents/threads/$(tid)/messages/$(mid); }
 
-    function handleIsValid(username) {
-      return username is string
-        && username.matches('^[a-z0-9_]{3,20}$')
-        && !(username in [
-          'admin', 'administrator', 'moderator', 'mod', 'staff', 'support',
-          'system', 'owner', 'root', 'security', 'firebase', 'official', 'null'
-        ]);
+    function validHandle(name) {
+      return name is string && name.matches('^[a-z0-9_]{3,20}$')
+        && !(name in ['admin','administrator','moderator','mod','staff','support',
+          'system','owner','root','security','firebase','official','null']);
     }
-
-    function avatarIsValid(data) {
-      return data is string
-        && data.size() <= 48000
-        && (data == '' ||
-          data.matches('^data:image/(webp|png);base64,[A-Za-z0-9+/=]+$'));
+    function validAvatar(data) {
+      return data is string && data.size() <= 48000
+        && (data == '' || data.matches('^data:image/(webp|png);base64,[A-Za-z0-9+/=]+$'));
     }
-
-    function handleOwnedAfter(username, uid) {
-      return getAfter(/databases/$(database)/documents/handles/$(username)).data.uid == uid;
+    function handleAfter(name, uid) {
+      return getAfter(/databases/$(database)/documents/handles/$(name)).data.uid == uid;
     }
-
-    function privateProfileValid(uid) {
+    function privateValid(uid) {
       let d = request.resource.data;
-      return d.keys().hasAll([
-          'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'updatedAt'
-        ])
-        && d.keys().hasOnly([
-          'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'updatedAt',
-          'avatarData', 'username', 'bio', 'isPublic'
-        ])
+      return d.keys().hasAll(['uid','displayName','email','photoURL','createdAt','updatedAt'])
+        && d.keys().hasOnly(['uid','displayName','email','photoURL','createdAt',
+          'updatedAt','avatarData','username','bio','isPublic'])
         && d.uid == uid
-        && d.uid is string
-        && d.displayName is string
-        && d.displayName.size() >= 2
-        && d.displayName.size() <= 60
-        && d.email is string
-        && d.email == request.auth.token.email
-        && d.email.size() <= 254
-        && d.photoURL is string
-        && d.photoURL.size() <= 2000
-        && d.createdAt is timestamp
-        && d.updatedAt is timestamp
-        && (!d.keys().hasAny(['avatarData']) || avatarIsValid(d.avatarData))
-        && (!d.keys().hasAny(['username']) ||
-          (handleIsValid(d.username) && handleOwnedAfter(d.username, uid)))
-        && (!d.keys().hasAny(['bio']) ||
-          (d.bio is string && d.bio.size() <= 180))
+        && d.displayName is string && d.displayName.size() >= 2 && d.displayName.size() <= 60
+        && d.email is string && d.email == request.auth.token.email && d.email.size() <= 254
+        && d.photoURL is string && d.photoURL.size() <= 2000
+        && d.createdAt is timestamp && d.updatedAt is timestamp
+        && (!d.keys().hasAny(['avatarData']) || validAvatar(d.avatarData))
+        && (!d.keys().hasAny(['username']) || (validHandle(d.username) && handleAfter(d.username, uid)))
+        && (!d.keys().hasAny(['bio']) || (d.bio is string && d.bio.size() <= 180))
         && (!d.keys().hasAny(['isPublic']) || d.isPublic is bool);
     }
-
-    function publicProfileValid(uid) {
+    // Prevent stale public records surviving a privacy switch or private edit.
+    function publicStateAfter(uid) {
       let d = request.resource.data;
-      let privateData = getAfter(/databases/$(database)/documents/users/$(uid)).data;
-      return d.keys().hasAll([
-          'uid', 'displayName', 'username', 'bio', 'avatarData', 'joinedAt'
-        ])
-        && d.keys().hasOnly([
-          'uid', 'displayName', 'username', 'bio', 'avatarData', 'joinedAt'
-        ])
-        && d.uid == uid
-        && privateData.get('isPublic', false) == true
-        && d.displayName == privateData.displayName
-        && d.username == privateData.username
-        && handleIsValid(d.username)
-        && handleOwnedAfter(d.username, uid)
-        && d.bio == privateData.get('bio', '')
-        && d.avatarData == privateData.get('avatarData', '')
-        && avatarIsValid(d.avatarData)
-        && d.joinedAt == privateData.createdAt;
+      return d.get('isPublic', false)
+        ? (existsAfter(publicPath(uid))
+          && getAfter(publicPath(uid)).data.displayName == d.displayName
+          && getAfter(publicPath(uid)).data.username == d.username
+          && getAfter(publicPath(uid)).data.bio == d.get('bio', '')
+          && getAfter(publicPath(uid)).data.avatarData == d.get('avatarData', ''))
+        : !existsAfter(publicPath(uid));
+    }
+    function publicValid(uid) {
+      let d = request.resource.data;
+      let p = getAfter(userPath(uid)).data;
+      return d.keys().hasAll(['uid','username','displayName','bio','avatarData','joinedAt'])
+        && d.keys().hasOnly(['uid','username','displayName','bio','avatarData','joinedAt'])
+        && d.uid == uid && p.get('isPublic', false) == true
+        && d.username == p.username && validHandle(d.username)
+        && handleAfter(d.username, uid)
+        && d.displayName == p.displayName
+        && d.bio == p.get('bio', '')
+        && validAvatar(d.avatarData)
+        && d.avatarData == p.get('avatarData','')
+        && d.joinedAt == p.createdAt;
     }
 
-    // Private account records. Only their owners can read these documents.
+    // Private identity and email; admins may VIEW a limited roster, not edit users.
     match /users/{uid} {
-      allow get: if isOwner(uid);
-      allow list: if false;
-      allow create: if isOwner(uid)
-        && privateProfileValid(uid)
+      allow get: if owner(uid) || admin();
+      allow list: if admin() && request.query.limit <= 30;
+      allow create: if owner(uid) && privateValid(uid)
         && request.resource.data.createdAt == request.time
         && request.resource.data.updatedAt == request.time;
-      allow update: if isOwner(uid)
-        && privateProfileValid(uid)
+      allow update: if owner(uid) && privateValid(uid)
         && request.resource.data.createdAt == resource.data.createdAt
-        && request.resource.data.diff(resource.data).affectedKeys()
-          .hasOnly(['displayName', 'username', 'bio', 'isPublic',
-                    'avatarData', 'updatedAt'])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(
+          ['displayName','username','bio','isPublic','avatarData','updatedAt'])
         && request.resource.data.updatedAt == request.time
-        // Releasing a previous username is part of the same transaction.
+        && publicStateAfter(uid)
         && (!resource.data.keys().hasAny(['username'])
-            || resource.data.username == request.resource.data.get('username', '')
-            || !existsAfter(
-              /databases/$(database)/documents/handles/$(resource.data.username)
-            ));
+          || resource.data.username == request.resource.data.get('username','')
+          || !existsAfter(/databases/$(database)/documents/handles/$(resource.data.username)));
       allow delete: if false;
     }
 
-    // Handle documents reserve a unique username without publishing an email.
-    // Reads check exact handles; listing and overwriting reservations are denied.
-    match /handles/{username} {
-      allow get: if request.auth != null;
+    // Username reservation: no enumeration and no takeovers.
+    match /handles/{name} {
+      allow get: if signedIn();
       allow list: if false;
-      allow create: if request.auth != null
-        && handleIsValid(username)
+      allow create: if signedIn() && validHandle(name)
         && request.resource.data.keys().hasOnly(['uid'])
-        && request.resource.data.keys().hasAll(['uid'])
         && request.resource.data.uid == request.auth.uid
-        && getAfter(
-          /databases/$(database)/documents/users/$(request.auth.uid)
-        ).data.username == username;
+        && getAfter(userPath(request.auth.uid)).data.username == name;
       allow update: if false;
-      allow delete: if request.auth != null
-        && resource.data.uid == request.auth.uid
-        && getAfter(
-          /databases/$(database)/documents/users/$(request.auth.uid)
-        ).data.get('username', '') != username;
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid
+        && getAfter(userPath(request.auth.uid)).data.get('username','') != name;
     }
 
-    // Opted-in profile cards contain NO email or private account metadata.
-    // Anyone can open a public profile by its exact ID, but not list them.
+    // Only users who opt in publish cards in this collection.
+    // Search queries must be bounded; private users aren't indexed.
     match /publicProfiles/{uid} {
-      allow get: if get(
-        /databases/$(database)/documents/users/$(uid)
-      ).data.get('isPublic', false) == true;
-      allow list: if false;
-      allow create, update: if isOwner(uid) && publicProfileValid(uid);
-      allow delete: if isOwner(uid);
+      allow get: if get(userPath(uid)).data.get('isPublic',false) == true;
+      allow list: if request.query.limit <= 15;
+      allow create, update: if owner(uid) && publicValid(uid);
+      allow delete: if owner(uid);
+    }
+
+    // A personal block list. Chat sends check BOTH directions.
+    match /blocks/{uid}/targets/{targetUid} {
+      allow get: if owner(uid);
+      allow list: if owner(uid) && request.query.limit <= 50;
+      allow create: if owner(uid) && targetUid != uid
+        && request.resource.data.keys().hasOnly(['blockedAt'])
+        && request.resource.data.blockedAt == request.time;
+      allow update: if false;
+      allow delete: if owner(uid);
+    }
+    function notBlocked(a, b) {
+      return !exists(/databases/$(database)/documents/blocks/$(a)/targets/$(b))
+        && !exists(/databases/$(database)/documents/blocks/$(b)/targets/$(a));
+    }
+    function otherMember(members, sender) {
+      return members[0] == sender ? members[1] : members[0];
+    }
+    function validThread(tid) {
+      let d = request.resource.data;
+      return d.keys().hasAll(['members','createdBy','createdAt','updatedAt',
+        'lastMessage','lastMessageId','lastSenderUid','lastSentAt'])
+        && d.keys().hasOnly(['members','createdBy','createdAt','updatedAt',
+          'lastMessage','lastMessageId','lastSenderUid','lastSentAt'])
+        && d.members is list && d.members.size() == 2
+        && d.members[0] is string && d.members[1] is string
+        && d.members[0] != d.members[1]
+        && tid == d.members[0] + '_' + d.members[1]
+        && request.auth.uid in d.members
+        && d.lastSenderUid == request.auth.uid
+        && d.lastMessage is string
+        && d.lastMessage.size() >= 1 && d.lastMessage.size() <= 700
+        && d.lastMessageId is string && d.lastMessageId.size() <= 150
+        && d.createdBy is string
+        && d.createdAt is timestamp && d.updatedAt is timestamp && d.lastSentAt is timestamp;
+    }
+    function linkedMessage(tid) {
+      let d = request.resource.data;
+      let m = getAfter(messagePath(tid,d.lastMessageId)).data;
+      return m.senderUid == request.auth.uid
+        && m.body == d.lastMessage && m.createdAt == request.time;
+    }
+    function threadParticipants(tid) {
+      return signedIn() && request.auth.uid in get(threadPath(tid)).data.members;
+    }
+    function canSend(tid, mid) {
+      let t = getAfter(threadPath(tid)).data;
+      return request.auth.uid in t.members
+        && notBlocked(t.members[0],t.members[1])
+        && t.lastMessageId == mid
+        && t.lastSenderUid == request.auth.uid
+        && t.lastMessage == request.resource.data.body
+        && t.lastSentAt == request.time;
+    }
+
+    match /threads/{tid} {
+      allow get: if signedIn() && request.auth.uid in resource.data.members;
+      allow list: if signedIn() && request.query.limit <= 30
+        && request.auth.uid in resource.data.members;
+      allow create: if signedIn() && validThread(tid)
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.lastSentAt == request.time
+        && exists(publicPath(otherMember(request.resource.data.members,request.auth.uid)))
+        && notBlocked(request.resource.data.members[0],request.resource.data.members[1])
+        && linkedMessage(tid);
+      allow update: if signedIn() && validThread(tid)
+        && request.resource.data.members == resource.data.members
+        && request.resource.data.createdBy == resource.data.createdBy
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'lastMessage','lastMessageId','lastSenderUid','lastSentAt','updatedAt'
+        ])
+        && request.resource.data.lastMessageId != resource.data.lastMessageId
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.lastSentAt == request.time
+        && notBlocked(resource.data.members[0],resource.data.members[1])
+        && linkedMessage(tid);
+      allow delete: if false;
+
+      match /messages/{mid} {
+        allow get: if threadParticipants(tid);
+        allow list: if threadParticipants(tid) && request.query.limit <= 40;
+        allow create: if signedIn()
+          && request.resource.data.keys().hasOnly(['senderUid','body','createdAt'])
+          && request.resource.data.keys().hasAll(['senderUid','body','createdAt'])
+          && request.resource.data.senderUid == request.auth.uid
+          && request.resource.data.body is string
+          && request.resource.data.body.size() >= 1
+          && request.resource.data.body.size() <= 700
+          && request.resource.data.createdAt == request.time
+          && canSend(tid,mid);
+        allow update, delete: if false;
+      }
+    }
+
+    // The sender can create an alert only alongside a legitimate message,
+    // for that message's other participant. Users manage only their own alerts.
+    match /notifications/{uid}/items/{mid} {
+      allow get: if owner(uid);
+      allow list: if owner(uid) && request.query.limit <= 50;
+      allow create: if signedIn() && uid != request.auth.uid
+        && request.resource.data.keys().hasOnly([
+          'type','fromUid','threadId','messageId','createdAt','read'
+        ])
+        && request.resource.data.keys().hasAll([
+          'type','fromUid','threadId','messageId','createdAt','read'
+        ])
+        && request.resource.data.type == 'message'
+        && request.resource.data.fromUid == request.auth.uid
+        && request.resource.data.messageId == mid
+        && request.resource.data.threadId is string
+        && request.resource.data.read == false
+        && request.resource.data.createdAt == request.time
+        && uid in getAfter(threadPath(request.resource.data.threadId)).data.members
+        && request.auth.uid in getAfter(threadPath(request.resource.data.threadId)).data.members
+        && getAfter(messagePath(request.resource.data.threadId,mid)).data.senderUid == request.auth.uid
+        && getAfter(messagePath(request.resource.data.threadId,mid)).data.createdAt == request.time;
+      allow update: if owner(uid)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read'])
+        && request.resource.data.read == true;
+      allow delete: if owner(uid);
+    }
+
+    // These are personal, client-written activity markers, NOT a trusted audit trail.
+    match /activity/{uid}/events/{eventId} {
+      allow get: if owner(uid);
+      allow list: if owner(uid) && request.query.limit <= 50;
+      allow create: if owner(uid)
+        && request.resource.data.keys().hasOnly(['kind','details','createdAt'])
+        && request.resource.data.keys().hasAll(['kind','details','createdAt'])
+        && request.resource.data.kind in [
+          'session_opened','profile_updated','theme_changed',
+          'password_changed','message_sent','message_read'
+        ]
+        && request.resource.data.details is string
+        && request.resource.data.details.size() <= 120
+        && request.resource.data.createdAt == request.time;
+      allow update: if false;
+      allow delete: if owner(uid);
+    }
+
+    // Real admin permission is a server-issued Firebase Auth custom claim.
+    // Reviews are non-destructive annotations; this is NOT account suspension.
+    match /adminReviews/{uid} {
+      allow get: if admin();
+      allow list: if admin() && request.query.limit <= 30;
+      allow create, update: if admin()
+        && request.resource.data.keys().hasOnly(['status','note','updatedBy','updatedAt'])
+        && request.resource.data.keys().hasAll(['status','note','updatedBy','updatedAt'])
+        && request.resource.data.status in ['clear','reviewed','flagged']
+        && request.resource.data.note is string
+        && request.resource.data.note.size() <= 300
+        && request.resource.data.updatedBy == request.auth.uid
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if false;
     }
   }
 }
