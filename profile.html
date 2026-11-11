@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Edit profile | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=profiles-2">
+  <link rel="stylesheet" href="styles.css?v=settings-1">
   <link rel="stylesheet" href="profile.css?v=profiles-2">
 </head>
 <body data-page="profile-editor">
@@ -33,7 +33,10 @@
         <h1>Make it yours<span class="accent-dot">.</span></h1>
         <p>Edit your identity on this website. Nothing gets published unless you choose to make it public.</p>
       </div>
-      <a href="account.html" class="button-secondary">Account details</a>
+      <div class="profile-intro-actions">
+        <a href="account.html" class="button-secondary">Account details</a>
+        <a href="settings.html" class="button-secondary">Settings</a>
+      </div>
     </div>
     <p id="profile-loading" class="profile-loading" role="status">Loading your profile…</p>
     <div id="profile-content" class="profile-columns" hidden>
@@ -92,7 +95,7 @@
     </div>
   </main>
   <footer>© 2026 My Website</footer>
-  <script type="module" src="auth-nav.js?v=profiles-2"></script>
+  <script type="module" src="auth-nav.js?v=settings-1"></script>
   <script type="module" src="profile.js?v=profiles-2"></script>
 </body>
 </html>
