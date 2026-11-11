@@ -20,13 +20,13 @@
           <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
           <span class="toggle-track" aria-hidden="true"></span>
         </label>
-        <a class="nav-login" href="login.html">Log in</a>
+        <a class="nav-auth nav-login" id="nav-auth-link" href="login.html" aria-label="Log in">Log in</a>
       </div>
     </nav>
   </header>
   <main class="auth-area">
     <section class="auth-card" aria-labelledby="page-title">
-      <div class="account-avatar" id="account-avatar" aria-hidden="true">?</div>
+      <div class="account-avatar" id="account-avatar" aria-hidden="true"></div>
       <h1 id="page-title">Your account</h1>
       <p class="auth-subtitle" id="account-subtitle">Checking your session...</p>
       <dl class="account-detail" id="account-details" hidden>
@@ -48,5 +48,6 @@
   </main>
   <footer>© 2026 My Website</footer>
   <script type="module" src="auth.js"></script>
+  <script type="module" src="auth-nav.js"></script>
 </body>
 </html>
