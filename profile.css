@@ -82,3 +82,5 @@ html[data-theme="dark"] .profile-feedback.success { color:#91dbb0; }
 html[data-theme="dark"] .profile-feedback.error { color:#ffada4; }
 @media (max-width:850px) { .profile-columns { grid-template-columns:1fr; } .profile-side { display:grid; grid-template-columns:1fr 1fr; align-items:start; } }
 @media (max-width:610px) { .profile-shell { padding:27px 17px 65px; } .profile-intro { align-items:flex-start; flex-direction:column; } .profile-box { padding:22px; } .profile-side { display:flex; } .public-profile-shell { padding:28px 16px 70px; } .public-profile-card { padding:17px; } .public-profile-heading { flex-direction:column; } .public-avatar { margin-left:12px; } }
+
+.profile-intro-actions{display:flex;gap:10px;flex-wrap:wrap}
