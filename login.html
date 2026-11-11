@@ -13,7 +13,9 @@
       --text: #252525;
       --muted: #73736f;
       --line: #e1e1dd;
-      --button: #292929;
+      --button: #cce6fa;
+      --button-hover: #b6daf5;
+      --button-text: #173e5d;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -44,13 +46,13 @@
     .nav-links a:hover { color: #111; }
     .nav-links .nav-login {
       padding: 8px 16px;
-      color: #fff;
+      color: var(--button-text);
       background: var(--button);
       border-radius: 8px;
       font-weight: 550;
       transition: background .15s ease;
     }
-    .nav-links .nav-login:hover { color: #fff; background: #444; }
+    .nav-links .nav-login:hover { color: var(--button-text); background: var(--button-hover); }
     main { flex: 1; }
     footer { border-top: 1px solid var(--line); padding: 22px 28px; text-align: center; font-size: 13px; color: var(--muted); }
     a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid #666; outline-offset: 3px; }
@@ -101,23 +103,34 @@
       border: 0;
       border-radius: 8px;
       background: var(--button);
-      color: #fff;
+      color: var(--button-text);
       font: inherit;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
     }
-    .submit:hover { background: #444; }
+    .submit:hover { background: var(--button-hover); }
     .form-note { font-size: 12px; line-height: 1.55; color: #888882; text-align: center; margin: 15px 0 0; }
     #login-status { font-size: 13px; color: #666; margin: 12px 0 0; }
     .back-link {
-      display: inline-block;
-      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      height: 44px;
+      margin-top: 14px;
+      border: 1px solid #c7dfef;
+      border-radius: 8px;
+      background: #eaf5fd;
+      color: #28536d;
       text-decoration: none;
-      color: #666660;
-      font-size: 13px;
+      font-size: 14px;
+      font-weight: 550;
+      transition: background .15s ease, border-color .15s ease;
     }
-    .back-link:hover { color: #222; text-decoration: underline; }
+    .back-link:hover { background: #dceefb; border-color: #b8d8ed; }
+    .back-arrow { font-size: 17px; line-height: 1; }
     @media (max-width: 480px) {
       .login-area { min-height: 510px; padding: 42px 16px 65px; }
       .login-card { padding: 28px 24px; }
@@ -144,7 +157,7 @@
         <p class="form-note">Demo only — account sign-in isn't connected yet.</p>
         <p id="login-status" role="status" aria-live="polite"></p>
       </form>
-      <a class="back-link" href="index.html">← Back to home</a>
+      <a class="back-link" href="index.html"><span class="back-arrow" aria-hidden="true">←</span> Back to home</a>
     </section>
   </main>
   <footer>© 2026 My Website</footer>
