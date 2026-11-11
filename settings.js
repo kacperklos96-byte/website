@@ -1,3 +1,4 @@
+import { recordActivity } from "./community-data.js";
 import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
 import {
   EmailAuthProvider, getAuth, onAuthStateChanged,
@@ -59,6 +60,10 @@ function setTheme(theme) {
   // theme.js handles the cookie and applies the same preference to every page.
   switchInput.dispatchEvent(new Event("change", { bubbles: true }));
   updateThemeChoices();
+  if (signedInUser) {
+    const client = firebaseClient();
+    recordActivity(client.db, signedInUser.uid, "theme_changed", "Changed appearance to " + theme);
+  }
 }
 
 function updateThemeChoices() {
@@ -147,6 +152,7 @@ $("password-form").addEventListener("submit", (event) => {
     await updatePassword(signedInUser, newPassword);
     $("password-form").reset();
     feedback("security-feedback", "Password updated successfully.", "success");
+    recordActivity(firebaseClient().db, signedInUser.uid, "password_changed", "Updated website account password");
   });
 });
 
