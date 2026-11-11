@@ -1,0 +1,7 @@
+# Local runtime and Firebase service-account files
+node_modules/
+service-account*.json
+firebase-admin-key*.json
+*.pem
+.env
+.env.*
