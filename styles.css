@@ -222,3 +222,15 @@ html[data-theme="dark"] .account-detail dd { color: #edf0f3; }
   .nav-links a { font-size: 12px; }
   .nav-links .nav-login { padding: 7px 10px; }
 }
+
+/* Account storage indicator */
+.database-status {
+  margin: -6px 0 20px;
+  font-size: 12px;
+  color: #777d78;
+}
+.database-status.connected { color: #2c7352; }
+.database-status.disconnected { color: #b94a39; }
+html[data-theme="dark"] .database-status { color: #abb4c0; }
+html[data-theme="dark"] .database-status.connected { color: #95deb5; }
+html[data-theme="dark"] .database-status.disconnected { color: #ffabab; }
