@@ -1,59 +1,91 @@
-# My Website — Feature Roadmap
+# My Website — all 8 roadmap features in the repository
 
-This is an intentionally small, professional but experimental Firebase-powered website, hosted on GitHub Pages.
+**Status:** The source code for all eight planned features has now been added to `main`.
+The newer features require publishing the latest Firestore rules and an admin-specific
+one-time setup. Merely committing the files does not change Firebase permissions.
 
-## 1. User dashboard — implemented
+| # | Feature | Code | Activation / limits |
+|---|---------|------|---------------------|
+| 1 | Dashboard | ✅ | Firebase Authentication and private profiles |
+| 2 | Profiles | ✅ | Publish updated Firestore rules for public profiles |
+| 3 | Settings | ✅ | Existing Firebase Auth; local theme preference |
+| 4 | Admin Panel | ✅ | Trusted Firebase Auth `admin: true` custom claim required |
+| 5 | Notifications | ✅ | Alerts arrive when someone sends a new private message |
+| 6 | Messaging | ✅ | Members can start chats from opted-in public profiles; per-user blocking |
+| 7 | User Search | ✅ | Prefix search over explicitly public usernames only |
+| 8 | Activity History | ✅ | Personal client-authored events, not a trusted security audit |
 
-- `dashboard.html`, `dashboard.js`, `dashboard.css`
-- Real Firebase Authentication session and private Firestore profile, with your own custom avatar
-- Account status, account creation and last sign-in metadata, clear links to editing your profile
-- Responsive light/dark layout
+## The five new features
 
-## 2. Profile system — implemented in GitHub (Firebase rules publishing required)
+### 4. Admin Panel
 
-- `profile.html`: private profile editor and live preview
-- Editable display name, **unique** username (3–20 lowercase letters/numbers/underscores), 180-character bio
-- Public profile is **off by default**; sharing is explicit
-- `public-profile.html?uid=...`: view a published profile through a stable link
-- Private account email stays in `users/{uid}`, never appears in public profiles
-- `handles/{username}` reserves names transactionally to prevent collisions
-- `publicProfiles/{uid}` stores only name, handle, bio, chosen picture and member-since date
-- Custom profile picture uploads from the existing account page also update a published avatar
-- No server-side Cloud Functions or additional hosting needed for these features
+- `admin.html`, `admin.js`: staff-only view of a bounded sample of account
+  records and the public-profile collection, with private review notes.
+- The page requires a **server-issued Firebase Auth custom claim**. Browser
+  check **and** Firestore security rules must pass.
+- No self-service role creation is allowed. A local, trusted Node.js helper
+  `scripts/set-admin.mjs` can assign or revoke the claim.
+- Review annotations do NOT suspend, ban, delete, or change user roles.
+- The counts are sample/page counts, not fabricated global site statistics.
 
-**IMPORTANT:** The new collections and fields require publishing the updated [firestore.rules](firestore.rules) file in the [Firebase Console](https://console.firebase.google.com/project/website-d402e/firestore/databases/-default-/security/rules). Until then profile changes and public profile links may return permission errors. Committing the rules file does not deploy it.
+### 5. Notifications
 
-## 3. Settings Page — implemented
+- `notifications.html`, `notifications.js`: private, live Firestore inbox.
+- New messages create an alert in the recipient's private collection as part
+  of the same transaction that creates the message.
+- Read/unread status, mark-all-read, delete, direct links to conversations.
+- A small live unread bell is added to the existing navigation for logged-in
+  users.
 
-- `settings.html`, `settings.css`, `settings.js`
-- Dark-gray or light appearance, using the same cookie and header theme toggle as the rest of the website
-- Profile visibility status from the private Firestore record, with an Edit profile & visibility action
-- Firebase email verification (when applicable)
-- Password changes for email/password users, requiring the current password and reauthentication
-- Password reset emails for email/password users
-- Google-only accounts show a correct provider-managed password explanation
-- Signed-in account details, logout, and export of the current private profile to local JSON
-- Private data is visible only after Firebase Auth confirms the session
-- No new Firestore rules or collections are needed for this stage
+### 6. Messaging
 
-Email address changes, account deletion, and a full security audit log are not implemented yet; those need additional account lifecycle/security work.
+- `messages.html`, `messages.js`, `community-data.js`
+- Two-member conversations, recent messages, and real-time updates.
+- Users can start a chat from another person's **opted-in public profile**.
+- Block/unblock users; Firestore rules prevent messages if either side blocks.
+- Messages are limited to 700 characters and stored privately. This is an
+  experimental messaging feature, not an end-to-end encrypted chat product.
+- The interface loads up to 30 threads and 40 recent messages per thread.
 
-## Upcoming stages (not yet built)
+### 7. User Search
 
-4. Admin panel: securely assigned administrator roles and moderation.
-5. Notifications: per-user inbox and unread counts.
-6. Messaging: private messaging, blocking, and abuse controls.
-7. Search: opt-in searchable public profile directory.
-8. Activity history: a fuller event timeline and backend-recorded audit events.
+- `search.html`, `search.js`
+- Search public usernames, view profile cards, and start conversations.
+- Only users with a published `publicProfiles/{uid}` record are listed.
+- Queries are limited to 15 results. Search can be used without signing in;
+  messaging requires an account.
 
-## Project links
+### 8. Activity History
 
-- [Website](https://kacperklos96-byte.github.io/website/)
-- [Dashboard](https://kacperklos96-byte.github.io/website/dashboard.html)
-- [Edit profile](https://kacperklos96-byte.github.io/website/profile.html)
-- [Settings](https://kacperklos96-byte.github.io/website/settings.html)
-- [Account and avatar](https://kacperklos96-byte.github.io/website/account.html)
+- `activity.html`, `activity.js`
+- Recent browser-recorded markers for session access, profile edits, theme,
+  password changes, and sent messages.
+- The record is private and append-only for the browser, but owners may delete
+  entries. This is **not** a tamper-proof server audit trail.
 
-### Security notes
+## How to activate the new features
 
-Only authenticated users can edit their own private and public documents. A public profile can be accessed with a direct link only while its owner opted in; the new rules disallow listing all user records and profile records. Usernames are unique via transactionally reserved handles and rules. We will introduce controlled public directory/search permissions during stage 7. Do not switch Firestore to open read/write rules.
+1. Copy **all** of the newest `firestore.rules` from the repository into
+   Firebase Console > Firestore Database > Rules, then press **Publish**.
+2. Sign into the website. Find People, Messages, Notifications and Activity
+   should now access their collections. A new notification appears only after
+   someone actually sends a message; the inbox isn't seeded with fake alerts.
+3. To enable Admin Panel, the site owner must use a trusted Admin SDK
+   environment to assign the claim. See [README.md](README.md) for the local
+   script and safe credential handling.
+4. Open [Dashboard](https://kacperklos96-byte.github.io/website/dashboard.html)
+   for shortcuts to all features.
+
+**Important:** All private user data remains protected by UID ownership rules,
+except the limited account roster accessible to verified administrators.
+The admin page never derives its role from editable Firestore profile fields.
+Messages and notification creation are tied together in a single Firestore
+transaction, so unauthenticated users cannot send or forge them.
+The rules contain no unrestricted public write clause.
+
+## Optional follow-up hardening
+
+For a real public launch, add reporting and moderator escalation, rate limiting
+through trusted backend enforcement, a dedicated account deletion/export service,
+email-change flows, abuse monitoring, pagination, Firebase emulator rule tests,
+and privileged server audit events. Never commit Firebase service-account keys.
