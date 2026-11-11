@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f3f1">
+  <title>Your account | My Website</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="account">
+  <header>
+    <nav aria-label="Main navigation">
+      <a class="logo" href="index.html">My Website</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a class="nav-login" href="login.html">Log in</a>
+      </div>
+    </nav>
+  </header>
+  <main class="auth-area">
+    <section class="auth-card" aria-labelledby="page-title">
+      <div class="account-avatar" id="account-avatar" aria-hidden="true">?</div>
+      <h1 id="page-title">Your account</h1>
+      <p class="auth-subtitle" id="account-subtitle">Checking your session...</p>
+      <dl class="account-detail" id="account-details" hidden>
+        <dt>Name</dt><dd id="account-name"></dd>
+        <dt style="margin-top:13px">Email</dt><dd id="account-email"></dd>
+      </dl>
+      <div class="account-actions">
+        <button class="button-primary full-width" type="button" id="verify-email" data-requires-auth hidden>Send verification email</button>
+        <button class="button-secondary full-width" type="button" id="signout" data-requires-auth>Log out</button>
+        <a class="button-secondary full-width" href="index.html">← Back to home</a>
+      </div>
+      <p class="form-status" id="auth-status" role="status" aria-live="polite" hidden></p>
+      <p class="setup-notice" id="setup-notice" role="status" hidden>
+        Login isn't active yet. To enable accounts, connect a Firebase project in <code>firebase-config.js</code>.
+      </p>
+    </section>
+  </main>
+  <footer>© 2026 My Website</footer>
+  <script type="module" src="auth.js"></script>
+</body>
+</html>
