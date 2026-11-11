@@ -7,7 +7,7 @@ import {
 import { getFirestore } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 import { ensureUserProfile, saveCustomAvatar } from "./database.js";
-import { renderAvatar, prepareAvatar } from "./avatar.js";
+import { renderAvatar, prepareAvatar } from "./avatar.js?v=mascot-1";
 
 const requiredFields = ["apiKey", "authDomain", "projectId", "appId"];
 const configured = requiredFields.every((key) =>
