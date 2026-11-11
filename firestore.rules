@@ -11,7 +11,7 @@ service cloud.firestore {
           'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'updatedAt'
         ])
         && d.keys().hasOnly([
-          'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'updatedAt'
+          'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'updatedAt', 'avatarData'
         ])
         && d.uid == uid
         && d.uid is string
@@ -23,10 +23,17 @@ service cloud.firestore {
         && d.photoURL is string
         && d.photoURL.size() <= 2000
         && d.createdAt is timestamp
-        && d.updatedAt is timestamp;
+        && d.updatedAt is timestamp
+        // Existing user documents may not have an avatarData field yet.
+        && (!d.keys().hasAny(['avatarData']) || (
+          d.avatarData is string
+          && d.avatarData.size() <= 48000
+          && (d.avatarData == '' ||
+              d.avatarData.matches('^data:image/(webp|png);base64,[A-Za-z0-9+/=]+$'))
+        ));
     }
 
-    // Profiles are private: the account owner can access only their own doc.
+    // Private: only the account owner can read their own document.
     // No public user list, client-controlled admin flags, or other collections.
     match /users/{uid} {
       allow get: if isOwner(uid);
@@ -39,9 +46,8 @@ service cloud.firestore {
         && profileIsValid(uid)
         && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.diff(resource.data).affectedKeys()
-          .hasOnly(['displayName', 'photoURL', 'updatedAt'])
+          .hasOnly(['displayName', 'photoURL', 'avatarData', 'updatedAt'])
         && request.resource.data.updatedAt == request.time;
-      // Account deletion needs a privileged backend workflow later.
       allow delete: if false;
     }
   }
