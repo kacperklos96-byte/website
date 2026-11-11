@@ -77,7 +77,7 @@ async function finishSignIn(user) {
   } catch (error) {
     console.warn("Signed in, but the profile database isn't ready:", error);
   }
-  window.location.assign("account.html");
+  window.location.assign("dashboard.html");
 }
 
 function renderAccount(user) {
@@ -145,7 +145,7 @@ if (!auth) {
       renderAccount(user);
       renderSavedProfile(user);
     } else if (user && !submitting) {
-      window.location.replace("account.html");
+      window.location.replace("dashboard.html");
     }
   }, () => setStatus("Couldn't check your account. Please refresh.", "error"));
 
