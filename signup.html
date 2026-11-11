@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f3f3f1">
   <title>Create account | My Website</title>
+  <script src="theme.js"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="signup">
@@ -14,6 +15,11 @@
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="index.html#about">About</a>
+        <label class="theme-toggle" title="Switch light / dark mode">
+          <span class="theme-symbol" aria-hidden="true">☾</span>
+          <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
+          <span class="toggle-track" aria-hidden="true"></span>
+        </label>
         <a class="nav-login" href="login.html">Log in</a>
       </div>
     </nav>
