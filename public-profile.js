@@ -24,6 +24,11 @@ if (!uid || !/^[A-Za-z0-9_-]{6,128}$/.test(uid)) {
       if (!snapshot.exists()) { showUnavailable(); return; }
       const profile = snapshot.data();
       renderAvatar($("public-profile-avatar"), profile);
+      const messageLink = $("public-message-link");
+      if (messageLink) {
+        messageLink.href = "messages.html?to=" + encodeURIComponent(uid);
+        messageLink.hidden = false;
+      }
       $("public-name").textContent = profile.displayName || "Member";
       $("public-handle").textContent = "@" + (profile.username || "member");
       $("public-bio").textContent = profile.bio || "No bio yet.";
