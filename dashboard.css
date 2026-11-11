@@ -102,7 +102,7 @@
 .build-progress { display: flex; justify-content: space-between; margin: 22px 0 8px; color: var(--muted); font-size: 12px; }
 .build-progress strong { color: var(--text); }
 .progress-track { height: 6px; width: 100%; border-radius: 30px; background: var(--line); overflow: hidden; }
-.progress-track span { display: block; width: 12.5%; height: 100%; background: var(--blue); border-radius: inherit; }
+.progress-track span { display: block; width: 25%; height: 100%; background: var(--blue); border-radius: inherit; }
 .dashboard-error { margin-top: 22px; padding: 14px; border: 1px solid #d8ada7; border-radius: 8px; font-size: 13px; color: #a43f34; }
 .nav-dashboard { font-weight: 600; }
 :root { --status-bg: #f2f3f3; }
