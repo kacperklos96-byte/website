@@ -78,6 +78,9 @@ async function showProfile(db, user) {
     const profile = await ensureUserProfile(db, user);
     if (!profile) throw new Error("No private profile found.");
     $("dash-name").textContent = profile.displayName || user.displayName || "Member";
+    const usernameEl = $("dash-username");
+    usernameEl.hidden = !profile.username;
+    usernameEl.textContent = profile.username ? "@" + profile.username : "";
     renderAvatar($("dashboard-avatar"), profile);
     const since = timeFromTimestamp(profile.createdAt);
     if (since) $("dash-member-since").textContent = formatDate(since);
