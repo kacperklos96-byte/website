@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Dashboard | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=settings-1">
-  <link rel="stylesheet" href="dashboard.css?v=settings-1">
+  <link rel="stylesheet" href="styles.css?v=community-1">
+  <link rel="stylesheet" href="dashboard.css?v=community-1">
 </head>
 <body data-page="dashboard">
   <header>
@@ -43,6 +43,13 @@
         </div>
       </div>
 
+      <section class="quick-tools" aria-label="Community features">
+        <a href="search.html"><span class="tool-symbol" aria-hidden="true">⌕</span><strong>Find people</strong><small>Discover public profiles</small></a>
+        <a href="messages.html"><span class="tool-symbol" aria-hidden="true">✉</span><strong>Messages</strong><small>Private conversations</small></a>
+        <a href="notifications.html"><span class="tool-symbol" aria-hidden="true">♢</span><strong>Notifications</strong><small>See your alerts</small></a>
+        <a href="activity.html"><span class="tool-symbol" aria-hidden="true">↗</span><strong>Activity</strong><small>Your recent events</small></a>
+        <a href="admin.html" id="admin-shortcut" hidden><span class="tool-symbol" aria-hidden="true">▣</span><strong>Admin</strong><small>Authorized access</small></a>
+      </section>
       <div class="dash-columns">
         <section class="dash-panel profile-panel" aria-labelledby="profile-heading">
           <div class="panel-top"><h2 id="profile-heading">Your profile</h2><span class="small-tag">ACCOUNT</span></div>
@@ -93,16 +100,16 @@
           <div class="panel-top"><h2 id="roadmap-heading">What's coming next</h2><span class="small-tag">ROADMAP</span></div>
           <div class="roadmap-row"><span class="roadmap-number">02</span><div><strong>Profile system</strong><p>Customize your username, bio and public profile.</p></div><span class="phase-label">Built</span></div>
           <div class="roadmap-row"><span class="roadmap-number">03</span><div><strong>Account settings</strong><p>Appearance, privacy, verification and password management.</p></div><span class="phase-label">Built</span></div>
-          <div class="roadmap-row"><span class="roadmap-number">04</span><div><strong>Admin panel</strong><p>Roles and secure website administration.</p></div><span class="phase-label">Next</span></div>
-          <div class="build-progress"><span>Build progress</span><strong>3 of 8</strong></div>
-          <div class="progress-track" role="progressbar" aria-label="Website feature roadmap" aria-valuenow="3" aria-valuemin="0" aria-valuemax="8"><span></span></div>
+          <div class="roadmap-row"><span class="roadmap-number">04–08</span><div><strong>Community features</strong><p>Admin, notifications, messages, search and activity pages.</p></div><span class="phase-label">Built</span></div>
+          <div class="build-progress"><span>Build progress</span><strong>8 of 8</strong></div>
+          <div class="progress-track" role="progressbar" aria-label="Website feature roadmap" aria-valuenow="8" aria-valuemin="0" aria-valuemax="8"><span></span></div>
         </section>
       </div>
       <p class="dashboard-error" id="dash-error" role="alert" hidden></p>
     </section>
   </main>
   <footer>© 2026 My Website</footer>
-  <script type="module" src="auth-nav.js?v=settings-1"></script>
-  <script type="module" src="dashboard.js?v=settings-1"></script>
+  <script type="module" src="auth-nav.js?v=community-1"></script>
+  <script type="module" src="dashboard.js?v=community-1"></script>
 </body>
 </html>
