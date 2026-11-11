@@ -347,3 +347,23 @@ html[data-theme="dark"] .nav-dashboard[aria-current="page"] { color: #89afff !im
   .nav-links { gap: 9px; }
   .nav-dashboard { font-size: 12px !important; }
 }
+
+/* Member notification bell: small and consistent with the existing header. */
+.nav-links a.nav-notification {
+  width:34px;height:36px;display:inline-flex;position:relative;
+  align-items:center;justify-content:center;flex:none;
+  border-radius:7px;text-decoration:none;color:var(--muted);
+}
+.nav-links a.nav-notification svg {width:19px;height:19px;}
+.nav-links a.nav-notification:hover {background:rgba(128,128,128,.1);color:var(--text);}
+.nav-unread-count {
+  position:absolute;top:-4px;right:-8px;min-width:17px;height:17px;
+  padding:0 3px;display:grid;place-items:center;
+  border-radius:99px;color:#fff;background:var(--blue);
+  font-size:9px;font-weight:750;line-height:1;
+  border:2px solid var(--bg);
+}
+.nav-unread-count[hidden] {display:none!important;}
+html[data-theme="dark"] .nav-links a.nav-notification {color:#c5cad2;}
+html[data-theme="dark"] .nav-links a.nav-notification:hover {color:#fff;}
+@media(max-width:480px){.nav-links a.nav-notification{width:27px;height:32px}.nav-unread-count{right:-6px;}}
