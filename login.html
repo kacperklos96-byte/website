@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log in | My Website</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; color: #222; background: #fff; line-height: 1.6; }
+    header { border-bottom: 1px solid #ddd; padding: 20px 24px; }
+    nav { max-width: 900px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-weight: bold; font-size: 18px; color: #222; text-decoration: none; }
+    nav a { color: #333; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    .nav-links { display: flex; align-items: center; gap: 20px; }
+    .login-button { display: inline-block; border: 1px solid #222; background: #222; color: #fff; border-radius: 5px; padding: 8px 16px; text-decoration: none; font: inherit; cursor: pointer; }
+    .login-button:hover { background: #444; text-decoration: none; }
+    main { min-height: calc(100vh - 165px); padding: 90px 24px; }
+    .login-card { max-width: 380px; margin: 0 auto; }
+    h1 { font-size: 32px; line-height: 1.2; margin: 0 0 12px; }
+    .subtitle { margin: 0 0 28px; color: #666; }
+    label { display: block; font-size: 14px; margin: 16px 0 6px; }
+    input { width: 100%; border: 1px solid #bbb; border-radius: 5px; padding: 11px; font: inherit; }
+    input:focus { outline: 2px solid #555; outline-offset: 1px; }
+    form .login-button { margin-top: 22px; width: 100%; }
+    .form-note, #login-status { font-size: 13px; color: #666; }
+    .back-link { display: inline-block; margin-top: 18px; color: #333; }
+    footer { border-top: 1px solid #ddd; text-align: center; padding: 20px; color: #777; font-size: 14px; }
+    @media (max-width: 440px) { header { padding: 14px 16px; } .logo { font-size: 16px; } .nav-links { gap: 12px; } main { padding-top: 65px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a class="logo" href="index.html">My Website</a>
+      <div class="nav-links"><a href="index.html">Home</a><a href="index.html#about">About</a></div>
+    </nav>
+  </header>
+  <main>
+    <div class="login-card">
+      <h1>Log in</h1>
+      <p class="subtitle">Welcome back.</p>
+      <form id="login-form">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" placeholder="Your password" required>
+        <button class="login-button" type="submit">Log in</button>
+        <p class="form-note">Demo form — real account login is not set up yet.</p>
+        <p id="login-status" role="status" aria-live="polite"></p>
+      </form>
+      <a class="back-link" href="index.html">← Back to home</a>
+    </div>
+  </main>
+  <footer>© 2026 My Website</footer>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      document.getElementById('login-status').textContent = 'This is a demo. Connect an authentication service to enable real logins.';
+    });
+  </script>
+</body>
+</html>
