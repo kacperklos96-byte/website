@@ -1,8 +1,7 @@
-// User profile storage in Cloud Firestore.
-// Firebase Authentication manages passwords and login identity.
-// Firestore stores only the app's own profile data; one document per UID.
+// Firebase Auth manages login credentials. Firestore stores private
+// website profile data and optional, compressed, custom avatar images.
 import {
-  doc, getDoc, runTransaction, serverTimestamp
+  doc, getDoc, runTransaction, serverTimestamp, updateDoc
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 
 export async function getUserProfile(db, uid) {
@@ -14,24 +13,32 @@ export async function ensureUserProfile(db, user) {
   if (!user || !user.uid || !user.email) {
     throw new Error("profile/missing-identity");
   }
+  const ref = doc(db, "users", user.uid);
 
-  const profileRef = doc(db, "users", user.uid);
-
-  // Transactions prevent two simultaneous logins from replacing createdAt.
-  // Existing profiles aren't overwritten when someone signs in again.
   await runTransaction(db, async (transaction) => {
-    const snapshot = await transaction.get(profileRef);
-    if (snapshot.exists()) return;
-
-    transaction.set(profileRef, {
+    const existing = await transaction.get(ref);
+    if (existing.exists()) return;
+    transaction.set(ref, {
       uid: user.uid,
       displayName: (user.displayName || "Member").slice(0, 60),
       email: user.email,
-      photoURL: (user.photoURL || "").slice(0, 2000),
+      photoURL: "", // Don't copy Google or other provider pictures.
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
   });
 
   return getUserProfile(db, user.uid);
+}
+
+export async function saveCustomAvatar(db, uid, avatarData) {
+  if (typeof avatarData !== "string" ||
+      avatarData.length > 48000 ||
+      (avatarData !== "" && !/^data:image\/(webp|png);base64,[A-Za-z0-9+/=]+$/.test(avatarData))) {
+    throw new Error("Invalid profile image.");
+  }
+  await updateDoc(doc(db, "users", uid), {
+    avatarData,
+    updatedAt: serverTimestamp()
+  });
 }
