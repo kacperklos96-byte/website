@@ -23,9 +23,23 @@ This is an intentionally small, professional but experimental Firebase-powered w
 
 **IMPORTANT:** The new collections and fields require publishing the updated [firestore.rules](firestore.rules) file in the [Firebase Console](https://console.firebase.google.com/project/website-d402e/firestore/databases/-default-/security/rules). Until then profile changes and public profile links may return permission errors. Committing the rules file does not deploy it.
 
+## 3. Settings Page — implemented
+
+- `settings.html`, `settings.css`, `settings.js`
+- Dark-gray or light appearance, using the same cookie and header theme toggle as the rest of the website
+- Profile visibility status from the private Firestore record, with an Edit profile & visibility action
+- Firebase email verification (when applicable)
+- Password changes for email/password users, requiring the current password and reauthentication
+- Password reset emails for email/password users
+- Google-only accounts show a correct provider-managed password explanation
+- Signed-in account details, logout, and export of the current private profile to local JSON
+- Private data is visible only after Firebase Auth confirms the session
+- No new Firestore rules or collections are needed for this stage
+
+Email address changes, account deletion, and a full security audit log are not implemented yet; those need additional account lifecycle/security work.
+
 ## Upcoming stages (not yet built)
 
-3. Settings: account security, appearance and privacy settings.
 4. Admin panel: securely assigned administrator roles and moderation.
 5. Notifications: per-user inbox and unread counts.
 6. Messaging: private messaging, blocking, and abuse controls.
@@ -37,6 +51,7 @@ This is an intentionally small, professional but experimental Firebase-powered w
 - [Website](https://kacperklos96-byte.github.io/website/)
 - [Dashboard](https://kacperklos96-byte.github.io/website/dashboard.html)
 - [Edit profile](https://kacperklos96-byte.github.io/website/profile.html)
+- [Settings](https://kacperklos96-byte.github.io/website/settings.html)
 - [Account and avatar](https://kacperklos96-byte.github.io/website/account.html)
 
 ### Security notes
