@@ -1,6 +1,14 @@
 // The website owns its avatars. Google profile pictures are never used.
 // Profile image data is a small, private image saved in Firestore.
-const silhouette = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.1" r="3.35"/><path d="M5.4 19.1c.5-3.3 3-5.3 6.6-5.3s6.1 2 6.6 5.3"/></svg>';
+// Everyone without an uploaded photo gets the same original mascot illustration.
+function showDefaultAvatar(element) {
+  element.replaceChildren();
+  const image = document.createElement("img");
+  image.src = "./default-avatar.svg?v=mascot-1";
+  image.alt = "";
+  image.decoding = "async";
+  element.appendChild(image);
+}
 
 export function renderAvatar(element, profile = null) {
   if (!element) return;
@@ -14,13 +22,11 @@ export function renderAvatar(element, profile = null) {
     img.alt = "";
     img.decoding = "async";
     img.addEventListener("error", () => {
-      img.remove();
-      element.innerHTML = silhouette;
+      showDefaultAvatar(element);
     }, { once: true });
     element.appendChild(img);
   } else {
-    // Fixed, known SVG only; no Firebase profile text is inserted as HTML.
-    element.innerHTML = silhouette;
+    showDefaultAvatar(element);
   }
 }
 
