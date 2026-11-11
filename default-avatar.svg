@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Small blue dragon mascot">
+  <circle cx="64" cy="64" r="64" fill="#263955"/>
+  <circle cx="64" cy="64" r="56" fill="#315381"/>
+  <path d="M16 88 34 58 43 73 50 56 53 92 39 107 33 92Z" fill="#74ABFF"/>
+  <path d="M24 86 36 69 40 82 47 71 46 94 37 101Z" fill="#D5EAFF"/>
+  <path d="M48 42 45 18 63 35 80 31 94 14 90 44" fill="#8AB7FD"/>
+  <path d="M48 42 49 30 60 40ZM83 36 90 26 87 47Z" fill="#E1F0FF"/>
+  <path d="M34 78c-4-22 9-43 34-44 15-1 25 9 28 23l15 7c6 3 9 10 7 17-2 7-9 11-17 12l-13 1-7 12-11-9-16 4-8-11-9 5-3-17Z" fill="#EDF7FF"/>
+  <path d="M41 56c10-15 26-19 41-14 8 3 14 10 15 18l-14-5-7-8-20 2-15 13Z" fill="#A7D1FF"/>
+  <path d="M89 65c4-3 10-4 16-1l8 5-10 4-11-3Z" fill="#D3E9FF"/>
+  <path d="M77 69c2-8 13-11 19-5-3 9-12 12-19 5Z" fill="#244876"/>
+  <circle cx="87" cy="66" r="3.8" fill="#0F263E"/>
+  <circle cx="88.5" cy="64.5" r="1.4" fill="#fff"/>
+  <path d="M106 78a2.8 2.8 0 1 0 5.6 0 2.8 2.8 0 1 0-5.6 0" fill="#47739F"/>
+  <path d="M84 86q12 6 24-2" fill="none" stroke="#7699B6" stroke-width="3" stroke-linecap="round"/>
+  <path d="m52 96 11-1 10 9-4 6-10-6Z" fill="#8BBFFC"/>
+  <path d="M35 64 29 51l15 6" fill="#EEF7FF"/>
+</svg>
