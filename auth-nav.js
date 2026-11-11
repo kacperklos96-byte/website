@@ -1,14 +1,48 @@
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, onSnapshot, orderBy, limit, query } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 import { renderAvatar } from "./avatar.js?v=mascot-1";
 
 const link = document.getElementById("nav-auth-link");
 const dashboardLink = document.getElementById("nav-dashboard-link");
 let activeUid = null;
+let unsubscribeAlerts = null;
+let notificationButton = null;
+
+function clearNotificationWatcher() {
+  if (unsubscribeAlerts) { unsubscribeAlerts(); unsubscribeAlerts = null; }
+  if (notificationButton) { notificationButton.remove(); notificationButton = null; }
+}
+
+function startNotificationWatcher(db, uid) {
+  clearNotificationWatcher();
+  if (!link) return;
+  notificationButton = document.createElement("a");
+  notificationButton.href = "notifications.html";
+  notificationButton.className = "nav-notification";
+  notificationButton.title = "Notifications";
+  notificationButton.setAttribute("aria-label", "Notifications");
+  notificationButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span class="nav-unread-count" hidden></span>';
+  link.insertAdjacentElement("beforebegin", notificationButton);
+  const count = notificationButton.querySelector(".nav-unread-count");
+  const q = query(collection(db, "notifications", uid, "items"), orderBy("createdAt", "desc"), limit(20));
+  unsubscribeAlerts = onSnapshot(q, snapshot => {
+    if (activeUid !== uid) return;
+    const unread = snapshot.docs.filter(d => d.data().read !== true).length;
+    count.hidden = unread === 0;
+    count.textContent = unread >= 20 ? "20+" : String(unread);
+    notificationButton.setAttribute("aria-label", unread ? unread + " unread notifications" : "Notifications");
+  }, error => {
+    // Bell stays available when rules aren't published, but unread counts
+    // aren't guessed or shown as zero on a permission failure.
+    count.hidden = true;
+    console.warn("Notifications unavailable:", error.code || error);
+  });
+}
 
 function showGuest() {
+  clearNotificationWatcher();
   activeUid = null;
   if (dashboardLink) dashboardLink.hidden = true;
   if (!link) return;
@@ -48,6 +82,7 @@ if (!isConfigured) {
       }
       activeUid = user.uid;
       showAccount(null);
+      startNotificationWatcher(db, user.uid);
       try {
         const snapshot = await getDoc(doc(db, "users", user.uid));
         if (activeUid === user.uid && snapshot.exists()) {
