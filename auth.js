@@ -7,6 +7,7 @@ import {
 import { getFirestore } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
 import { ensureUserProfile } from "./database.js";
+import { renderAvatar } from "./avatar.js";
 
 const requiredFields = ["apiKey", "authDomain", "projectId", "appId"];
 const configured = requiredFields.every((key) =>
@@ -81,8 +82,7 @@ async function finishSignIn(user) {
 
 function renderAccount(user) {
   const displayName = user.displayName || "Member";
-  document.getElementById("account-avatar").textContent =
-    displayName.slice(0, 1).toUpperCase();
+  renderAvatar(document.getElementById("account-avatar"), user);
   document.getElementById("account-subtitle").textContent = "Signed in successfully.";
   document.getElementById("account-name").textContent = displayName;
   document.getElementById("account-email").textContent = user.email || "No email supplied";
@@ -101,6 +101,9 @@ async function renderSavedProfile(user) {
     if (!profile) throw new Error("profile/not-found");
     document.getElementById("account-name").textContent = profile.displayName;
     document.getElementById("account-email").textContent = profile.email;
+    if (!user.photoURL && profile.photoURL) {
+      renderAvatar(document.getElementById("account-avatar"), { photoURL: profile.photoURL });
+    }
     const createdAt = profile.createdAt?.toDate?.();
     document.getElementById("account-created").textContent = createdAt
       ? createdAt.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })
