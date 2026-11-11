@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f3f3f1">
+  <title>Activity history | My Website</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css?v=community-1">
+  <link rel="stylesheet" href="community.css?v=community-1">
+</head>
+<body data-page="activity">
+<header><nav aria-label="Main navigation"><a class="logo" href="index.html">My Website</a>
+<div class="nav-links"><a href="index.html">Home</a>
+<a id="nav-dashboard-link" class="nav-dashboard" href="dashboard.html" hidden>Dashboard</a>
+<label class="theme-toggle" title="Switch light/dark mode"><span class="theme-symbol" aria-hidden="true">☾</span><input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode"><span class="toggle-track" aria-hidden="true"></span></label>
+<a id="nav-auth-link" class="nav-auth nav-login" href="login.html">Log in</a></div></nav></header>
+<main class="community-shell">
+<div class="community-head"><div><p class="community-eyebrow">YOUR ACCOUNT · HISTORY</p><h1>Activity history<span>.</span></h1><p>An overview of events recorded in your website session and profile. This isn't a security audit log.</p></div>
+<a href="dashboard.html" class="button-secondary">← Dashboard</a></div>
+<section class="community-panel">
+<div class="community-table-controls"><h2>Recent activity</h2><button type="button" class="community-button" id="refresh-activity">Refresh</button></div>
+<div id="activity-events" class="community-list"><p class="community-state" id="page-status">Loading recent activity…</p></div>
+<p class="community-hint">Events in this view are created by your browser and may be incomplete. For sign-in metadata, see the dashboard.</p>
+</section>
+</main>
+<footer>© 2026 My Website</footer>
+<script type="module" src="auth-nav.js?v=community-1"></script>
+<script type="module" src="activity.js?v=community-1"></script>
+</body></html>
