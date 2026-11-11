@@ -1,37 +1,44 @@
-# Experimental website — development roadmap
+# My Website — Feature Roadmap
 
-A professional, minimal experimental site built on GitHub Pages, Firebase Authentication and Cloud Firestore.
+This is an intentionally small, professional but experimental Firebase-powered website, hosted on GitHub Pages.
 
-## Stage 1 — User Dashboard ✅ implemented
+## 1. User dashboard — implemented
 
-- `dashboard.html` — authenticated account dashboard
-- `dashboard.js` — reads real Firebase sign-in information and the user's own Firestore profile
-- `dashboard.css` — responsive light/dark layout with solid blue accents
-- After successful login or registration, users open the dashboard automatically
-- Header displays a **Dashboard** link only when the session is authenticated
-- Shows the user's own avatar, display name, email, member-since date, provider and verification status
-- Shows recent available Firebase account events (last sign-in, account creation, profile update)
-- Links to the existing account page for changing custom pictures and signing out
+- `dashboard.html`, `dashboard.js`, `dashboard.css`
+- Real Firebase Authentication session and private Firestore profile, with your own custom avatar
+- Account status, account creation and last sign-in metadata, clear links to editing your profile
+- Responsive light/dark layout
 
-The dashboard displays **real account data only**. Recent events are drawn from available Firebase metadata; this is not yet a full tamper-resistant audit system. This stage uses your existing security rules and needs **no new Firestore permissions**.
+## 2. Profile system — implemented in GitHub (Firebase rules publishing required)
 
-## Next planned stages
+- `profile.html`: private profile editor and live preview
+- Editable display name, **unique** username (3–20 lowercase letters/numbers/underscores), 180-character bio
+- Public profile is **off by default**; sharing is explicit
+- `public-profile.html?uid=...`: view a published profile through a stable link
+- Private account email stays in `users/{uid}`, never appears in public profiles
+- `handles/{username}` reserves names transactionally to prevent collisions
+- `publicProfiles/{uid}` stores only name, handle, bio, chosen picture and member-since date
+- Custom profile picture uploads from the existing account page also update a published avatar
+- No server-side Cloud Functions or additional hosting needed for these features
 
-2. **Profiles:** editable username, bio and opt-in public profile.
-3. **Settings:** account settings, privacy controls, password reset and appearance.
-4. **Admin:** role-protected administrative UI (needs trusted server-side authorization).
-5. **Notifications:** private per-user notification inbox.
-6. **Messaging:** authenticated private conversations with abuse protections.
-7. **Search:** public-profile opt-in and searchable directory.
-8. **Activity:** a richer activity timeline; sensitive audit events require a trusted backend.
+**IMPORTANT:** The new collections and fields require publishing the updated [firestore.rules](firestore.rules) file in the [Firebase Console](https://console.firebase.google.com/project/website-d402e/firestore/databases/-default-/security/rules). Until then profile changes and public profile links may return permission errors. Committing the rules file does not deploy it.
 
-These future stages are **not yet implemented**. Their data models and Firestore rules must be designed and published before enabling them. The dashboard deliberately labels them as upcoming.
+## Upcoming stages (not yet built)
 
-## Links
+3. Settings: account security, appearance and privacy settings.
+4. Admin panel: securely assigned administrator roles and moderation.
+5. Notifications: per-user inbox and unread counts.
+6. Messaging: private messaging, blocking, and abuse controls.
+7. Search: opt-in searchable public profile directory.
+8. Activity history: a fuller event timeline and backend-recorded audit events.
+
+## Project links
 
 - [Website](https://kacperklos96-byte.github.io/website/)
 - [Dashboard](https://kacperklos96-byte.github.io/website/dashboard.html)
-- [Account](https://kacperklos96-byte.github.io/website/account.html)
-- [Firebase project](https://console.firebase.google.com/project/website-d402e/overview)
+- [Edit profile](https://kacperklos96-byte.github.io/website/profile.html)
+- [Account and avatar](https://kacperklos96-byte.github.io/website/account.html)
 
-See [README.md](README.md) for setup and account photo details.
+### Security notes
+
+Only authenticated users can edit their own private and public documents. A public profile can be accessed with a direct link only while its owner opted in; the new rules disallow listing all user records and profile records. Usernames are unique via transactionally reserved handles and rules. We will introduce controlled public directory/search permissions during stage 7. Do not switch Firestore to open read/write rules.
