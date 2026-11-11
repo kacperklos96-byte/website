@@ -1,5 +1,34 @@
 # My Website — Authentication, Firestore and custom avatars
 
+## NEW: Feature 2 — Profile system
+
+Your `main` branch now has editable profiles.
+
+- **Edit:** [profile.html](https://kacperklos96-byte.github.io/website/profile.html). You must be signed in.
+- **Public view:** `public-profile.html?uid=<Firebase UID>` (the editor generates/copies the actual link after you publish).
+- **Private by default:** Only the profile owner sees their private email. Public visitors only see the fields you choose to share.
+- **Unique username:** 3–20 lowercase letters, numbers, underscores. Names are reserved in `handles/{username}` through a Firestore transaction.
+- **Custom profile picture:** Upload via [account.html](https://kacperklos96-byte.github.io/website/account.html). The profile editor previews it.
+
+### REQUIRED: Publish the revised rules
+
+The new database collections **will not work** until the updated rules are published in Firebase:
+
+1. Open [firestore.rules in GitHub](https://github.com/kacperklos96-byte/website/blob/main/firestore.rules) and copy the entire file.
+2. Open the [website-d402e Firestore Rules editor](https://console.firebase.google.com/project/website-d402e/firestore/databases/-default-/security/rules).
+3. Replace the rules with the copied content and click **Publish**.
+4. Reopen the [profile editor](https://kacperklos96-byte.github.io/website/profile.html), set a username and bio, then save your profile.
+5. To share your page, enable **Public profile**, save, then use the **Copy profile link** button.
+
+**Do not** enable open Firestore read/write access to troubleshoot. The new rules protect users' private documents while allowing individual public profiles to be read by URL.
+
+The public profile's avatar is deliberately a copy of the user's *chosen website avatar*, never their Google photo. Email addresses, Firebase Auth details, and private account documents are not published. Turning public visibility off makes the page inaccessible (and deletes its public copy).
+
+See [ROADMAP.md](ROADMAP.md) for the remaining features.
+
+---
+
+
 This is a simple, professional-looking experimental website hosted on GitHub Pages.
 
 ## Live website
