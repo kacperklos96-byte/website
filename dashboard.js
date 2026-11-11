@@ -1,3 +1,4 @@
+import { recordActivity } from "./community-data.js";
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
@@ -117,6 +118,22 @@ if (!configured) {
         return;
       }
       showUser(user);
+      // Record at most one session event per tab. These markers are not a
+      // trusted authentication audit trail.
+      try {
+        const key = "website_session_event_" + user.uid;
+        if (sessionStorage.getItem(key) !== "yes") {
+          sessionStorage.setItem(key, "yes");
+          recordActivity(db, user.uid, "session_opened", "Opened your website dashboard");
+        }
+      } catch (error) { console.warn("Session activity unavailable:", error); }
+      const adminLink = document.getElementById("admin-shortcut");
+      if (adminLink) {
+        try {
+          const token = await user.getIdTokenResult();
+          adminLink.hidden = token.claims.admin !== true;
+        } catch (_) { adminLink.hidden = true; }
+      }
       await showProfile(db, user);
     }, (err) => {
       loading.textContent = "Unable to check your login. Please reload the page.";
