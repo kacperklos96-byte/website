@@ -1,0 +1,91 @@
+/* Community features: compact, neutral, responsive and consistent with site. */
+.community-shell{width:min(1120px,100%);margin:auto;padding:40px 28px 95px}
+.community-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin:0 0 30px}
+.community-head h1{font-size:clamp(30px,5vw,41px);font-weight:690;letter-spacing:-1.2px;line-height:1.15;margin:0 0 10px}
+.community-head h1 span{color:var(--blue)}
+.community-head p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.community-eyebrow{font-size:11px!important;font-weight:750;letter-spacing:1.3px;margin:0 0 10px!important}
+.community-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.community-panel{min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:13px;padding:23px;box-shadow:0 3px 11px #00000008}
+.community-panel h2{margin:0 0 8px;font-size:17px}
+.community-muted{font-size:13px;color:var(--muted);line-height:1.6}
+.community-state{margin:20px 0;color:var(--muted);font-size:13px;line-height:1.6}
+.community-state.error{color:#c34f47}
+.community-state.success{color:#237b52}
+.community-button{border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface);color:var(--text);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.community-button:hover{background:var(--bg);border-color:#9ea6b1}
+.community-button:disabled{opacity:.5;cursor:not-allowed}
+.community-button.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.community-button.primary:hover{background:var(--blue-hover)}
+.community-input,.community-select,.community-textarea{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 13px;outline:none;min-width:0}
+.community-input:focus,.community-select:focus,.community-textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2563eb20}
+.community-field{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.community-field label{font-size:12px;font-weight:700}
+.community-textarea{resize:vertical;min-height:80px}
+.community-two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.community-list{display:flex;flex-direction:column;gap:0}
+.member-row,.message-thread-row,.notice-row,.activity-row,.admin-user-row{display:flex;gap:13px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line);min-width:0}
+.member-row:last-child,.message-thread-row:last-child,.notice-row:last-child,.activity-row:last-child,.admin-user-row:last-child{border-bottom:0}
+.community-avatar{display:grid;place-items:center;flex:none;width:46px;height:46px;border-radius:50%;background:#31517f;overflow:hidden}
+.community-avatar img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.community-avatar.small{width:36px;height:36px}
+.community-avatar.large{width:62px;height:62px}
+.member-text{min-width:0;flex:1}
+.member-title{font-size:14px;font-weight:680;margin:0 0 2px;overflow-wrap:anywhere}
+.member-handle{color:var(--blue);font-size:12px;overflow-wrap:anywhere}
+.member-description{color:var(--muted);font-size:12px;margin:5px 0 0;overflow-wrap:anywhere;line-height:1.55}
+.member-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.community-search{display:flex;gap:9px;margin-bottom:18px;align-items:center}
+.community-search .community-input{flex:1}
+.community-hint{font-size:12px;color:var(--muted);line-height:1.5;margin:12px 0}
+.pill{display:inline-block;padding:4px 9px;border-radius:6px;border:1px solid var(--line);font-size:11px;font-weight:650;color:var(--muted)}
+.pill.ok{color:#267b55;background:#1ca5670a;border-color:#56af8540}
+.pill.warn{color:#b56835;background:#bd7c2610;border-color:#e4a05f50}
+.community-blank{padding:38px 12px;text-align:center;color:var(--muted);font-size:13px;line-height:1.6}
+.community-layout{display:grid;grid-template-columns:minmax(255px,315px) minmax(0,1fr);gap:18px;align-items:start}
+.thread-list{max-height:650px;overflow-y:auto}
+.message-thread-row{cursor:pointer;text-align:left;width:100%;background:none;border-left:0;border-right:0;border-top:0;color:var(--text);font:inherit}
+.message-thread-row.selected{background:rgba(37,99,235,.08);border-radius:8px;padding-left:9px;padding-right:9px}
+.chat-panel{min-height:560px;display:flex;flex-direction:column}
+.chat-header{display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--line);padding-bottom:16px;flex-wrap:wrap}
+.chat-header .member-text{flex:1}
+.chat-messages{flex:1;min-height:260px;max-height:440px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:22px 4px}
+.chat-bubble{padding:10px 13px;border:1px solid var(--line);border-radius:11px;max-width:min(78%,420px);align-self:flex-start;background:var(--bg);font-size:13px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.chat-bubble.own{align-self:flex-end;background:var(--blue);border-color:var(--blue);color:#fff}
+.chat-bubble small{display:block;margin-top:6px;color:var(--muted);font-size:10px}
+.chat-bubble.own small{color:#d3e1ff}
+.chat-compose{border-top:1px solid var(--line);padding-top:15px;display:flex;gap:9px}
+.chat-compose .community-input{flex:1}
+.chat-compose button{align-self:stretch}
+.notification-dot{display:inline-grid;place-items:center;border-radius:99px;min-width:20px;height:20px;padding:0 5px;background:var(--blue);color:#fff;font-size:11px;font-weight:700}
+.notice-row.unread{background:rgba(37,99,235,.045);padding-left:9px;padding-right:9px;border-radius:8px}
+.notice-row .date,.activity-row .date{font-size:11px;color:var(--muted)}
+.community-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.stat-number{font-size:25px;font-weight:720;letter-spacing:-.8px}
+.stat-label{color:var(--muted);font-size:12px}
+.admin-user-row{align-items:flex-start}
+.admin-note{font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.admin-edit{display:flex;flex-direction:column;gap:8px;padding:15px;border:1px solid var(--line);border-radius:9px;margin-top:15px}
+.community-table-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.activity-type{color:var(--blue);font-size:12px;font-weight:650}
+.activity-glyph{width:36px;height:36px;background:var(--bg);border:1px solid var(--line);border-radius:9px;display:grid;place-items:center;flex:none;color:var(--blue)}
+html[data-theme="dark"] .pill.ok{color:#95deba}
+html[data-theme="dark"] .pill.warn{color:#ffd2a4}
+html[data-theme="dark"] .community-state.error{color:#ffa9a0}
+html[data-theme="dark"] .community-state.success{color:#9be2b5}
+@media(max-width:760px){
+ .community-shell{padding:28px 18px 65px}
+ .community-head{align-items:flex-start;flex-direction:column}
+ .community-layout,.community-two-col{grid-template-columns:1fr}
+ .thread-list{max-height:260px}
+ .chat-panel{min-height:420px}
+ .community-stats{grid-template-columns:1fr}
+ .community-panel{padding:19px}
+}
+@media(max-width:430px){
+ .member-row,.notice-row,.activity-row{flex-wrap:wrap}
+ .member-actions{width:100%;justify-content:flex-start;padding-left:55px}
+ .chat-compose{flex-wrap:wrap}
+ .chat-compose button{min-height:40px}
+ .chat-compose .community-input{flex-basis:100%}
+}
