@@ -1,3 +1,4 @@
+import { recordActivity } from "./community-data.js";
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
@@ -87,6 +88,7 @@ form.addEventListener("submit", async (event) => {
       console.warn("Firebase Auth name sync will retry at a later login.", err);
     }
     fillForm(saved);
+    recordActivity(getFirestore(app), user.uid, "profile_updated", "Updated profile details and visibility");
     showFeedback(isPublic
       ? "Saved! Your public profile is ready to share."
       : "Profile saved. Your information is private.", "success");
