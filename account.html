@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Your account | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=mascot-1">
+  <link rel="stylesheet" href="styles.css?v=dashboard-1">
 </head>
 <body data-page="account">
   <header>
@@ -20,6 +20,7 @@
           <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
           <span class="toggle-track" aria-hidden="true"></span>
         </label>
+        <a class="nav-dashboard" id="nav-dashboard-link" href="dashboard.html" hidden>Dashboard</a>
         <a class="nav-auth nav-login" id="nav-auth-link" href="login.html" aria-label="Log in">Log in</a>
       </div>
     </nav>
@@ -44,6 +45,7 @@
       <div class="account-actions">
         <button class="button-primary full-width" type="button" id="verify-email" data-requires-auth hidden>Send verification email</button>
         <button class="button-secondary full-width" type="button" id="signout" data-requires-auth>Log out</button>
+        <a class="button-primary full-width" href="dashboard.html">Go to dashboard →</a>
         <a class="button-secondary full-width" href="index.html">← Back to home</a>
       </div>
       <p class="form-status" id="auth-status" role="status" aria-live="polite" hidden></p>
@@ -53,7 +55,7 @@
     </section>
   </main>
   <footer>© 2026 My Website</footer>
-  <script type="module" src="auth.js?v=mascot-1"></script>
-  <script type="module" src="auth-nav.js?v=mascot-1"></script>
+  <script type="module" src="auth.js?v=dashboard-1"></script>
+  <script type="module" src="auth-nav.js?v=dashboard-1"></script>
 </body>
 </html>
