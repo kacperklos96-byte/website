@@ -367,3 +367,10 @@ html[data-theme="dark"] .nav-dashboard[aria-current="page"] { color: #89afff !im
 html[data-theme="dark"] .nav-links a.nav-notification {color:#c5cad2;}
 html[data-theme="dark"] .nav-links a.nav-notification:hover {color:#fff;}
 @media(max-width:480px){.nav-links a.nav-notification{width:27px;height:32px}.nav-unread-count{right:-6px;}}
+
+/* Keep navbar usable on phones when Dashboard + notifications are visible. */
+@media (max-width:520px) {
+  .nav-links > a[href="index.html"],
+  .nav-links > a[href="#home"] { display:none; }
+  .nav-links { gap:10px; }
+}
