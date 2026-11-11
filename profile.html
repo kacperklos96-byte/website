@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f3f1">
+  <title>Edit profile | My Website</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css?v=profiles-2">
+  <link rel="stylesheet" href="profile.css?v=profiles-2">
+</head>
+<body data-page="profile-editor">
+  <header>
+    <nav aria-label="Main navigation">
+      <a class="logo" href="index.html">My Website</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html" class="nav-dashboard" id="nav-dashboard-link" hidden>Dashboard</a>
+        <label class="theme-toggle" title="Switch light / dark mode">
+          <span class="theme-symbol" aria-hidden="true">☾</span>
+          <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
+          <span class="toggle-track" aria-hidden="true"></span>
+        </label>
+        <a class="nav-auth nav-login" id="nav-auth-link" href="login.html">Log in</a>
+      </div>
+    </nav>
+  </header>
+  <main class="profile-shell">
+    <div class="profile-breadcrumb"><a href="dashboard.html">Dashboard</a><span aria-hidden="true">/</span><span>Edit profile</span></div>
+    <div class="profile-intro">
+      <div>
+        <p class="profile-eyebrow">ACCOUNT · PROFILE</p>
+        <h1>Make it yours<span class="accent-dot">.</span></h1>
+        <p>Edit your identity on this website. Nothing gets published unless you choose to make it public.</p>
+      </div>
+      <a href="account.html" class="button-secondary">Account details</a>
+    </div>
+    <p id="profile-loading" class="profile-loading" role="status">Loading your profile…</p>
+    <div id="profile-content" class="profile-columns" hidden>
+      <section class="profile-box" aria-labelledby="edit-title">
+        <div class="profile-box-head"><h2 id="edit-title">Profile details</h2><span class="small-head-tag">PERSONAL</span></div>
+        <form id="edit-profile-form">
+          <div class="profile-field">
+            <label for="edit-display-name">Display name</label>
+            <input id="edit-display-name" name="displayName" type="text" minlength="2" maxlength="60" autocomplete="nickname" required>
+            <p>The name people will see on your public profile.</p>
+          </div>
+          <div class="profile-field">
+            <label for="edit-username">Username</label>
+            <div class="handle-input"><span>@</span><input id="edit-username" name="username" type="text" minlength="3" maxlength="20" pattern="[a-z0-9_]{3,20}" placeholder="your_username" required spellcheck="false" autocapitalize="off" autocomplete="off"></div>
+            <p>Unique. 3–20 lowercase letters, numbers, or underscores.</p>
+          </div>
+          <div class="profile-field">
+            <label for="edit-bio">About you</label>
+            <textarea id="edit-bio" name="bio" rows="4" maxlength="180" placeholder="A few words about you, your projects, or anything fun."></textarea>
+            <div class="field-footer"><span>Plain text only</span><span id="bio-counter">0 / 180</span></div>
+          </div>
+          <div class="visibility-control">
+            <div><strong>Public profile</strong><p>Anyone with your profile link can see your username, display name, bio and avatar. Your email stays private.</p></div>
+            <label class="visibility-switch">
+              <input id="edit-public" type="checkbox" role="switch" aria-label="Make my profile public">
+              <span class="visibility-track" aria-hidden="true"></span>
+            </label>
+          </div>
+          <div class="profile-form-actions">
+            <button type="submit" class="button-primary" id="save-profile">Save changes</button>
+            <a href="dashboard.html" class="button-secondary">Cancel</a>
+          </div>
+          <p class="profile-feedback" id="profile-feedback" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+      <aside class="profile-side">
+        <section class="profile-box preview-box">
+          <div class="profile-box-head"><h2>Live preview</h2><span class="small-head-tag">PREVIEW</span></div>
+          <div class="preview-banner"><span class="preview-small-star">✦</span></div>
+          <div class="preview-avatar" id="profile-preview-avatar" aria-hidden="true"></div>
+          <h3 id="preview-name">Your display name</h3>
+          <p class="preview-handle" id="preview-handle">@username</p>
+          <p class="preview-bio" id="preview-bio">Your bio will show up here.</p>
+          <div class="preview-visibility" id="preview-visibility">Private profile</div>
+          <div class="preview-actions">
+            <a class="button-secondary full-width" id="view-profile-link" href="#" hidden>View public profile ↗</a>
+            <button class="button-secondary full-width" id="copy-profile-link" type="button" hidden>Copy profile link</button>
+          </div>
+        </section>
+        <section class="profile-hint">
+          <strong>Profile picture</strong>
+          <p>Your custom avatar is used here too. Change or remove it from your account page.</p>
+          <a href="account.html">Manage profile picture →</a>
+        </section>
+      </aside>
+    </div>
+  </main>
+  <footer>© 2026 My Website</footer>
+  <script type="module" src="auth-nav.js?v=profiles-2"></script>
+  <script type="module" src="profile.js?v=profiles-2"></script>
+</body>
+</html>
