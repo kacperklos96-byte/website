@@ -333,3 +333,17 @@ html[data-theme="dark"] .avatar-remove-button {
 }
 html[data-theme="dark"] .avatar-status.success { color: #95deb5; }
 html[data-theme="dark"] .avatar-status.error { color: #ffabab; }
+
+/* Shared dashboard navigation across public/authenticated pages. */
+.nav-dashboard { font-weight: 650; }
+html[data-theme="dark"] .nav-links a.nav-dashboard:hover { color: #fff; }
+.nav-dashboard[aria-current="page"] { color: var(--blue) !important; }
+html[data-theme="dark"] .nav-dashboard[aria-current="page"] { color: #89afff !important; }
+@media (max-width: 600px) {
+  .nav-links a[href$="#about"], .nav-links a[href="#about"] { display: none; }
+  .nav-links { gap: 12px; }
+}
+@media (max-width: 390px) {
+  .nav-links { gap: 9px; }
+  .nav-dashboard { font-size: 12px !important; }
+}
