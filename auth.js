@@ -1,4 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
 import {
   getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,
   createUserWithEmailAndPassword, updateProfile, onAuthStateChanged,
@@ -6,8 +6,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
-import { ensureUserProfile } from "./database.js";
-import { renderAvatar } from "./avatar.js";
+import { ensureUserProfile, saveCustomAvatar } from "./database.js";
+import { renderAvatar, prepareAvatar } from "./avatar.js";
 
 const requiredFields = ["apiKey", "authDomain", "projectId", "appId"];
 const configured = requiredFields.every((key) =>
@@ -16,7 +16,7 @@ const configured = requiredFields.every((key) =>
   !firebaseConfig[key].includes("REPLACE_")
 );
 
-const app = configured ? initializeApp(firebaseConfig) : null;
+const app = configured ? (getApps().length ? getApp() : initializeApp(firebaseConfig)) : null;
 const auth = app ? getAuth(app) : null;
 const db = app ? getFirestore(app) : null;
 const page = document.body.dataset.page;
@@ -82,7 +82,7 @@ async function finishSignIn(user) {
 
 function renderAccount(user) {
   const displayName = user.displayName || "Member";
-  renderAvatar(document.getElementById("account-avatar"), user);
+  renderAvatar(document.getElementById("account-avatar"));
   document.getElementById("account-subtitle").textContent = "Signed in successfully.";
   document.getElementById("account-name").textContent = displayName;
   document.getElementById("account-email").textContent = user.email || "No email supplied";
@@ -101,8 +101,13 @@ async function renderSavedProfile(user) {
     if (!profile) throw new Error("profile/not-found");
     document.getElementById("account-name").textContent = profile.displayName;
     document.getElementById("account-email").textContent = profile.email;
-    if (!user.photoURL && profile.photoURL) {
-      renderAvatar(document.getElementById("account-avatar"), { photoURL: profile.photoURL });
+    renderAvatar(document.getElementById("account-avatar"), profile);
+    const uploadButton = document.getElementById("avatar-upload-btn");
+    const removeButton = document.getElementById("avatar-remove-btn");
+    if (uploadButton) uploadButton.disabled = false;
+    if (removeButton) {
+      removeButton.hidden = !profile.avatarData;
+      removeButton.disabled = false;
     }
     const createdAt = profile.createdAt?.toDate?.();
     document.getElementById("account-created").textContent = createdAt
@@ -182,6 +187,69 @@ if (!auth) {
   }
 
   if (page === "account") {
+    const avatarInput = document.getElementById("avatar-file");
+    const uploadButton = document.getElementById("avatar-upload-btn");
+    const removeButton = document.getElementById("avatar-remove-btn");
+    const avatarStatus = document.getElementById("avatar-status");
+
+    function setAvatarStatus(message, type = "") {
+      avatarStatus.textContent = message;
+      avatarStatus.className = "avatar-status" + (type ? " " + type : "");
+    }
+
+    async function changeAvatar(avatarData) {
+      const uid = auth.currentUser?.uid;
+      if (!uid) throw new Error("Your session expired. Please sign in again.");
+      await saveCustomAvatar(db, uid, avatarData);
+      if (auth.currentUser?.uid !== uid) return;
+      renderAvatar(document.getElementById("account-avatar"), { avatarData });
+      window.dispatchEvent(new CustomEvent("profile-avatar-updated", {
+        detail: { uid, avatarData }
+      }));
+      removeButton.hidden = !avatarData;
+    }
+
+    uploadButton.addEventListener("click", () => avatarInput.click());
+
+    avatarInput.addEventListener("change", async () => {
+      const file = avatarInput.files?.[0];
+      if (!file) return;
+      uploadButton.disabled = true;
+      removeButton.disabled = true;
+      setAvatarStatus("Preparing picture...");
+      try {
+        const compressed = await prepareAvatar(file);
+        setAvatarStatus("Saving picture...");
+        await changeAvatar(compressed);
+        setAvatarStatus("Picture saved to your profile.", "success");
+      } catch (error) {
+        setAvatarStatus(error.code === "permission-denied"
+          ? "Upload needs updated Firestore rules. See the setup instructions."
+          : (error.message || "Couldn't save that picture."), "error");
+      } finally {
+        avatarInput.value = "";
+        uploadButton.disabled = false;
+        removeButton.disabled = false;
+      }
+    });
+
+    removeButton.addEventListener("click", async () => {
+      uploadButton.disabled = true;
+      removeButton.disabled = true;
+      setAvatarStatus("Removing picture...");
+      try {
+        await changeAvatar("");
+        setAvatarStatus("Picture removed.", "success");
+      } catch (error) {
+        setAvatarStatus(error.code === "permission-denied"
+          ? "Removal needs updated Firestore rules. See the setup instructions."
+          : (error.message || "Couldn't remove that picture."), "error");
+      } finally {
+        uploadButton.disabled = false;
+        removeButton.disabled = false;
+      }
+    });
+
     document.getElementById("signout").addEventListener("click", () =>
       inProgress(async () => {
         await signOut(auth);
