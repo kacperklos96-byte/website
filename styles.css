@@ -285,3 +285,51 @@ html[data-theme="dark"] .nav-links a.nav-profile:hover {
   color: #fff;
   border-color: #6998e2;
 }
+
+/* Private custom profile picture editor */
+.avatar-editor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: -8px 0 4px;
+}
+.avatar-edit-button,
+.avatar-remove-button {
+  min-height: 32px;
+  padding: 6px 11px;
+  border-radius: 7px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.avatar-edit-button {
+  background: var(--blue);
+  color: #fff;
+  border: 1px solid var(--blue);
+}
+.avatar-edit-button:hover { background: var(--blue-hover); }
+.avatar-remove-button {
+  background: transparent;
+  border: 1px solid #c7cacf;
+  color: #666c73;
+}
+.avatar-remove-button:hover { background: rgba(128,128,128,.09); }
+.avatar-edit-button:disabled, .avatar-remove-button:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+.avatar-status {
+  margin: 8px 0 26px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.avatar-status.success { color: #2c7352; }
+.avatar-status.error { color: #b94a39; }
+html[data-theme="dark"] .avatar-remove-button {
+  border-color: #555c66;
+  color: #c6cbd1;
+}
+html[data-theme="dark"] .avatar-status.success { color: #95deb5; }
+html[data-theme="dark"] .avatar-status.error { color: #ffabab; }
