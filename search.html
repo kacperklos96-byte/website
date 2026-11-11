@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f3f3f1">
+  <title>Find people | My Website</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css?v=community-1">
+  <link rel="stylesheet" href="community.css?v=community-1">
+</head>
+<body data-page="search">
+<header><nav aria-label="Main navigation"><a class="logo" href="index.html">My Website</a>
+<div class="nav-links"><a href="index.html">Home</a>
+<a id="nav-dashboard-link" class="nav-dashboard" href="dashboard.html" hidden>Dashboard</a>
+<label class="theme-toggle" title="Switch light/dark mode"><span class="theme-symbol" aria-hidden="true">☾</span><input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode"><span class="toggle-track" aria-hidden="true"></span></label>
+<a id="nav-auth-link" class="nav-auth nav-login" href="login.html">Log in</a></div></nav></header>
+<main class="community-shell">
+<div class="community-head"><div><p class="community-eyebrow">COMMUNITY · DISCOVER</p><h1>Find people<span>.</span></h1><p>Find members who have chosen to make their profiles public. Private accounts don't appear here.</p></div>
+<a href="dashboard.html" class="button-secondary">← Dashboard</a></div>
+<section class="community-panel">
+<div class="community-search">
+<input class="community-input" type="search" id="user-search" placeholder="Search by username (e.g. meteor)" maxlength="20" spellcheck="false" autocomplete="off" aria-label="Search public usernames">
+<button class="community-button" type="button" id="clear-search">Clear</button>
+</div>
+<div class="community-table-controls"><h2>Public profiles</h2><span class="pill" id="result-count">—</span></div>
+<div class="community-list" id="search-results"><p class="community-state" id="page-status">Loading members…</p></div>
+<p class="community-hint">Only users who opted into public profiles are listed. Search is limited to a small number of results at once.</p>
+</section>
+</main>
+<footer>© 2026 My Website</footer>
+<script type="module" src="auth-nav.js?v=community-1"></script>
+<script type="module" src="search.js?v=community-1"></script>
+</body></html>
