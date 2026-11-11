@@ -121,10 +121,6 @@ function listenThreads() {
       if(serial!==recentSeq)return;
       parent.appendChild(clickableThread(thread,profile));
     }
-    if(!activeOther) {
-      const requested=new URLSearchParams(location.search).get("thread");
-      if(requested && threadsIndex.some(x=>x.id===requested))chooseThread(requested);
-    }
   },error=>{
     $("threads").textContent="Conversations unavailable. Publish the new Firestore rules.";
     console.error(error);
