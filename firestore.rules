@@ -5,17 +5,39 @@ service cloud.firestore {
       return request.auth != null && request.auth.uid == uid;
     }
 
-    function profileIsValid(uid) {
+    function handleIsValid(username) {
+      return username is string
+        && username.matches('^[a-z0-9_]{3,20}$')
+        && !(username in [
+          'admin', 'administrator', 'moderator', 'mod', 'staff', 'support',
+          'system', 'owner', 'root', 'security', 'firebase', 'official', 'null'
+        ]);
+    }
+
+    function avatarIsValid(data) {
+      return data is string
+        && data.size() <= 48000
+        && (data == '' ||
+          data.matches('^data:image/(webp|png);base64,[A-Za-z0-9+/=]+$'));
+    }
+
+    function handleOwnedAfter(username, uid) {
+      return getAfter(/databases/$(database)/documents/handles/$(username)).data.uid == uid;
+    }
+
+    function privateProfileValid(uid) {
       let d = request.resource.data;
       return d.keys().hasAll([
           'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'updatedAt'
         ])
         && d.keys().hasOnly([
-          'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'updatedAt', 'avatarData'
+          'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'updatedAt',
+          'avatarData', 'username', 'bio', 'isPublic'
         ])
         && d.uid == uid
         && d.uid is string
         && d.displayName is string
+        && d.displayName.size() >= 2
         && d.displayName.size() <= 60
         && d.email is string
         && d.email == request.auth.token.email
@@ -24,31 +46,89 @@ service cloud.firestore {
         && d.photoURL.size() <= 2000
         && d.createdAt is timestamp
         && d.updatedAt is timestamp
-        // Existing user documents may not have an avatarData field yet.
-        && (!d.keys().hasAny(['avatarData']) || (
-          d.avatarData is string
-          && d.avatarData.size() <= 48000
-          && (d.avatarData == '' ||
-              d.avatarData.matches('^data:image/(webp|png);base64,[A-Za-z0-9+/=]+$'))
-        ));
+        && (!d.keys().hasAny(['avatarData']) || avatarIsValid(d.avatarData))
+        && (!d.keys().hasAny(['username']) ||
+          (handleIsValid(d.username) && handleOwnedAfter(d.username, uid)))
+        && (!d.keys().hasAny(['bio']) ||
+          (d.bio is string && d.bio.size() <= 180))
+        && (!d.keys().hasAny(['isPublic']) || d.isPublic is bool);
     }
 
-    // Private: only the account owner can read their own document.
-    // No public user list, client-controlled admin flags, or other collections.
+    function publicProfileValid(uid) {
+      let d = request.resource.data;
+      let privateData = getAfter(/databases/$(database)/documents/users/$(uid)).data;
+      return d.keys().hasAll([
+          'uid', 'displayName', 'username', 'bio', 'avatarData', 'joinedAt'
+        ])
+        && d.keys().hasOnly([
+          'uid', 'displayName', 'username', 'bio', 'avatarData', 'joinedAt'
+        ])
+        && d.uid == uid
+        && privateData.get('isPublic', false) == true
+        && d.displayName == privateData.displayName
+        && d.username == privateData.username
+        && handleIsValid(d.username)
+        && handleOwnedAfter(d.username, uid)
+        && d.bio == privateData.get('bio', '')
+        && d.avatarData == privateData.get('avatarData', '')
+        && avatarIsValid(d.avatarData)
+        && d.joinedAt == privateData.createdAt;
+    }
+
+    // Private account records. Only their owners can read these documents.
     match /users/{uid} {
       allow get: if isOwner(uid);
       allow list: if false;
       allow create: if isOwner(uid)
-        && profileIsValid(uid)
+        && privateProfileValid(uid)
         && request.resource.data.createdAt == request.time
         && request.resource.data.updatedAt == request.time;
       allow update: if isOwner(uid)
-        && profileIsValid(uid)
+        && privateProfileValid(uid)
         && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.diff(resource.data).affectedKeys()
-          .hasOnly(['displayName', 'photoURL', 'avatarData', 'updatedAt'])
-        && request.resource.data.updatedAt == request.time;
+          .hasOnly(['displayName', 'username', 'bio', 'isPublic',
+                    'avatarData', 'updatedAt'])
+        && request.resource.data.updatedAt == request.time
+        // Releasing a previous username is part of the same transaction.
+        && (!resource.data.keys().hasAny(['username'])
+            || resource.data.username == request.resource.data.get('username', '')
+            || !existsAfter(
+              /databases/$(database)/documents/handles/$(resource.data.username)
+            ));
       allow delete: if false;
+    }
+
+    // Handle documents reserve a unique username without publishing an email.
+    // Reads check exact handles; listing and overwriting reservations are denied.
+    match /handles/{username} {
+      allow get: if request.auth != null;
+      allow list: if false;
+      allow create: if request.auth != null
+        && handleIsValid(username)
+        && request.resource.data.keys().hasOnly(['uid'])
+        && request.resource.data.keys().hasAll(['uid'])
+        && request.resource.data.uid == request.auth.uid
+        && getAfter(
+          /databases/$(database)/documents/users/$(request.auth.uid)
+        ).data.username == username;
+      allow update: if false;
+      allow delete: if request.auth != null
+        && resource.data.uid == request.auth.uid
+        && getAfter(
+          /databases/$(database)/documents/users/$(request.auth.uid)
+        ).data.get('username', '') != username;
+    }
+
+    // Opted-in profile cards contain NO email or private account metadata.
+    // Anyone can open a public profile by its exact ID, but not list them.
+    match /publicProfiles/{uid} {
+      allow get: if get(
+        /databases/$(database)/documents/users/$(uid)
+      ).data.get('isPublic', false) == true;
+      allow list: if false;
+      allow create, update: if isOwner(uid) && publicProfileValid(uid);
+      allow delete: if isOwner(uid);
     }
   }
 }
