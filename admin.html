@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f3f3f1">
+  <title>Admin Panel | My Website</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css?v=community-1">
+  <link rel="stylesheet" href="community.css?v=community-1">
+</head>
+<body data-page="admin">
+<header><nav aria-label="Main navigation"><a class="logo" href="index.html">My Website</a>
+<div class="nav-links"><a href="index.html">Home</a>
+<a id="nav-dashboard-link" class="nav-dashboard" href="dashboard.html" hidden>Dashboard</a>
+<label class="theme-toggle" title="Switch light/dark mode"><span class="theme-symbol" aria-hidden="true">☾</span><input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode"><span class="toggle-track" aria-hidden="true"></span></label>
+<a id="nav-auth-link" class="nav-auth nav-login" href="login.html">Log in</a></div></nav></header>
+<main class="community-shell">
+<div class="community-head"><div><p class="community-eyebrow">MANAGEMENT · ADMINISTRATION</p><h1>Admin Panel<span>.</span></h1><p>Authorized-only oversight, recent user accounts and moderation review notes.</p></div>
+<a href="dashboard.html" class="button-secondary">← Dashboard</a></div>
+<div id="page-status" class="community-state">Checking your administrator permissions…</div>
+<div id="admin-content" hidden>
+<div class="community-stats">
+<section class="community-panel"><div class="stat-number" id="admin-users-count">—</div><div class="stat-label">Accounts in current page</div></section>
+<section class="community-panel"><div class="stat-number" id="admin-public-count">—</div><div class="stat-label">Public profiles in sample</div></section>
+<section class="community-panel"><div class="stat-number" id="admin-reviewed-count">—</div><div class="stat-label">Review records in sample</div></section>
+</div>
+<div class="community-two-col">
+<section class="community-panel"><div class="community-table-controls"><h2>Accounts</h2><button id="reload-admin" class="community-button" type="button">Refresh</button></div>
+<div id="admin-users" class="community-list"></div><p class="community-hint">Showing at most 25 accounts, not a global count. Private data is restricted to verified admins.</p></section>
+<section class="community-panel">
+<h2>Review an account</h2><p class="community-muted">Choose an account to attach a private moderation note. Notes do not ban or suspend anybody.</p>
+<form id="admin-review-form">
+<div class="community-field"><label for="review-uid">User ID</label><input class="community-input" id="review-uid" type="text" readonly required></div>
+<div class="community-field"><label for="review-status">Review status</label><select class="community-select" id="review-status"><option value="clear">Clear</option><option value="reviewed">Reviewed</option><option value="flagged">Flagged for attention</option></select></div>
+<div class="community-field"><label for="review-note">Private staff note (max 300 characters)</label><textarea class="community-textarea" id="review-note" maxlength="300" placeholder="Internal moderation note."></textarea></div>
+<button id="save-review" class="community-button primary" type="submit">Save review</button>
+</form>
+<p class="community-state" role="status" id="admin-feedback"></p>
+</section>
+</div>
+<p class="community-hint">Admin access requires a Firebase Auth custom claim set from a trusted Admin SDK environment. Merely editing this page cannot grant admin privileges.</p>
+</div>
+</main>
+<footer>© 2026 My Website</footer>
+<script type="module" src="auth-nav.js?v=community-1"></script>
+<script type="module" src="admin.js?v=community-1"></script>
+</body></html>
