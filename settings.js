@@ -1,4 +1,4 @@
-import { recordActivity } from "./community-data.js";
+import { recordActivity, firebaseClient } from "./community-data.js";
 import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
 import {
   EmailAuthProvider, getAuth, onAuthStateChanged,
