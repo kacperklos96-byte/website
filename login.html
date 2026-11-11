@@ -5,168 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f3f3f1">
   <title>Log in | My Website</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --bg: #f3f3f1;
-      --surface: #fafaf9;
-      --text: #252525;
-      --muted: #73736f;
-      --line: #e1e1dd;
-      --button: #cce6fa;
-      --button-hover: #b6daf5;
-      --button-text: #173e5d;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-    }
-    header { border-bottom: 1px solid var(--line); }
-    nav {
-      max-width: 960px;
-      margin: auto;
-      padding: 20px 28px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-    .logo { font-size: 16px; font-weight: 650; color: var(--text); text-decoration: none; letter-spacing: -.3px; white-space: nowrap; }
-    .nav-links { display: flex; align-items: center; gap: 25px; }
-    .nav-links a { font-size: 14px; color: #555550; text-decoration: none; white-space: nowrap; }
-    .nav-links a:hover { color: #111; }
-    .nav-links .nav-login {
-      padding: 8px 16px;
-      color: var(--button-text);
-      background: var(--button);
-      border-radius: 8px;
-      font-weight: 550;
-      transition: background .15s ease;
-    }
-    .nav-links .nav-login:hover { color: var(--button-text); background: var(--button-hover); }
-    main { flex: 1; }
-    footer { border-top: 1px solid var(--line); padding: 22px 28px; text-align: center; font-size: 13px; color: var(--muted); }
-    a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid #666; outline-offset: 3px; }
-    @media (max-width: 480px) {
-      nav { padding: 16px 20px; }
-      .nav-links { gap: 14px; }
-      .nav-links a { font-size: 13px; }
-      .nav-links .nav-login { padding: 7px 11px; }
-    }
-
-    .login-area {
-      min-height: 570px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 20px 80px;
-    }
-    .login-card {
-      width: min(100%, 420px);
-      padding: 36px;
-      border: 1px solid #e5e5e1;
-      border-radius: 14px;
-      background: var(--surface);
-      box-shadow: 0 4px 16px rgba(20, 20, 20, .045);
-    }
-    h1 { font-size: 28px; letter-spacing: -.9px; font-weight: 650; line-height: 1.25; margin: 0 0 7px; }
-    .subtitle { font-size: 14px; color: var(--muted); margin: 0 0 29px; }
-    label { display: block; font-size: 13px; font-weight: 550; color: #44443f; margin: 19px 0 8px; }
-    input {
-      display: block;
-      width: 100%;
-      height: 45px;
-      padding: 0 13px;
-      font: inherit;
-      font-size: 14px;
-      border: 1px solid #deded9;
-      border-radius: 8px;
-      background: #f6f6f4;
-      color: var(--text);
-      transition: border-color .15s ease;
-    }
-    input::placeholder { color: #969690; }
-    input:focus { border-color: #878780; outline: none; box-shadow: 0 0 0 3px rgba(80, 80, 80, .08); }
-    .submit {
-      width: 100%;
-      height: 45px;
-      margin-top: 27px;
-      border: 0;
-      border-radius: 8px;
-      background: var(--button);
-      color: var(--button-text);
-      font: inherit;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .submit:hover { background: var(--button-hover); }
-    .form-note { font-size: 12px; line-height: 1.55; color: #888882; text-align: center; margin: 15px 0 0; }
-    #login-status { font-size: 13px; color: #666; margin: 12px 0 0; }
-    .back-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      height: 44px;
-      margin-top: 14px;
-      border: 1px solid #c7dfef;
-      border-radius: 8px;
-      background: #eaf5fd;
-      color: #28536d;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 550;
-      transition: background .15s ease, border-color .15s ease;
-    }
-    .back-link:hover { background: #dceefb; border-color: #b8d8ed; }
-    .back-arrow { font-size: 17px; line-height: 1; }
-    @media (max-width: 480px) {
-      .login-area { min-height: 510px; padding: 42px 16px 65px; }
-      .login-card { padding: 28px 24px; }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-page="login">
   <header>
     <nav aria-label="Main navigation">
       <a class="logo" href="index.html">My Website</a>
-      <div class="nav-links"><a href="index.html">Home</a><a href="index.html#about">About</a></div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a class="nav-login" href="login.html">Log in</a>
+      </div>
     </nav>
   </header>
-  <main class="login-area">
-    <section class="login-card" aria-labelledby="login-title">
-      <h1 id="login-title">Log in</h1>
-      <p class="subtitle">Welcome back. Enter your details below.</p>
-      <form id="login-form">
-        <label for="email">Email address</label>
-        <input id="email" type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
-        <label for="password">Password</label>
-        <input id="password" type="password" name="password" autocomplete="current-password" placeholder="Enter your password" required>
-        <button class="submit" type="submit">Log in</button>
-        <p class="form-note">Demo only — account sign-in isn't connected yet.</p>
-        <p id="login-status" role="status" aria-live="polite"></p>
+  <main class="auth-area">
+    <section class="auth-card" aria-labelledby="page-title">
+      <h1 id="page-title">Log in</h1>
+      <p class="auth-subtitle">Welcome back. Enter your details below.</p>
+      <form class="auth-form" id="auth-form">
+        <div class="form-field"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required></div>
+        <div class="form-field"><label for="password">Password</label><input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required></div>
+        <button class="button-primary full-width" id="auth-submit" data-requires-auth type="submit">Log in</button>
       </form>
-      <a class="back-link" href="index.html"><span class="back-arrow" aria-hidden="true">←</span> Back to home</a>
+      <div class="divider">or</div>
+      <button class="button-google full-width" id="google-signin" data-requires-auth type="button"><svg width="19" height="19" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.27 5.48-4.78 7.18l7.73 6C44.51 37.94 46.98 31.73 46.98 24.55z"/>
+  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.47 0 20.12 0 24s.92 7.53 2.56 10.78l7.97-6.19z"/>
+  <path fill="#34A853" d="M24 48c6.48 0 11.92-2.13 15.89-5.8l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+</svg><span>Continue with Google</span></button>
+      <p class="switch-page">Don't have an account? <a href="signup.html">Create account</a></p>
+      <p class="form-status" id="auth-status" role="status" aria-live="polite" hidden></p>
+      <p class="setup-notice" id="setup-notice" role="status" hidden>
+        Login isn't active yet. To enable accounts, connect a Firebase project in <code>firebase-config.js</code>.
+      </p>
+      <a class="button-secondary full-width back-link" href="index.html"><span aria-hidden="true">←</span> Back to home</a>
     </section>
   </main>
   <footer>© 2026 My Website</footer>
-  <script>
-    document.getElementById('login-form').addEventListener('submit', function (event) {
-      event.preventDefault();
-      document.getElementById('login-status').textContent = 'This is a demo. Real account logins are not enabled.';
-      document.getElementById('password').value = '';
-    });
-  </script>
+  <script type="module" src="auth.js"></script>
 </body>
 </html>
