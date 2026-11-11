@@ -1,72 +1,71 @@
-# My Website — Firebase Auth + Cloud Firestore
+# My Website — Authentication, Firestore and custom avatars
 
-A clean experimental website (GitHub Pages) with solid-blue buttons, a cookie-saved light/dark theme, login, account creation, Google sign-in, and private user profiles.
+This is a simple, professional-looking experimental website hosted on GitHub Pages.
 
-## Current status
+## Live website
 
-The **website code is ready**, but **no real database is activated yet**. GitHub Pages hosts only static files, and the repository's `firebase-config.js` currently contains placeholders. You must create a Firebase project and publish its Firestore rules before user accounts can be stored. Do not use real credentials in the demo forms before the project is configured.
+- [Homepage](https://kacperklos96-byte.github.io/website/)
+- [Log in](https://kacperklos96-byte.github.io/website/login.html)
+- [Create account](https://kacperklos96-byte.github.io/website/signup.html)
+- [Your account](https://kacperklos96-byte.github.io/website/account.html)
 
-## Set up the live database and authentication
+## Firebase setup
 
-1. Go to [Firebase Console](https://console.firebase.google.com/), sign in, and create a project (or select one you've already created).
-2. Open **Project settings > Your apps**, click the Web `</>` icon, and register a web app. You do not need Firebase Hosting because you're using GitHub Pages.
-3. Copy the Firebase **public web app config** into `firebase-config.js`: `apiKey`, `authDomain`, `projectId`, `appId`. These values are meant to be used in the browser; **never** paste service-account keys, private keys, Firebase Admin credentials, or passwords into this public GitHub repo.
-4. Go to **Build > Authentication > Sign-in method**. Enable **Email/Password** and **Google** (Google may ask for a support email), then save.
-5. Under **Authentication > Settings > Authorized domains**, add `kacperklos96-byte.github.io` (without `https://` or `/website`).
-6. Go to **Build > Firestore Database > Create database**. Create the **(default)** database in a suitable region. Choose **production mode** if asked; we will publish specific restrictive rules next.
-7. In **Firestore Database > Rules**, replace the starter rules with the complete contents of [`firestore.rules`](firestore.rules) from this repository. Click **Publish**. The rules **must** be published in the Firebase project; simply committing the rules file to GitHub does not activate them.
-8. Open the published website and register a test account. Go to **Firestore Database > Data > users**: a document with that Firebase Auth user's **UID** should now appear. Check a Google login too. Sign-in with an existing Firebase Auth account also creates a missing profile document.
+This project uses the Firebase project **website-d402e**.
 
-**Site URLs**
+- Firebase Authentication provides email/password and Google login.
+- The logged-in user's private profile is stored in Cloud Firestore at `users/{uid}`.
+- Theme preference is stored in a cookie.
+- Private custom avatars are saved as small, resized image data in the user's Firestore document — **Google profile photos are not used**. This avoids requiring Cloud Storage/billing for this small experimental site.
 
-- Home: https://kacperklos96-byte.github.io/website/
-- Login: https://kacperklos96-byte.github.io/website/login.html
-- Create account: https://kacperklos96-byte.github.io/website/signup.html
-- Account: https://kacperklos96-byte.github.io/website/account.html
+### Important: Publish updated Firestore rules to activate picture uploads
 
-GitHub Pages may need a few minutes to publish updates to `main`.
+The file [firestore.rules](firestore.rules) was changed to allow the optional `avatarData` field. **GitHub commits do not automatically publish Firestore rules.** To make **Change picture** and **Remove** work:
 
-## What is stored
+1. Open [Firestore Rules for website-d402e](https://console.firebase.google.com/project/website-d402e/firestore/databases/-default-/security/rules).
+2. Open [firestore.rules](firestore.rules) from this repository and copy its complete contents.
+3. Replace the existing Firebase rules and click **Publish**.
+4. Refresh [Your account](https://kacperklos96-byte.github.io/website/account.html), click **Change picture**, and select a JPG, PNG, or WebP image. Your own picture should now be saved and used across the site.
 
-**Firebase Authentication** handles passwords, accounts, provider identities, and login sessions.
+**Don't change the rules to `allow read, write: if true`.** The existing rules keep user documents private.
 
-**Cloud Firestore** stores one private app-profile document at `users/{uid}`:
+### How avatar uploads work
+
+- You can upload a JPG, PNG, or WebP image up to 5 MB.
+- The browser center-crops and resizes the image to a tiny square, compresses it to less than 48 KB, and uploads that result to `users/{uid}.avatarData`.
+- Your picture replaces the default generic avatar on the account page and navigation.
+- **Remove** clears the stored avatar and restores the generic icon.
+- Your Google profile picture is **never** used as the website avatar.
+- Firestore rules restrict each user to their own private profile, validate the avatar format and size, and block unauthenticated access.
+- No Cloud Storage bucket is needed for these small experimental avatars. For a larger website, use dedicated object storage and a separate thumbnail pipeline.
+
+### Other Firebase setup (only if starting from scratch)
+
+1. Register a Firebase Web app and place its public configuration in `firebase-config.js` (never upload private keys).
+2. Enable **Email/Password** and **Google** providers in [Firebase Authentication](https://console.firebase.google.com/project/website-d402e/authentication/providers).
+3. Add `kacperklos96-byte.github.io` as an authorized authentication domain.
+4. Create the **(default)** Firestore database, and publish the rules in `firestore.rules`.
+
+### Data layout
 
 ```text
-users/
-  <Firebase Authentication UID>/
-    uid          = same as document ID
-    displayName  = user's name
-    email        = account email (private)
-    photoURL     = Google profile photo URL, if any
-    createdAt    = Firestore server timestamp
-    updatedAt    = Firestore server timestamp
+users/{uid}
+  uid          = Firebase Authentication user ID
+  displayName  = display name
+  email        = private email address
+  photoURL     = legacy field; no longer used for avatars
+  avatarData   = optional, private compressed image data
+  createdAt    = Firestore timestamp
+  updatedAt    = Firestore timestamp
 ```
 
-- The user document is created the first time an authenticated user signs in if it doesn't exist. Existing documents keep their original `createdAt` time.
-- The account page shows the stored name, email, creation date, and database connection status.
-- **No plaintext passwords** or Google access tokens are stored in Firestore or your GitHub repository.
-- The `firestore.rules` policy permits each signed-in account to **read only its own user document**. Public user listings, edits to UID/email/createdAt, all other collections, and client-controlled admin roles are denied. The client cannot delete a user document.
-- Future public profiles, messaging, dashboard data, notifications, or admin functionality require separate collections and carefully designed security rules and/or a privileged backend. Don't simply make the `users` collection public.
+Firebase Authentication stores credentials. Firestore does not store plaintext passwords. User records are private. Features like public profiles, direct messages and admin tools will need carefully scoped additional collections and security rules.
 
-## Optional: publish Firestore rules from the CLI
+### Development / troubleshooting
 
-```bash
-npm install -g firebase-tools
-firebase login
-firebase use --add
-firebase deploy --only firestore:rules
-```
+- **Picture upload says access denied:** Publish the latest `firestore.rules` from GitHub in Firebase Console.
+- **Profile picture doesn't update everywhere:** Reload the page. The navigation reads the saved avatar after authentication.
+- **Login isn't working:** Check Firebase Authentication providers, authorized domain, and configuration.
+- **Rules update:** The repository also has `firebase.json` for future Firebase CLI deployment.
 
-The CLI will need to be associated with your Firebase project; `firebase.json` points to the rule file. The Firebase Console rule editor is easier for the first deployment.
-
-## Troubleshooting
-
-- **Buttons disabled / setup message:** Edit `firebase-config.js` with your own public Firebase web config.
-- **Missing or insufficient permissions:** Publish `firestore.rules` in **Firestore Database > Rules**, and make sure you're logged in as the document owner.
-- **Firestore database not found:** Create the default Firestore database in your Firebase project.
-- **Google login unauthorized domain:** Add `kacperklos96-byte.github.io` under Authentication authorized domains.
-- **Account exists but no Firestore document:** Authentication and Cloud Firestore are separate. Open the account page after setting up Firestore; the page attempts to create the missing private profile safely.
-- **Profile failed to save:** The account page shows a database warning instead of claiming the profile was stored.
-
-For a real public launch, review privacy notices, consent for any non-essential trackers, account deletion/export flows, abuse protection, and Firebase billing usage and security settings.
+Before launching publicly, implement privacy notices, account deletion, audit/recovery, security testing, and appropriate abuse protection.
