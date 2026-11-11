@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f3f3f1">
+  <title>Messages | My Website</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css?v=community-1">
+  <link rel="stylesheet" href="community.css?v=community-1">
+</head>
+<body data-page="messages">
+<header><nav aria-label="Main navigation"><a class="logo" href="index.html">My Website</a>
+<div class="nav-links"><a href="index.html">Home</a>
+<a id="nav-dashboard-link" class="nav-dashboard" href="dashboard.html" hidden>Dashboard</a>
+<label class="theme-toggle" title="Switch light/dark mode"><span class="theme-symbol" aria-hidden="true">☾</span><input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode"><span class="toggle-track" aria-hidden="true"></span></label>
+<a id="nav-auth-link" class="nav-auth nav-login" href="login.html">Log in</a></div></nav></header>
+<main class="community-shell">
+<div class="community-head"><div><p class="community-eyebrow">COMMUNITY · CHAT</p><h1>Messages<span>.</span></h1><p>Private conversations between members. Start a chat from a public profile, and block anyone you don't want messages from.</p></div>
+<a href="dashboard.html" class="button-secondary">← Dashboard</a></div>
+<div class="community-layout">
+<section class="community-panel">
+<div class="community-table-controls"><h2>Conversations</h2><a class="community-button" href="search.html">Find people</a></div>
+<div id="threads" class="thread-list"><p class="community-state" id="page-status">Checking messages…</p></div>
+</section>
+<section class="community-panel chat-panel">
+<div class="chat-header">
+  <div class="community-avatar small" id="chat-avatar" aria-hidden="true"></div>
+  <div class="member-text"><p class="member-title" id="chat-name">Choose a conversation</p><span class="member-handle" id="chat-handle"></span></div>
+  <button type="button" class="community-button" id="block-user" hidden>Block user</button>
+  <button type="button" class="community-button" id="unblock-user" hidden>Unblock</button>
+</div>
+<div id="chat-messages" class="chat-messages" aria-live="polite"><p class="community-blank">Select a conversation or find someone to start chatting.</p></div>
+<form id="send-form" class="chat-compose">
+<input class="community-input" id="message-input" type="text" placeholder="Write a message…" maxlength="700" autocomplete="off" aria-label="Message" disabled required>
+<button class="community-button primary" id="send-message" type="submit" disabled>Send</button>
+</form>
+<p class="community-state" id="message-feedback" role="status" aria-live="polite"></p>
+</section>
+</div>
+</main>
+<footer>© 2026 My Website</footer>
+<script type="module" src="auth-nav.js?v=community-1"></script>
+<script type="module" src="messages.js?v=community-1"></script>
+</body></html>
