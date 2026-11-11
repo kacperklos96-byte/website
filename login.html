@@ -3,60 +3,156 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f3f1">
   <title>Log in | My Website</title>
   <style>
+    :root {
+      color-scheme: light;
+      --bg: #f3f3f1;
+      --surface: #fafaf9;
+      --text: #252525;
+      --muted: #73736f;
+      --line: #e1e1dd;
+      --button: #292929;
+    }
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: Arial, sans-serif; color: #222; background: #fff; line-height: 1.6; }
-    header { border-bottom: 1px solid #ddd; padding: 20px 24px; }
-    nav { max-width: 900px; margin: auto; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-weight: bold; font-size: 18px; color: #222; text-decoration: none; }
-    nav a { color: #333; text-decoration: none; }
-    nav a:hover { text-decoration: underline; }
-    .nav-links { display: flex; align-items: center; gap: 20px; }
-    .login-button { display: inline-block; border: 1px solid #222; background: #222; color: #fff; border-radius: 5px; padding: 8px 16px; text-decoration: none; font: inherit; cursor: pointer; }
-    .login-button:hover { background: #444; text-decoration: none; }
-    main { min-height: calc(100vh - 165px); padding: 90px 24px; }
-    .login-card { max-width: 380px; margin: 0 auto; }
-    h1 { font-size: 32px; line-height: 1.2; margin: 0 0 12px; }
-    .subtitle { margin: 0 0 28px; color: #666; }
-    label { display: block; font-size: 14px; margin: 16px 0 6px; }
-    input { width: 100%; border: 1px solid #bbb; border-radius: 5px; padding: 11px; font: inherit; }
-    input:focus { outline: 2px solid #555; outline-offset: 1px; }
-    form .login-button { margin-top: 22px; width: 100%; }
-    .form-note, #login-status { font-size: 13px; color: #666; }
-    .back-link { display: inline-block; margin-top: 18px; color: #333; }
-    footer { border-top: 1px solid #ddd; text-align: center; padding: 20px; color: #777; font-size: 14px; }
-    @media (max-width: 440px) { header { padding: 14px 16px; } .logo { font-size: 16px; } .nav-links { gap: 12px; } main { padding-top: 65px; } }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    header { border-bottom: 1px solid var(--line); }
+    nav {
+      max-width: 960px;
+      margin: auto;
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo { font-size: 16px; font-weight: 650; color: var(--text); text-decoration: none; letter-spacing: -.3px; white-space: nowrap; }
+    .nav-links { display: flex; align-items: center; gap: 25px; }
+    .nav-links a { font-size: 14px; color: #555550; text-decoration: none; white-space: nowrap; }
+    .nav-links a:hover { color: #111; }
+    .nav-links .nav-login {
+      padding: 8px 16px;
+      color: #fff;
+      background: var(--button);
+      border-radius: 8px;
+      font-weight: 550;
+      transition: background .15s ease;
+    }
+    .nav-links .nav-login:hover { color: #fff; background: #444; }
+    main { flex: 1; }
+    footer { border-top: 1px solid var(--line); padding: 22px 28px; text-align: center; font-size: 13px; color: var(--muted); }
+    a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid #666; outline-offset: 3px; }
+    @media (max-width: 480px) {
+      nav { padding: 16px 20px; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 13px; }
+      .nav-links .nav-login { padding: 7px 11px; }
+    }
+
+    .login-area {
+      min-height: 570px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px 80px;
+    }
+    .login-card {
+      width: min(100%, 420px);
+      padding: 36px;
+      border: 1px solid #e5e5e1;
+      border-radius: 14px;
+      background: var(--surface);
+      box-shadow: 0 4px 16px rgba(20, 20, 20, .045);
+    }
+    h1 { font-size: 28px; letter-spacing: -.9px; font-weight: 650; line-height: 1.25; margin: 0 0 7px; }
+    .subtitle { font-size: 14px; color: var(--muted); margin: 0 0 29px; }
+    label { display: block; font-size: 13px; font-weight: 550; color: #44443f; margin: 19px 0 8px; }
+    input {
+      display: block;
+      width: 100%;
+      height: 45px;
+      padding: 0 13px;
+      font: inherit;
+      font-size: 14px;
+      border: 1px solid #deded9;
+      border-radius: 8px;
+      background: #f6f6f4;
+      color: var(--text);
+      transition: border-color .15s ease;
+    }
+    input::placeholder { color: #969690; }
+    input:focus { border-color: #878780; outline: none; box-shadow: 0 0 0 3px rgba(80, 80, 80, .08); }
+    .submit {
+      width: 100%;
+      height: 45px;
+      margin-top: 27px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--button);
+      color: #fff;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .submit:hover { background: #444; }
+    .form-note { font-size: 12px; line-height: 1.55; color: #888882; text-align: center; margin: 15px 0 0; }
+    #login-status { font-size: 13px; color: #666; margin: 12px 0 0; }
+    .back-link {
+      display: inline-block;
+      margin-top: 24px;
+      text-decoration: none;
+      color: #666660;
+      font-size: 13px;
+    }
+    .back-link:hover { color: #222; text-decoration: underline; }
+    @media (max-width: 480px) {
+      .login-area { min-height: 510px; padding: 42px 16px 65px; }
+      .login-card { padding: 28px 24px; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <nav>
+    <nav aria-label="Main navigation">
       <a class="logo" href="index.html">My Website</a>
       <div class="nav-links"><a href="index.html">Home</a><a href="index.html#about">About</a></div>
     </nav>
   </header>
-  <main>
-    <div class="login-card">
-      <h1>Log in</h1>
-      <p class="subtitle">Welcome back.</p>
+  <main class="login-area">
+    <section class="login-card" aria-labelledby="login-title">
+      <h1 id="login-title">Log in</h1>
+      <p class="subtitle">Welcome back. Enter your details below.</p>
       <form id="login-form">
-        <label for="email">Email</label>
-        <input id="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+        <label for="email">Email address</label>
+        <input id="email" type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
         <label for="password">Password</label>
-        <input id="password" type="password" autocomplete="current-password" placeholder="Your password" required>
-        <button class="login-button" type="submit">Log in</button>
-        <p class="form-note">Demo form — real account login is not set up yet.</p>
+        <input id="password" type="password" name="password" autocomplete="current-password" placeholder="Enter your password" required>
+        <button class="submit" type="submit">Log in</button>
+        <p class="form-note">Demo only — account sign-in isn't connected yet.</p>
         <p id="login-status" role="status" aria-live="polite"></p>
       </form>
       <a class="back-link" href="index.html">← Back to home</a>
-    </div>
+    </section>
   </main>
   <footer>© 2026 My Website</footer>
   <script>
     document.getElementById('login-form').addEventListener('submit', function (event) {
       event.preventDefault();
-      document.getElementById('login-status').textContent = 'This is a demo. Connect an authentication service to enable real logins.';
+      document.getElementById('login-status').textContent = 'This is a demo. Real account logins are not enabled.';
+      document.getElementById('password').value = '';
     });
   </script>
 </body>
