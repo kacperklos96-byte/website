@@ -2,7 +2,7 @@ import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebase
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
-import { renderAvatar } from "./avatar.js";
+import { renderAvatar } from "./avatar.js?v=mascot-1";
 
 const link = document.getElementById("nav-auth-link");
 let activeUid = null;
