@@ -109,3 +109,116 @@ button:disabled { opacity: .65; cursor: not-allowed; }
   .auth-area { min-height: 520px; padding: 38px 16px 60px; }
   .auth-card { padding: 28px 24px; }
 }
+
+/* Cookie-persisted light / dark-gray theme control */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: #6b6d68;
+  flex: none;
+}
+.theme-symbol { font-size: 20px; line-height: 1; user-select: none; }
+.theme-toggle input {
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  position: absolute;
+}
+.toggle-track {
+  position: relative;
+  display: block;
+  width: 42px;
+  height: 24px;
+  border: 1px solid #cbd0d3;
+  border-radius: 99px;
+  background: #dadfe4;
+  transition: background .17s ease, border-color .17s ease;
+}
+.toggle-track::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.15);
+  transition: transform .17s ease;
+}
+.theme-toggle input:checked + .toggle-track {
+  border-color: #2563eb;
+  background: #2563eb;
+}
+.theme-toggle input:checked + .toggle-track::after {
+  transform: translateX(18px);
+}
+.theme-toggle input:focus-visible + .toggle-track {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+}
+
+/* Dark-gray palette: no gradients, consistent solid-blue buttons. */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #222428;
+  --surface: #2c2f34;
+  --text: #f0f1f3;
+  --muted: #abb0b8;
+  --line: #3d4249;
+}
+html[data-theme="dark"] .logo { color: var(--text); }
+html[data-theme="dark"] .nav-links a:not(.nav-login) { color: #c1c5cb; }
+html[data-theme="dark"] .nav-links a:not(.nav-login):hover { color: #fff; }
+html[data-theme="dark"] .theme-toggle { color: #c4c8d0; }
+html[data-theme="dark"] .toggle-track { background: #505660; border-color: #626975; }
+html[data-theme="dark"] .theme-toggle input:checked + .toggle-track { background: #2563eb; border-color: #2563eb; }
+html[data-theme="dark"] footer { color: #a6acb4; }
+html[data-theme="dark"] .hero p,
+html[data-theme="dark"] .about p,
+html[data-theme="dark"] .auth-subtitle,
+html[data-theme="dark"] .switch-page { color: #abb0b8; }
+html[data-theme="dark"] .auth-card { border-color: #41464e; box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+html[data-theme="dark"] .form-field label { color: #e0e3e8; }
+html[data-theme="dark"] .form-field input {
+  background: #25282d;
+  border-color: #4b515a;
+  color: #f0f1f3;
+}
+html[data-theme="dark"] .form-field input::placeholder { color: #9098a2; }
+html[data-theme="dark"] .form-field input:focus { border-color: #5f97ff; box-shadow: 0 0 0 3px rgba(73,139,255,.16); }
+html[data-theme="dark"] .button-secondary {
+  background: #373b41; color: #e1e4e9; border-color: #51565e;
+}
+html[data-theme="dark"] .button-secondary:hover { background: #434851; }
+html[data-theme="dark"] .button-google {
+  background: #35393f; color: #f0f1f3; border-color: #525860;
+}
+html[data-theme="dark"] .button-google:hover { background: #41464e; }
+html[data-theme="dark"] .divider { color: #adb4bc; }
+html[data-theme="dark"] .divider::before,
+html[data-theme="dark"] .divider::after { background: #494e55; }
+html[data-theme="dark"] .switch-page a { color: #80aaff; }
+html[data-theme="dark"] .form-status { color: #bdc4cb; }
+html[data-theme="dark"] .form-status.error { color: #ff9d9d; }
+html[data-theme="dark"] .form-status.success { color: #9ae7bd; }
+html[data-theme="dark"] .setup-notice { background: #383324; border-color: #605138; color: #eed19c; }
+html[data-theme="dark"] .account-avatar { background: #263f69; color: #a6c6ff; }
+html[data-theme="dark"] .account-detail {
+  background: #26292e; border-color: #484d55;
+}
+html[data-theme="dark"] .account-detail dt { color: #b2bac3; }
+html[data-theme="dark"] .account-detail dd { color: #edf0f3; }
+
+@media (max-width: 600px) {
+  .nav-links { gap: 13px; }
+  .theme-toggle { gap: 4px; }
+  .theme-symbol { display: none; }
+}
+@media (max-width: 370px) {
+  .nav-links { gap: 9px; }
+  .nav-links a { font-size: 12px; }
+  .nav-links .nav-login { padding: 7px 10px; }
+}
