@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Your account | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=account-nav-1">
+  <link rel="stylesheet" href="styles.css?v=custom-avatar-2">
 </head>
 <body data-page="account">
   <header>
@@ -27,6 +27,12 @@
   <main class="auth-area">
     <section class="auth-card" aria-labelledby="page-title">
       <div class="account-avatar" id="account-avatar" aria-hidden="true"></div>
+      <div class="avatar-editor">
+        <input id="avatar-file" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+        <button id="avatar-upload-btn" class="avatar-edit-button" type="button" disabled>Change picture</button>
+        <button id="avatar-remove-btn" class="avatar-remove-button" type="button" disabled hidden>Remove</button>
+      </div>
+      <p class="avatar-status" id="avatar-status" role="status" aria-live="polite">Upload your own picture — no Google avatar.</p>
       <h1 id="page-title">Your account</h1>
       <p class="auth-subtitle" id="account-subtitle">Checking your session...</p>
       <dl class="account-detail" id="account-details" hidden>
@@ -47,7 +53,7 @@
     </section>
   </main>
   <footer>© 2026 My Website</footer>
-  <script type="module" src="auth.js?v=account-nav-1"></script>
-  <script type="module" src="auth-nav.js?v=account-nav-1"></script>
+  <script type="module" src="auth.js?v=custom-avatar-2"></script>
+  <script type="module" src="auth-nav.js?v=custom-avatar-2"></script>
 </body>
 </html>
