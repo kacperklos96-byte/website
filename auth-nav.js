@@ -5,10 +5,12 @@ import { firebaseConfig } from "./firebase-config.js";
 import { renderAvatar } from "./avatar.js?v=mascot-1";
 
 const link = document.getElementById("nav-auth-link");
+const dashboardLink = document.getElementById("nav-dashboard-link");
 let activeUid = null;
 
 function showGuest() {
   activeUid = null;
+  if (dashboardLink) dashboardLink.hidden = true;
   if (!link) return;
   link.className = "nav-auth nav-login auth-ready";
   link.href = "login.html";
@@ -18,6 +20,7 @@ function showGuest() {
 }
 
 function showAccount(profile) {
+  if (dashboardLink) dashboardLink.hidden = false;
   if (!link) return;
   link.className = "nav-auth nav-profile auth-ready";
   link.href = "account.html";
