@@ -5,25 +5,32 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Notifications | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=community-1">
-  <link rel="stylesheet" href="community.css?v=community-1">
+  <link rel="stylesheet" href="styles.css?v=nav-refresh-2">
+  <link rel="stylesheet" href="community.css?v=nav-refresh-2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body data-page="notifications">
 <header><nav aria-label="Main navigation"><a class="logo" href="index.html">My Website</a>
 <div class="nav-links"><a href="index.html">Home</a>
-<a id="nav-dashboard-link" class="nav-dashboard" href="dashboard.html" hidden>Dashboard</a>
-<label class="theme-toggle" title="Switch light/dark mode"><span class="theme-symbol" aria-hidden="true">☾</span><input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode"><span class="toggle-track" aria-hidden="true"></span></label>
+
+
 <a id="nav-auth-link" class="nav-auth nav-login" href="login.html">Log in</a></div></nav></header>
 <main class="community-shell">
 <div class="community-head"><div><p class="community-eyebrow">YOUR ACCOUNT · ALERTS</p><h1>Notifications<span>.</span></h1><p>Updates from your conversations, stored in your private notification inbox.</p></div>
-<a href="dashboard.html" class="button-secondary">← Dashboard</a></div>
+<a href="dashboard.html" class="button-secondary"><i class="fas fa-arrow-left" aria-hidden="true"></i> Dashboard</a></div>
 <section class="community-panel">
 <div class="community-table-controls"><h2>Inbox</h2><button class="community-button" id="mark-all-read" disabled type="button">Mark all read</button></div>
 <div class="community-list" id="notifications-list"><p class="community-state" id="page-status">Checking notifications…</p></div>
 <p class="community-hint">Messages create notifications for their recipient. You can mark alerts read or remove them from your inbox.</p>
 </section>
 </main>
-<footer>© 2026 My Website</footer>
-<script type="module" src="auth-nav.js?v=community-1"></script>
-<script type="module" src="notifications.js?v=community-1"></script>
+<footer class="site-footer"><span>© 2026 My Website</span>
+  <label class="theme-toggle theme-toggle-footer" title="Switch light / dark mode">
+    <span class="theme-symbol" aria-hidden="true"><i class="fas fa-moon"></i></span>
+    <span class="theme-label">Theme</span>
+    <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
+    <span class="toggle-track" aria-hidden="true"></span>
+  </label></footer>
+<script type="module" src="auth-nav.js?v=nav-refresh-2"></script>
+<script type="module" src="notifications.js?v=nav-refresh-2"></script>
 </body></html>
