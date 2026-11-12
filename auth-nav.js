@@ -5,7 +5,6 @@ import { firebaseConfig } from "./firebase-config.js";
 import { renderAvatar } from "./avatar.js?v=mascot-1";
 
 const link = document.getElementById("nav-auth-link");
-const dashboardLink = document.getElementById("nav-dashboard-link");
 let activeUid = null;
 let unsubscribeAlerts = null;
 let notificationButton = null;
@@ -23,7 +22,7 @@ function startNotificationWatcher(db, uid) {
   notificationButton.className = "nav-notification";
   notificationButton.title = "Notifications";
   notificationButton.setAttribute("aria-label", "Notifications");
-  notificationButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span class="nav-unread-count" hidden></span>';
+  notificationButton.innerHTML = '<i class="fas fa-bell" aria-hidden="true"></i><span class="nav-unread-count" hidden></span>';
   link.insertAdjacentElement("beforebegin", notificationButton);
   const count = notificationButton.querySelector(".nav-unread-count");
   const q = query(collection(db, "notifications", uid, "items"), orderBy("createdAt", "desc"), limit(20));
@@ -44,7 +43,6 @@ function startNotificationWatcher(db, uid) {
 function showGuest() {
   clearNotificationWatcher();
   activeUid = null;
-  if (dashboardLink) dashboardLink.hidden = true;
   if (!link) return;
   link.className = "nav-auth nav-login auth-ready";
   link.href = "login.html";
@@ -54,12 +52,11 @@ function showGuest() {
 }
 
 function showAccount(profile) {
-  if (dashboardLink) dashboardLink.hidden = false;
   if (!link) return;
   link.className = "nav-auth nav-profile auth-ready";
-  link.href = "account.html";
-  link.setAttribute("aria-label", "Open your account");
-  link.title = "Your account";
+  link.href = "dashboard.html";
+  link.setAttribute("aria-label", "Open dashboard");
+  link.title = "Dashboard";
   renderAvatar(link, profile);
 }
 
