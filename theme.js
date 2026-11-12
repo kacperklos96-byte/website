@@ -12,6 +12,8 @@
     if (meta) meta.content = theme === "dark" ? "#222428" : "#f3f3f1";
     const toggle = document.getElementById("theme-toggle");
     if (toggle) toggle.checked = theme === "dark";
+    const themeIcon = document.querySelector(".theme-symbol i");
+    if (themeIcon) themeIcon.className = theme === "dark" ? "fas fa-moon" : "fas fa-sun";
   }
 
   applyTheme(selected);
