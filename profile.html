@@ -6,8 +6,9 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Edit profile | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=community-1">
-  <link rel="stylesheet" href="profile.css?v=community-1">
+  <link rel="stylesheet" href="styles.css?v=nav-refresh-2">
+  <link rel="stylesheet" href="profile.css?v=nav-refresh-2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body data-page="profile-editor">
   <header>
@@ -15,12 +16,8 @@
       <a class="logo" href="index.html">My Website</a>
       <div class="nav-links">
         <a href="index.html">Home</a>
-        <a href="dashboard.html" class="nav-dashboard" id="nav-dashboard-link" hidden>Dashboard</a>
-        <label class="theme-toggle" title="Switch light / dark mode">
-          <span class="theme-symbol" aria-hidden="true">☾</span>
-          <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
-          <span class="toggle-track" aria-hidden="true"></span>
-        </label>
+        
+        
         <a class="nav-auth nav-login" id="nav-auth-link" href="login.html">Log in</a>
       </div>
     </nav>
@@ -75,14 +72,14 @@
       <aside class="profile-side">
         <section class="profile-box preview-box">
           <div class="profile-box-head"><h2>Live preview</h2><span class="small-head-tag">PREVIEW</span></div>
-          <div class="preview-banner"><span class="preview-small-star">✦</span></div>
+          <div class="preview-banner"><span class="preview-small-star"><i class="fas fa-star" aria-hidden="true"></i></span></div>
           <div class="preview-avatar" id="profile-preview-avatar" aria-hidden="true"></div>
           <h3 id="preview-name">Your display name</h3>
           <p class="preview-handle" id="preview-handle">@username</p>
           <p class="preview-bio" id="preview-bio">Your bio will show up here.</p>
           <div class="preview-visibility" id="preview-visibility">Private profile</div>
           <div class="preview-actions">
-            <a class="button-secondary full-width" id="view-profile-link" href="#" hidden>View public profile ↗</a>
+            <a class="button-secondary full-width" id="view-profile-link" href="#" hidden>View public profile <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
             <button class="button-secondary full-width" id="copy-profile-link" type="button" hidden>Copy profile link</button>
           </div>
         </section>
@@ -101,8 +98,14 @@
       </aside>
     </div>
   </main>
-  <footer>© 2026 My Website</footer>
-  <script type="module" src="auth-nav.js?v=community-1"></script>
-  <script type="module" src="profile.js?v=community-1"></script>
+  <footer class="site-footer"><span>© 2026 My Website</span>
+  <label class="theme-toggle theme-toggle-footer" title="Switch light / dark mode">
+    <span class="theme-symbol" aria-hidden="true"><i class="fas fa-moon"></i></span>
+    <span class="theme-label">Theme</span>
+    <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
+    <span class="toggle-track" aria-hidden="true"></span>
+  </label></footer>
+  <script type="module" src="auth-nav.js?v=nav-refresh-2"></script>
+  <script type="module" src="profile.js?v=nav-refresh-2"></script>
 </body>
 </html>
