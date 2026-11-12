@@ -84,3 +84,12 @@ html[data-theme="dark"] .profile-feedback.error { color:#ffada4; }
 @media (max-width:610px) { .profile-shell { padding:27px 17px 65px; } .profile-intro { align-items:flex-start; flex-direction:column; } .profile-box { padding:22px; } .profile-side { display:flex; } .public-profile-shell { padding:28px 16px 70px; } .public-profile-card { padding:17px; } .public-profile-heading { flex-direction:column; } .public-avatar { margin-left:12px; } }
 
 .profile-intro-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+/* Profile photos now belong to the Profile Editor, not an Account page. */
+.profile-hint .profile-box-head{margin-bottom:8px}
+.profile-hint .profile-box-head h2{font-size:14px;margin:0;font-weight:680}
+.profile-hint .profile-box-head i{margin-right:7px;color:var(--blue)}
+.profile-picture-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.profile-picture-actions button{font-size:12px;min-height:38px;padding:8px 12px}
+.profile-picture-actions button:disabled{opacity:.6}
+.profile-hint .profile-feedback{margin:12px 0 0}
