@@ -6,8 +6,9 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Dashboard | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=community-1">
-  <link rel="stylesheet" href="dashboard.css?v=community-1">
+  <link rel="stylesheet" href="styles.css?v=nav-refresh-2">
+  <link rel="stylesheet" href="dashboard.css?v=nav-refresh-2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body data-page="dashboard">
   <header>
@@ -15,13 +16,9 @@
       <a class="logo" href="index.html">My Website</a>
       <div class="nav-links">
         <a href="index.html">Home</a>
-        <a href="dashboard.html" class="nav-dashboard" id="nav-dashboard-link" hidden aria-current="page">Dashboard</a>
+        
         <a href="index.html#about">About</a>
-        <label class="theme-toggle" title="Switch light / dark mode">
-          <span class="theme-symbol" aria-hidden="true">☾</span>
-          <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
-          <span class="toggle-track" aria-hidden="true"></span>
-        </label>
+        
         <a class="nav-auth nav-login" id="nav-auth-link" href="login.html" aria-label="Log in">Log in</a>
       </div>
     </nav>
@@ -38,17 +35,17 @@
           <p class="intro">Here's a quick overview of your account and what's happening.</p>
         </div>
         <div class="dash-heading-actions">
-          <a class="button-primary dash-heading-action" href="profile.html">Edit profile <span aria-hidden="true">↗</span></a>
-          <a class="button-secondary dash-heading-action" href="settings.html">Settings <span aria-hidden="true">↗</span></a>
+          <a class="button-primary dash-heading-action" href="profile.html">Edit profile <span aria-hidden="true"><i class="fas fa-external-link-alt" aria-hidden="true"></i></span></a>
+          <a class="button-secondary dash-heading-action" href="settings.html">Settings <span aria-hidden="true"><i class="fas fa-external-link-alt" aria-hidden="true"></i></span></a>
         </div>
       </div>
 
       <section class="quick-tools" aria-label="Community features">
-        <a href="search.html"><span class="tool-symbol" aria-hidden="true">⌕</span><strong>Find people</strong><small>Discover public profiles</small></a>
-        <a href="messages.html"><span class="tool-symbol" aria-hidden="true">✉</span><strong>Messages</strong><small>Private conversations</small></a>
-        <a href="notifications.html"><span class="tool-symbol" aria-hidden="true">♢</span><strong>Notifications</strong><small>See your alerts</small></a>
-        <a href="activity.html"><span class="tool-symbol" aria-hidden="true">↗</span><strong>Activity</strong><small>Your recent events</small></a>
-        <a href="admin.html" id="admin-shortcut" hidden><span class="tool-symbol" aria-hidden="true">▣</span><strong>Admin</strong><small>Authorized access</small></a>
+        <a href="search.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-search" aria-hidden="true"></i></span><strong>Find people</strong><small>Discover public profiles</small></a>
+        <a href="messages.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-envelope" aria-hidden="true"></i></span><strong>Messages</strong><small>Private conversations</small></a>
+        <a href="notifications.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-bell" aria-hidden="true"></i></span><strong>Notifications</strong><small>See your alerts</small></a>
+        <a href="activity.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-external-link-alt" aria-hidden="true"></i></span><strong>Activity</strong><small>Your recent events</small></a>
+        <a href="admin.html" id="admin-shortcut" hidden><span class="tool-symbol" aria-hidden="true"><i class="fas fa-shield-alt" aria-hidden="true"></i></span><strong>Admin</strong><small>Authorized access</small></a>
       </section>
       <div class="dash-columns">
         <section class="dash-panel profile-panel" aria-labelledby="profile-heading">
@@ -64,23 +61,23 @@
             <div><dt>Member since</dt><dd id="dash-member-since">—</dd></div>
             <div><dt>Login method</dt><dd id="dash-provider">—</dd></div>
           </dl>
-          <a class="dash-text-link" href="profile.html">Customize profile <span aria-hidden="true">→</span></a>
+          <a class="dash-text-link" href="profile.html">Customize profile <span aria-hidden="true"><i class="fas fa-arrow-right" aria-hidden="true"></i></span></a>
         </section>
 
         <section class="dash-panel security-panel" aria-labelledby="status-heading">
           <div class="panel-top"><h2 id="status-heading">Account status</h2><span class="small-tag">LIVE</span></div>
           <div class="status-row">
-            <span class="status-icon" aria-hidden="true">✓</span>
+            <span class="status-icon" aria-hidden="true"><i class="fas fa-check-circle" aria-hidden="true"></i></span>
             <div class="status-info"><strong>Signed in</strong><span>Firebase Authentication</span></div>
             <span class="status-value good">Active</span>
           </div>
           <div class="status-row">
-            <span class="status-icon" aria-hidden="true">✉</span>
+            <span class="status-icon" aria-hidden="true"><i class="fas fa-envelope" aria-hidden="true"></i></span>
             <div class="status-info"><strong>Email verification</strong><span id="email-status-description">Checking status</span></div>
             <span class="status-value" id="dash-email-status">—</span>
           </div>
           <div class="status-row">
-            <span class="status-icon" aria-hidden="true">☁</span>
+            <span class="status-icon" aria-hidden="true"><i class="fas fa-cloud" aria-hidden="true"></i></span>
             <div class="status-info"><strong>Cloud profile</strong><span id="cloud-description">Checking Firestore</span></div>
             <span class="status-value" id="dash-cloud-status">—</span>
           </div>
@@ -108,8 +105,14 @@
       <p class="dashboard-error" id="dash-error" role="alert" hidden></p>
     </section>
   </main>
-  <footer>© 2026 My Website</footer>
-  <script type="module" src="auth-nav.js?v=community-1"></script>
-  <script type="module" src="dashboard.js?v=community-1"></script>
+  <footer class="site-footer"><span>© 2026 My Website</span>
+  <label class="theme-toggle theme-toggle-footer" title="Switch light / dark mode">
+    <span class="theme-symbol" aria-hidden="true"><i class="fas fa-moon"></i></span>
+    <span class="theme-label">Theme</span>
+    <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
+    <span class="toggle-track" aria-hidden="true"></span>
+  </label></footer>
+  <script type="module" src="auth-nav.js?v=nav-refresh-2"></script>
+  <script type="module" src="dashboard.js?v=nav-refresh-2"></script>
 </body>
 </html>
