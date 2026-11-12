@@ -5,18 +5,19 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Find people | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=community-1">
-  <link rel="stylesheet" href="community.css?v=community-1">
+  <link rel="stylesheet" href="styles.css?v=nav-refresh-2">
+  <link rel="stylesheet" href="community.css?v=nav-refresh-2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body data-page="search">
 <header><nav aria-label="Main navigation"><a class="logo" href="index.html">My Website</a>
 <div class="nav-links"><a href="index.html">Home</a>
-<a id="nav-dashboard-link" class="nav-dashboard" href="dashboard.html" hidden>Dashboard</a>
-<label class="theme-toggle" title="Switch light/dark mode"><span class="theme-symbol" aria-hidden="true">☾</span><input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode"><span class="toggle-track" aria-hidden="true"></span></label>
+
+
 <a id="nav-auth-link" class="nav-auth nav-login" href="login.html">Log in</a></div></nav></header>
 <main class="community-shell">
 <div class="community-head"><div><p class="community-eyebrow">COMMUNITY · DISCOVER</p><h1>Find people<span>.</span></h1><p>Find members who have chosen to make their profiles public. Private accounts don't appear here.</p></div>
-<a href="dashboard.html" class="button-secondary">← Dashboard</a></div>
+<a href="dashboard.html" class="button-secondary"><i class="fas fa-arrow-left" aria-hidden="true"></i> Dashboard</a></div>
 <section class="community-panel">
 <div class="community-search">
 <input class="community-input" type="search" id="user-search" placeholder="Search by username (e.g. meteor)" maxlength="20" spellcheck="false" autocomplete="off" aria-label="Search public usernames">
@@ -27,7 +28,13 @@
 <p class="community-hint">Only users who opted into public profiles are listed. Search is limited to a small number of results at once.</p>
 </section>
 </main>
-<footer>© 2026 My Website</footer>
-<script type="module" src="auth-nav.js?v=community-1"></script>
-<script type="module" src="search.js?v=community-1"></script>
+<footer class="site-footer"><span>© 2026 My Website</span>
+  <label class="theme-toggle theme-toggle-footer" title="Switch light / dark mode">
+    <span class="theme-symbol" aria-hidden="true"><i class="fas fa-moon"></i></span>
+    <span class="theme-label">Theme</span>
+    <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
+    <span class="toggle-track" aria-hidden="true"></span>
+  </label></footer>
+<script type="module" src="auth-nav.js?v=nav-refresh-2"></script>
+<script type="module" src="search.js?v=nav-refresh-2"></script>
 </body></html>
