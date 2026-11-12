@@ -354,7 +354,7 @@ html[data-theme="dark"] .nav-dashboard[aria-current="page"] { color: #89afff !im
   align-items:center;justify-content:center;flex:none;
   border-radius:7px;text-decoration:none;color:var(--muted);
 }
-.nav-links a.nav-notification svg {width:19px;height:19px;}
+.nav-links a.nav-notification i {font-size:17px;line-height:1;}
 .nav-links a.nav-notification:hover {background:rgba(128,128,128,.1);color:var(--text);}
 .nav-unread-count {
   position:absolute;top:-4px;right:-8px;min-width:17px;height:17px;
@@ -373,4 +373,44 @@ html[data-theme="dark"] .nav-links a.nav-notification:hover {color:#fff;}
   .nav-links > a[href="index.html"],
   .nav-links > a[href="#home"] { display:none; }
   .nav-links { gap:10px; }
+}
+
+/* Less clutter: theme control lives in the footer, not the header. */
+.site-footer{
+  position:relative;
+  display:flex;
+  min-height:74px;
+  align-items:center;
+  justify-content:center;
+  padding:22px 155px 22px 28px;
+}
+.site-footer>span:first-child{flex:1;text-align:center;padding-left:127px}
+.site-footer .theme-toggle-footer{
+  position:absolute;
+  right:28px;
+  top:50%;
+  transform:translateY(-50%);
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:600;
+  transition:color .15s ease;
+}
+.site-footer .theme-toggle-footer:hover{color:var(--text)}
+.site-footer .theme-label{line-height:1}
+.site-footer .theme-symbol{display:grid;place-items:center;width:16px;font-size:14px;line-height:1}
+.site-footer .theme-symbol i{font-size:14px}
+.site-footer .toggle-track{width:36px;height:21px;flex:none}
+.site-footer .toggle-track::after{width:15px;height:15px;top:2px;left:2px}
+.site-footer .theme-toggle input:checked + .toggle-track::after{transform:translateX(15px)}
+.site-footer .theme-toggle input:focus-visible + .toggle-track{outline:2px solid var(--blue);outline-offset:3px}
+.nav-links .nav-notification i{display:inline-block}
+.button-primary .fas,.button-secondary .fas,.community-button .fas{font-size:.9em}
+@media(max-width:580px){
+  .site-footer{min-height:87px;flex-direction:column;gap:10px;padding:16px 15px}
+  .site-footer>span:first-child{padding:0;flex:none}
+  .site-footer .theme-toggle-footer{position:static;transform:none}
+  .site-footer .theme-symbol{display:grid}
 }
