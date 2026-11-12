@@ -6,7 +6,8 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Create account | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=community-1">
+  <link rel="stylesheet" href="styles.css?v=nav-refresh-2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body data-page="signup">
   <header>
@@ -15,12 +16,8 @@
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="index.html#about">About</a>
-        <label class="theme-toggle" title="Switch light / dark mode">
-          <span class="theme-symbol" aria-hidden="true">☾</span>
-          <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
-          <span class="toggle-track" aria-hidden="true"></span>
-        </label>
-        <a class="nav-dashboard" id="nav-dashboard-link" href="dashboard.html" hidden>Dashboard</a>
+        
+        
         <a class="nav-auth nav-login" id="nav-auth-link" href="login.html" aria-label="Log in">Log in</a>
       </div>
     </nav>
@@ -48,11 +45,17 @@
       <p class="setup-notice" id="setup-notice" role="status" hidden>
         Login isn't active yet. To enable accounts, connect a Firebase project in <code>firebase-config.js</code>.
       </p>
-      <a class="button-secondary full-width back-link" href="index.html"><span aria-hidden="true">←</span> Back to home</a>
+      <a class="button-secondary full-width back-link" href="index.html"><span aria-hidden="true"><i class="fas fa-arrow-left" aria-hidden="true"></i></span> Back to home</a>
     </section>
   </main>
-  <footer>© 2026 My Website</footer>
-  <script type="module" src="auth.js?v=community-1"></script>
-  <script type="module" src="auth-nav.js?v=community-1"></script>
+  <footer class="site-footer"><span>© 2026 My Website</span>
+  <label class="theme-toggle theme-toggle-footer" title="Switch light / dark mode">
+    <span class="theme-symbol" aria-hidden="true"><i class="fas fa-moon"></i></span>
+    <span class="theme-label">Theme</span>
+    <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
+    <span class="toggle-track" aria-hidden="true"></span>
+  </label></footer>
+  <script type="module" src="auth.js?v=nav-refresh-2"></script>
+  <script type="module" src="auth-nav.js?v=nav-refresh-2"></script>
 </body>
 </html>
