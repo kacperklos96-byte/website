@@ -1,5 +1,15 @@
 # My Website — Authentication, Firestore and custom avatars
 
+## Navigation and appearance update — November 2026
+
+- Signed-in users click their **profile avatar** to open the **Dashboard**.
+- The redundant Dashboard text link and separate Account page were retired. Old `account.html` URLs redirect to `dashboard.html`.
+- **Upload / Remove picture** now live in [Edit profile](https://kacperklos96-byte.github.io/website/profile.html), alongside display name, username, and bio.
+- The light/dark toggle is in the footer so guests can also change theme. The full appearance chooser remains in [Settings](https://kacperklos96-byte.github.io/website/settings.html).
+- Icons throughout the header, dashboard, settings, and activity use Font Awesome Solid (`fas fa-*`) from the Font Awesome 6.7.2 CDN.
+- This presentation-only update does not require new Firestore rules. Earlier database feature activation still requires publishing `firestore.rules`.
+
+
 ## NEW: Features 4–8 — Admin, Notifications, Messages, Search, Activity
 
 These features have been committed directly to the website:
@@ -57,7 +67,7 @@ or grant roles**. Real account sanctions would require a trusted backend.
 - Activity entries are **browser-authored markers** and can be incomplete;
   they are not verified server-side security audit logs.
 - The existing Firebase Auth, Firestore, custom mascot and photo uploads,
-  cookie theme, and account pages are retained.
+  cookie theme, and profile editors are retained.
 
 See [ROADMAP.md](ROADMAP.md) for implementation scope and limitations.
 
@@ -85,7 +95,7 @@ Your `main` branch now has editable profiles.
 - **Public view:** `public-profile.html?uid=<Firebase UID>` (the editor generates/copies the actual link after you publish).
 - **Private by default:** Only the profile owner sees their private email. Public visitors only see the fields you choose to share.
 - **Unique username:** 3–20 lowercase letters, numbers, underscores. Names are reserved in `handles/{username}` through a Firestore transaction.
-- **Custom profile picture:** Upload via [account.html](https://kacperklos96-byte.github.io/website/account.html). The profile editor previews it.
+- **Custom profile picture:** Upload via [profile.html](https://kacperklos96-byte.github.io/website/profile.html). The profile editor previews it.
 
 ### REQUIRED: Publish the revised rules
 
@@ -113,7 +123,7 @@ This is a simple, professional-looking experimental website hosted on GitHub Pag
 - [Homepage](https://kacperklos96-byte.github.io/website/)
 - [Log in](https://kacperklos96-byte.github.io/website/login.html)
 - [Create account](https://kacperklos96-byte.github.io/website/signup.html)
-- [Your account](https://kacperklos96-byte.github.io/website/account.html)
+- [Your account](https://kacperklos96-byte.github.io/website/profile.html)
 
 ## Firebase setup
 
@@ -131,7 +141,7 @@ The file [firestore.rules](firestore.rules) was changed to allow the optional `a
 1. Open [Firestore Rules for website-d402e](https://console.firebase.google.com/project/website-d402e/firestore/databases/-default-/security/rules).
 2. Open [firestore.rules](firestore.rules) from this repository and copy its complete contents.
 3. Replace the existing Firebase rules and click **Publish**.
-4. Refresh [Your account](https://kacperklos96-byte.github.io/website/account.html), click **Change picture**, and select a JPG, PNG, or WebP image. Your own picture should now be saved and used across the site.
+4. Refresh [Your account](https://kacperklos96-byte.github.io/website/profile.html), click **Change picture**, and select a JPG, PNG, or WebP image. Your own picture should now be saved and used across the site.
 
 **Don't change the rules to `allow read, write: if true`.** The existing rules keep user documents private.
 
@@ -139,7 +149,7 @@ The file [firestore.rules](firestore.rules) was changed to allow the optional `a
 
 - You can upload a JPG, PNG, or WebP image up to 5 MB.
 - The browser center-crops and resizes the image to a tiny square, compresses it to less than 48 KB, and uploads that result to `users/{uid}.avatarData`.
-- Your picture replaces the default generic avatar on the account page and navigation.
+- Your picture replaces the default generic avatar on the profile editor and navigation.
 - **Remove** clears the stored avatar and restores the generic icon.
 - Your Google profile picture is **never** used as the website avatar.
 - Firestore rules restrict each user to their own private profile, validate the avatar format and size, and block unauthenticated access.
