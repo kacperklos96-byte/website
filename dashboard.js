@@ -33,7 +33,9 @@ function addActivity(icon, label, when) {
   const symbol = document.createElement("span");
   symbol.className = "activity-marker";
   symbol.setAttribute("aria-hidden", "true");
-  symbol.textContent = icon;
+  const glyph = document.createElement("i");
+  glyph.className = "fas fa-" + icon;
+  symbol.appendChild(glyph);
   const detail = document.createElement("div");
   const title = document.createElement("span");
   title.className = "activity-label";
@@ -54,15 +56,15 @@ function showUser(user) {
   setStatus("dash-email-status", user.emailVerified ? "Verified" : "Not verified", user.emailVerified ? "good" : "warning");
   $("email-status-description").textContent = user.emailVerified
     ? "Your email address is confirmed."
-    : "Verify your email in Account.";
+    : "Verify your email in Settings.";
 
   const createdAuth = user.metadata?.creationTime ? new Date(user.metadata.creationTime) : null;
   const lastLogin = user.metadata?.lastSignInTime ? new Date(user.metadata.lastSignInTime) : null;
   $("dash-member-since").textContent = formatDate(createdAuth);
   activity.replaceChildren();
   const events = [
-    ["↗", "Last sign-in", lastLogin],
-    ["★", "Account created", createdAuth]
+    ["sign-in-alt", "Last sign-in", lastLogin],
+    ["user-plus", "Account created", createdAuth]
   ].filter((item) => item[2] && !Number.isNaN(item[2].getTime()));
   events.sort((a,b) => b[2] - a[2]);
   for (const event of events) addActivity(...event);
@@ -91,7 +93,7 @@ async function showProfile(db, user) {
     const updatedAt = timeFromTimestamp(profile.updatedAt);
     const createdAt = timeFromTimestamp(profile.createdAt);
     if (updatedAt && createdAt && updatedAt - createdAt > 60 * 1000) {
-      addActivity("✎", "Profile updated", updatedAt);
+      addActivity("user-edit", "Profile updated", updatedAt);
     }
   } catch (err) {
     setStatus("dash-cloud-status", "Unavailable", "warning");
