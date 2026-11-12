@@ -7,12 +7,12 @@ const $ = id=>document.getElementById(id);
 const list=$("activity-events");
 let db,uid;
 const labels={
-  session_opened:["↗","Session opened"],
-  profile_updated:["✎","Profile updated"],
-  theme_changed:["◐","Appearance changed"],
-  password_changed:["♢","Password changed"],
-  message_sent:["✉","Message sent"],
-  message_read:["✓","Message opened"]
+  session_opened:["sign-in-alt","Session opened"],
+  profile_updated:["user-edit","Profile updated"],
+  theme_changed:["palette","Appearance changed"],
+  password_changed:["key","Password changed"],
+  message_sent:["envelope","Message sent"],
+  message_read:["check-circle","Message opened"]
 };
 function state(message,error=false){
   list.replaceChildren();
@@ -29,9 +29,9 @@ async function loadEvents(){
     if(snapshot.empty){state("No activity recorded yet. Editing your profile or sending a message will add an entry.");return;}
     snapshot.forEach(s=>{
       const d=s.data();
-      const [icon,label]=labels[d.kind]||["•","Account event"];
+      const [icon,label]=labels[d.kind]||["circle","Account event"];
       const row=document.createElement("div");row.className="activity-row";
-      const glyph=document.createElement("span");glyph.className="activity-glyph";glyph.textContent=icon;
+      const glyph=document.createElement("span");glyph.className="activity-glyph"; const iconElement=document.createElement("i");iconElement.className="fas fa-"+icon;iconElement.setAttribute("aria-hidden","true");glyph.append(iconElement);
       const text=document.createElement("div");text.className="member-text";
       const title=document.createElement("p");title.className="member-title";title.textContent=label;
       const details=document.createElement("p");details.className="member-description";
