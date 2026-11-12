@@ -1,5 +1,15 @@
 # My Website — all 8 roadmap features in the repository
 
+## Navigation and appearance update — November 2026
+
+- Signed-in users click their **profile avatar** to open the **Dashboard**.
+- The redundant Dashboard text link and separate Account page were retired. Old `account.html` URLs redirect to `dashboard.html`.
+- **Upload / Remove picture** now live in [Edit profile](https://kacperklos96-byte.github.io/website/profile.html), alongside display name, username, and bio.
+- The light/dark toggle is in the footer so guests can also change theme. The full appearance chooser remains in [Settings](https://kacperklos96-byte.github.io/website/settings.html).
+- Icons throughout the header, dashboard, settings, and activity use Font Awesome Solid (`fas fa-*`) from the Font Awesome 6.7.2 CDN.
+- This presentation-only update does not require new Firestore rules. Earlier database feature activation still requires publishing `firestore.rules`.
+
+
 **Status:** The source code for all eight planned features has now been added to `main`.
 The newer features require publishing the latest Firestore rules and an admin-specific
 one-time setup. Merely committing the files does not change Firebase permissions.
