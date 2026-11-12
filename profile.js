@@ -3,8 +3,8 @@ import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebase
 import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
-import { ensureUserProfile, saveProfile, normalizeUsername, validateUsername } from "./database.js";
-import { renderAvatar } from "./avatar.js?v=mascot-1";
+import { ensureUserProfile, saveProfile, saveCustomAvatar, normalizeUsername, validateUsername } from "./database.js";
+import { renderAvatar, prepareAvatar } from "./avatar.js?v=mascot-1";
 
 const $ = (id) => document.getElementById(id);
 const form = $("edit-profile-form");
@@ -48,6 +48,11 @@ function fillForm(profile) {
   $("edit-bio").value = profile.bio || "";
   $("edit-public").checked = profile.isPublic === true;
   renderAvatar(previewAvatar, profile);
+  const upload = $("avatar-upload-btn");
+  const remove = $("avatar-remove-btn");
+  upload.disabled = false;
+  remove.disabled = false;
+  remove.hidden = !profile.avatarData;
   updatePreview();
 }
 function errorMessage(error) {
@@ -109,6 +114,63 @@ $("copy-profile-link").addEventListener("click", async () => {
     showFeedback("Use the View public profile button to copy the link from your browser.", "error");
   }
 });
+
+const avatarInput = $("avatar-file");
+const uploadAvatar = $("avatar-upload-btn");
+const removeAvatar = $("avatar-remove-btn");
+const avatarFeedback = $("avatar-feedback");
+let changingAvatar = false;
+
+function avatarMessage(message, kind = "") {
+  avatarFeedback.textContent = message;
+  avatarFeedback.className = "profile-feedback" + (kind ? " " + kind : "");
+}
+async function changeAvatar(avatarData) {
+  if (changingAvatar || !user || !current) return;
+  changingAvatar = true;
+  uploadAvatar.disabled = true;
+  removeAvatar.disabled = true;
+  try {
+    const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+    await saveCustomAvatar(getFirestore(app), user.uid, avatarData);
+    if (user.uid !== getAuth(app).currentUser?.uid) return;
+    current = { ...current, avatarData };
+    renderAvatar(previewAvatar, current);
+    removeAvatar.hidden = !avatarData;
+    window.dispatchEvent(new CustomEvent("profile-avatar-updated", {
+      detail: { uid: user.uid, avatarData }
+    }));
+    avatarMessage(avatarData ? "Your picture has been saved." : "Default mascot restored.", "success");
+  } catch (error) {
+    avatarMessage(error?.code === "permission-denied"
+      ? "Upload denied. Check the latest published Firestore rules."
+      : (error?.message || "Couldn't update your avatar."), "error");
+  } finally {
+    changingAvatar = false;
+    uploadAvatar.disabled = false;
+    removeAvatar.disabled = false;
+  }
+}
+uploadAvatar.addEventListener("click", () => avatarInput.click());
+avatarInput.addEventListener("change", async () => {
+  const file = avatarInput.files?.[0];
+  if (!file) return;
+  avatarMessage("Preparing picture…");
+  try {
+    const avatarData = await prepareAvatar(file);
+    avatarMessage("Saving picture…");
+    await changeAvatar(avatarData);
+  } catch (error) {
+    avatarMessage(error?.message || "Couldn't read this picture.", "error");
+  } finally {
+    avatarInput.value = "";
+  }
+});
+removeAvatar.addEventListener("click", () => {
+  avatarMessage("Removing picture…");
+  changeAvatar("");
+});
+
 const configured = ["apiKey", "authDomain", "projectId", "appId"].every((key) =>
   typeof firebaseConfig[key] === "string" && !firebaseConfig[key].includes("REPLACE_")
 );
