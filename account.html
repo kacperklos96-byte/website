@@ -1,64 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f3f3f1">
-  <title>Your account | My Website</title>
-  <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=community-1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="refresh" content="0;url=dashboard.html">
+  <meta name="robots" content="noindex">
+  <title>Opening dashboard | My Website</title>
+  <script>window.location.replace("dashboard.html");</script>
 </head>
-<body data-page="account">
-  <header>
-    <nav aria-label="Main navigation">
-      <a class="logo" href="index.html">My Website</a>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="index.html#about">About</a>
-        <label class="theme-toggle" title="Switch light / dark mode">
-          <span class="theme-symbol" aria-hidden="true">☾</span>
-          <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
-          <span class="toggle-track" aria-hidden="true"></span>
-        </label>
-        <a class="nav-dashboard" id="nav-dashboard-link" href="dashboard.html" hidden>Dashboard</a>
-        <a class="nav-auth nav-login" id="nav-auth-link" href="login.html" aria-label="Log in">Log in</a>
-      </div>
-    </nav>
-  </header>
-  <main class="auth-area">
-    <section class="auth-card" aria-labelledby="page-title">
-      <div class="account-avatar" id="account-avatar" aria-hidden="true"></div>
-      <div class="avatar-editor">
-        <input id="avatar-file" type="file" accept="image/jpeg,image/png,image/webp" hidden>
-        <button id="avatar-upload-btn" class="avatar-edit-button" type="button" disabled>Change picture</button>
-        <button id="avatar-remove-btn" class="avatar-remove-button" type="button" disabled hidden>Remove</button>
-      </div>
-      <p class="avatar-status" id="avatar-status" role="status" aria-live="polite">Upload your own picture — no Google avatar.</p>
-      <h1 id="page-title">Your account</h1>
-      <p class="auth-subtitle" id="account-subtitle">Checking your session...</p>
-      <dl class="account-detail" id="account-details" hidden>
-        <dt>Name</dt><dd id="account-name"></dd>
-        <dt style="margin-top:13px">Email</dt><dd id="account-email"></dd>
-        <dt style="margin-top:13px">Member since</dt><dd id="account-created">Loading...</dd>
-      </dl>
-      <p class="database-status" id="database-status" role="status">Checking the profile database...</p>
-      <div class="account-actions">
-        <a class="button-primary full-width" href="profile.html">Edit my profile →</a>
-        <a class="button-secondary full-width" href="settings.html">Account settings →</a>
-        <a class="button-secondary full-width" href="messages.html">My messages →</a>
-        <button class="button-primary full-width" type="button" id="verify-email" data-requires-auth hidden>Send verification email</button>
-        <button class="button-secondary full-width" type="button" id="signout" data-requires-auth>Log out</button>
-        <a class="button-primary full-width" href="dashboard.html">Go to dashboard →</a>
-        <a class="button-secondary full-width" href="index.html">← Back to home</a>
-      </div>
-      <p class="form-status" id="auth-status" role="status" aria-live="polite" hidden></p>
-      <p class="setup-notice" id="setup-notice" role="status" hidden>
-        Login isn't active yet. To enable accounts, connect a Firebase project in <code>firebase-config.js</code>.
-      </p>
-    </section>
-  </main>
-  <footer>© 2026 My Website</footer>
-  <script type="module" src="auth.js?v=community-1"></script>
-  <script type="module" src="auth-nav.js?v=community-1"></script>
+<body>
+  <p>The account page has moved. <a href="dashboard.html">Open your dashboard</a>.</p>
 </body>
 </html>
