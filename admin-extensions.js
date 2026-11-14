@@ -21,7 +21,7 @@ function reportRow(snap){
  (d.groupId?" · Group: "+d.groupId:""));
  const statusField=optionSelect([["open","Open"],["reviewing","Reviewing"],["resolved","Resolved"],["dismissed","Dismissed"]],d.status);
  const note=el("textarea","community-textarea");note.value=d.staffNote||"";note.maxLength=1000;note.rows=2;
- note.placeholder="Internal staff note";note.style.width="100%";
+ note.placeholder="Staff update (visible to the reporter)";note.style.width="100%";
  const save=el("button","community-button primary","Save review");save.type="button";
  save.addEventListener("click",async()=>{
   save.disabled=true;try{
