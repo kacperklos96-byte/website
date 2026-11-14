@@ -305,21 +305,31 @@ $("social-channel-add").addEventListener("click",()=>{
 });
 function editChannelAccess(c){
  if(!groupOwner())return;
+ const members=selectedGroup.data.members.filter(uid=>uid!==user.uid);
+ if(!members.length){status("Invite a friend into the group before granting channel access.",true);return;}
  showModal("Private channel access",[
- {name:"allowed",label:"Allowed member UIDs (comma-separated; group owner is always included)",max:1200,
-  value:[...new Set(c.data.allowedUids||[])].filter(x=>x!==user.uid).join(", ")}
+  {name:"uid",label:"Group member",type:"select",
+   options:members.map(uid=>[uid,friendNames.get(uid)||"Member "+uid.slice(0,8)])},
+  {name:"operation",label:"Permission",type:"select",
+   options:[["allow","Allow channel access"],["remove","Remove channel access"]]}
  ],async d=>{
-  const uids=[...new Set(d.allowed.split(",").map(x=>x.trim()).filter(Boolean))];
-  if(uids.length>40||uids.some(x=>!safeUid(x)||!selectedGroup.data.members.includes(x)))throw Error("Every UID must already be a member of this group (maximum 40).");
-  await updateDoc(doc(db,"groups",selectedGroup.id,"channels",c.id),{allowedUids:[user.uid,...uids]});
-  status("Channel access updated.");
+  const target=d.uid;
+  if(!members.includes(target))throw Error("Choose a current member.");
+  const allowed=new Set(c.data.allowedUids||[user.uid]);
+  if(d.operation==="allow")allowed.add(target);
+  else allowed.delete(target);
+  allowed.add(user.uid);
+  await updateDoc(doc(db,"groups",selectedGroup.id,"channels",c.id),{allowedUids:[...allowed]});
+  status("Channel permissions updated.");
  });
 }
 $("social-invite-member").addEventListener("click",()=>{
  if(!groupOwner())return;
  const available=allFriends().filter(x=>!selectedGroup.data.members.includes(x.uid));
- showModal("Invite a member",[
-  {name:"uid",label:"Member UID (copy from their public profile)",required:true,max:128},
+ if(!available.length){status("Add a friend in Find people first, then invite them here.",true);return;}
+ showModal("Invite a friend",[
+  {name:"uid",label:"Choose a friend",type:"select",
+   options:available.map(x=>[x.uid,friendNames.get(x.uid)||"Member "+x.uid.slice(0,8)])},
  ],async d=>{
   const target=d.uid.trim();
   if(!safeUid(target)||target===user.uid||selectedGroup.data.members.includes(target))throw Error("Enter the UID of another user who isn't in this group.");
