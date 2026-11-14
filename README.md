@@ -1,5 +1,38 @@
 # My Website — Authentication, Firestore and custom avatars
 
+## BONUS: Private Calendar — November 2026
+
+[Open Calendar](https://kacperklos96-byte.github.io/website/calendar.html) (also linked from your Dashboard).
+
+Your account now has a real, private calendar with:
+
+- Responsive monthly view; Monday-first weeks and convenient Previous / Next / Today navigation
+- Click any date to see its events; open or edit an event from its list
+- Create, update and delete events with confirmation for deletion
+- All-day or timed events (validated end time), four colored categories (Personal, School, Work, Other)
+- Optional location and notes
+- Live Firestore updates in the browser (up to 250 events across the visible calendar weeks)
+- Download currently loaded calendar events as a standard `.ics` calendar file
+- Client-written activity markers for event creation, editing and deletion
+- Dark-gray/light theme, responsive layout and Font Awesome icons
+
+Events are stored at `calendars/{auth.uid}/events/{eventId}` and **only that authenticated user** may read, create, change or delete their events. No public calendar feed or cross-user access exists. Timed `.ics` exports use floating local time, interpreted as local time by a calendar app. The exporter includes only events loaded for the displayed calendar weeks, not all historical events.
+
+### Required: publish the latest Firestore security rules
+
+The website can display the Calendar page immediately after GitHub Pages deploys it. **Saving and loading events needs the latest rules published** to your Firebase project:
+
+1. [Open the repository's latest firestore.rules](https://github.com/kacperklos96-byte/website/blob/main/firestore.rules) and copy the entire file.
+2. [Open website-d402e Firestore Rules](https://console.firebase.google.com/project/website-d402e/firestore/databases/-default-/security/rules).
+3. Replace the previous rules with the new complete file and click **Publish**.
+
+This adds only the `calendars/{uid}/events/{eventId}` rule block and the corresponding allowed activity event types; existing privacy rules and admin checks remain in place.
+
+The site uses Firebase Authentication and Firestore, and it does not send external email or push reminders. A private calendar page is not a scheduled notification service.
+
+---
+
+
 ## Navigation and appearance update — November 2026
 
 - Signed-in users click their **profile avatar** to open the **Dashboard**.
