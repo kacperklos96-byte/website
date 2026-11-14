@@ -1,5 +1,61 @@
 # My Website — Authentication, Firestore and custom avatars
 
+## Major platform expansion — November 2026
+
+All pages below have been committed to the GitHub Pages repository. Website UI code deploys automatically through GitHub Actions, but **Firestore rules are not deployed by GitHub Pages**.
+
+### New pages and capabilities
+
+| URL | Purpose |
+|---|---|
+| [Community](https://kacperklos96-byte.github.io/website/messages.html) | Discord-style three-column hub with existing direct-message history, friend requests, group invitations, private groups, text channels and restricted channels |
+| [Find people](https://kacperklos96-byte.github.io/website/search.html) | Find opt-in public profiles and send a friend request or a private message |
+| [Tasks & Boards](https://kacperklos96-byte.github.io/website/tasks.html) | Live personal to-do list, three-stage Kanban with drag/drop, task priority, deadlines and browser reminders |
+| [Support Center](https://kacperklos96-byte.github.io/website/support.html) | Submit private support tickets and see staff responses |
+| [Admin Panel](https://kacperklos96-byte.github.io/website/admin.html) | Existing account roster/review notes PLUS incident reports, moderation updates, support queue, announcements, site settings, trusted audit viewer and local admin action command generator |
+
+The Community page preserves the existing `threads/{id}/messages` data and the old `messages.html?thread=...` notification links. Group messages use their own collection at `groups/{groupId}/channels/{channelId}/posts` and do **not** overwrite existing DMs. Group creation automatically creates `#general` and owner-only `#incident-reports`. An owner can create additional private or public channels, and grant access to current members by UID. A private channel is not visible to unapproved members.
+
+**Incident reports** sent via the flag button are stored in `reports`, readable only by the reporting member and trusted staff. **Channel messages** are visible to anyone who can access that channel, so use the private report form for sensitive reports. Report review messages stored in `staffNote` are readable by the reporter too; never put staff-only secrets there.
+
+The **Tasks** page stores data at `taskBoards/{uid}/items`. Browser reminders and desktop notifications run only while that page is open. They **do not** send background push, SMS, or email. Notification permission is requested only if the user clicks Enable browser alerts.
+
+The **Admin Panel** supports reports (open/reviewing/resolved/dismissed), ticket responses, public announcements and UI-level site flags from the browser using Firestore rules. Announcements and maintenance notices appear site-wide through `site-notices.js`. Maintenance and feature flags are **not server-side enforcement**, and users who know a direct URL can still navigate there. These controls should not be used as security restrictions.
+
+### Required Firestore activation
+
+1. Open [the complete latest firestore.rules file](https://github.com/kacperklos96-byte/website/blob/main/firestore.rules), select **Raw** and copy its full contents.
+2. Open [Firebase Console → Firestore Database → Rules](https://console.firebase.google.com/project/website-d402e/firestore/databases/-default-/security/rules).
+3. Replace the entire current rules file and click **Publish**.
+4. Sign out and back in if you have recently changed Firebase Auth custom claims.
+
+These owner-only and staff-only permissions must be published for friend requests, groups, reports, tickets, and tasks to save. Do **not** publish permissive `allow read, write: if true` rules.
+
+### Trusted administrative operations
+
+GitHub Pages is static hosting and does **not** have private Firebase Admin credentials. Assigning roles, suspending/reactivating user accounts and revoking refresh tokens require the trusted [scripts/admin-tools.mjs](https://github.com/kacperklos96-byte/website/blob/main/scripts/admin-tools.mjs) script run locally with `firebase-admin`.
+
+From a copy of this repo on your own PC, with your service-account JSON stored outside GitHub:
+
+```powershell
+npm.cmd install --no-save firebase-admin
+$env:GOOGLE_APPLICATION_CREDENTIALS = "D:\\your-private-service-account.json"
+node scripts/admin-tools.mjs role TARGET_UID moderator
+node scripts/admin-tools.mjs role TARGET_UID owner
+node scripts/admin-tools.mjs suspend TARGET_UID "Reason"
+node scripts/admin-tools.mjs unsuspend TARGET_UID
+node scripts/admin-tools.mjs revoke-sessions TARGET_UID
+```
+
+The script supports `owner`, `admin`, `moderator`, `support` and `none` roles. Only `owner` and `admin` receive the `admin:true` claim, which grants access to the private roster and site configuration. Moderator and Support roles can review reports and support tickets but not manage other admin claims from the browser. The trusted script appends immutable-from-the-browser audit entries into `adminAudit`. Actions taken directly from the Firestore client, such as reviewing a report, are **not** independently logged into that trusted audit trail.
+
+Firebase Auth can revoke an account's **refresh tokens**, but there is no complete per-device session listing built into this browser panel. Existing ID tokens may remain valid until expiry after revocation. `suspend` disables the account in Firebase Auth and revokes refresh tokens.
+
+**Never commit or share your service-account key.**
+
+---
+
+
 ## BONUS: Private Calendar — November 2026
 
 [Open Calendar](https://kacperklos96-byte.github.io/website/calendar.html) (also linked from your Dashboard).
