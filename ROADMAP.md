@@ -1,5 +1,20 @@
 # My Website — all 8 roadmap features in the repository
 
+## Platform expansion — Code committed (requires Firebase rules publication)
+
+**Community**: Discord-like three-column UI replacing the old Messages layout, while reusing the existing DMs and notification links. Members can find opt-in public profiles, send/accept/decline friend requests, create private groups, invite friends, chat in channels and manage restricted channel access. Incidents submitted using Report are stored in a separate private moderation queue. Existing private-message blocking continues to work.
+
+**Tasks & Boards**: private to-do list, three-stage drag/drop Kanban, task priorities, due dates and reminders. Reminders trigger while the page is open and may show browser alerts after permission; no background notification service has been deployed.
+
+**Support**: member ticket submission and staff responses; member incident report status tracking.
+
+**Admin**: moderation queue, support queue, announcement manager, maintenance banner and navigation-only feature flags; trusted audit viewer; role/suspend/session-revoke command builder. The privileged actions require local trusted Admin SDK script `scripts/admin-tools.mjs`. Browser cannot assign roles, disable users or revoke tokens. The trusted audit collection logs local SDK actions; client-side report/ticket updates are not a tamper-proof audit trail. Support staff can answer tickets only; moderators can additionally review incidents; admins can access the roster, manage announcements and site controls.
+
+**Activation**: Publish latest `firestore.rules` in Firebase Console. These rules are not automatically deployed by GitHub Pages. No service account credentials are stored in GitHub.
+
+---
+
+
 ## Navigation and appearance update — November 2026
 
 - Signed-in users click their **profile avatar** to open the **Dashboard**.
