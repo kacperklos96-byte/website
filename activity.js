@@ -15,7 +15,12 @@ const labels={
   message_read:["check-circle","Message opened"],
   calendar_created:["calendar-plus","Calendar event created"],
   calendar_updated:["calendar-check","Calendar event updated"],
-  calendar_deleted:["calendar-times","Calendar event deleted"]
+  calendar_deleted:["calendar-times","Calendar event deleted"],
+  task_created:["tasks","Task created"],
+  task_updated:["edit","Task updated"],
+  task_deleted:["trash","Task deleted"],
+  group_joined:["users","Joined a group"],
+  support_ticket_created:["life-ring","Support ticket created"]
 };
 function state(message,error=false){
   list.replaceChildren();
