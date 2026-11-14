@@ -238,7 +238,8 @@ service cloud.firestore {
         && request.resource.data.keys().hasAll(['kind','details','createdAt'])
         && request.resource.data.kind in [
           'session_opened','profile_updated','theme_changed',
-          'password_changed','message_sent','message_read'
+          'password_changed','message_sent','message_read',
+          'calendar_created','calendar_updated','calendar_deleted'
         ]
         && request.resource.data.details is string
         && request.resource.data.details.size() <= 120
