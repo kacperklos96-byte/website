@@ -12,7 +12,10 @@ const labels={
   theme_changed:["palette","Appearance changed"],
   password_changed:["key","Password changed"],
   message_sent:["envelope","Message sent"],
-  message_read:["check-circle","Message opened"]
+  message_read:["check-circle","Message opened"],
+  calendar_created:["calendar-plus","Calendar event created"],
+  calendar_updated:["calendar-check","Calendar event updated"],
+  calendar_deleted:["calendar-times","Calendar event deleted"]
 };
 function state(message,error=false){
   list.replaceChildren();
