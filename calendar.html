@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f3f1">
+  <title>Calendar | My Website</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css?v=calendar-1">
+  <link rel="stylesheet" href="calendar.css?v=calendar-1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body data-page="calendar">
+  <header>
+    <nav aria-label="Main navigation">
+      <a class="logo" href="index.html">My Website</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a class="nav-auth nav-login" id="nav-auth-link" href="login.html" aria-label="Log in">Log in</a>
+      </div>
+    </nav>
+  </header>
+  <main class="calendar-shell">
+    <div class="calendar-breadcrumb">
+      <a href="dashboard.html"><i class="fas fa-arrow-left" aria-hidden="true"></i> Dashboard</a>
+      <span aria-hidden="true">/</span><span>Calendar</span>
+    </div>
+    <div class="calendar-header">
+      <div>
+        <p class="calendar-eyebrow">YOUR SPACE · ORGANIZATION</p>
+        <h1>Calendar<span>.</span></h1>
+        <p>Finally, a place to organize all the incredibly important things you do on this website.</p>
+      </div>
+      <button class="button-primary" id="calendar-add" type="button" disabled>
+        <i class="fas fa-plus" aria-hidden="true"></i> New event
+      </button>
+    </div>
+
+    <p class="calendar-feedback" id="calendar-status" role="status" aria-live="polite">Checking your account…</p>
+
+    <div class="calendar-layout">
+      <section class="calendar-card calendar-main" aria-label="Month calendar">
+        <div class="calendar-toolbar">
+          <div class="calendar-title-box">
+            <h2 id="calendar-month">—</h2>
+            <span id="calendar-month-count" class="calendar-count">—</span>
+          </div>
+          <div class="calendar-nav">
+            <button id="calendar-today" class="calendar-icon-button today-button" type="button">Today</button>
+            <button id="calendar-prev" class="calendar-icon-button" type="button" aria-label="Previous month" title="Previous month"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+            <button id="calendar-next" class="calendar-icon-button" type="button" aria-label="Next month" title="Next month"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+          </div>
+        </div>
+        <div class="calendar-weekdays" aria-hidden="true">
+          <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+        </div>
+        <div id="calendar-grid" class="calendar-grid" aria-label="Calendar days"></div>
+        <div class="calendar-bottom">
+          <div class="calendar-legend">
+            <span><i class="legend-dot personal"></i> Personal</span>
+            <span><i class="legend-dot school"></i> School</span>
+            <span><i class="legend-dot work"></i> Work</span>
+            <span><i class="legend-dot other"></i> Other</span>
+          </div>
+          <button class="calendar-export-button" id="calendar-export" type="button" disabled>
+            <i class="fas fa-download" aria-hidden="true"></i> Export shown events (.ics)
+          </button>
+        </div>
+      </section>
+
+      <aside class="calendar-side">
+        <section class="calendar-card day-panel" aria-labelledby="day-heading">
+          <div class="side-heading">
+            <div><p class="panel-eyebrow">SELECTED DAY</p><h2 id="day-heading">—</h2></div>
+            <button type="button" class="calendar-small-add" id="day-add" title="Add an event on this day" aria-label="Add an event on selected day" disabled><i class="fas fa-plus" aria-hidden="true"></i></button>
+          </div>
+          <div id="day-events" class="day-events"><p class="calendar-empty">Select a date to see your plans.</p></div>
+        </section>
+        <section class="calendar-card upcoming-panel" aria-labelledby="upcoming-heading">
+          <div class="side-heading"><div><p class="panel-eyebrow">ON THE HORIZON</p><h2 id="upcoming-heading">Upcoming</h2></div></div>
+          <div id="calendar-upcoming" class="upcoming-events"><p class="calendar-empty">Loading events…</p></div>
+          <p class="calendar-small-print">Shows events from the currently displayed calendar weeks.</p>
+        </section>
+      </aside>
+    </div>
+
+    <dialog id="event-dialog" class="event-dialog" aria-labelledby="event-dialog-title">
+      <form id="event-form" class="event-form">
+        <div class="dialog-heading">
+          <div><p class="panel-eyebrow">PERSONAL CALENDAR</p><h2 id="event-dialog-title">New event</h2></div>
+          <button id="event-close" class="calendar-close" aria-label="Close editor" title="Close" type="button"><i class="fas fa-times" aria-hidden="true"></i></button>
+        </div>
+        <div class="calendar-field">
+          <label for="event-title">Event title <span class="required">*</span></label>
+          <input id="event-title" type="text" minlength="1" maxlength="90" placeholder="Something important (probably)" required>
+        </div>
+        <div class="calendar-form-two">
+          <div class="calendar-field"><label for="event-day">Date</label><input id="event-day" type="date" min="1900-01-01" max="2100-12-31" required></div>
+          <div class="calendar-field"><label for="event-category">Category</label>
+            <select id="event-category">
+              <option value="personal">Personal</option><option value="school">School</option>
+              <option value="work">Work</option><option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <label class="calendar-all-day"><input id="event-all-day" type="checkbox" checked> All-day event</label>
+        <div id="event-time-fields" class="calendar-form-two" hidden>
+          <div class="calendar-field"><label for="event-start">Start time</label><input id="event-start" type="time" value="09:00"></div>
+          <div class="calendar-field"><label for="event-end">End time</label><input id="event-end" type="time" value="10:00"></div>
+        </div>
+        <div class="calendar-field"><label for="event-location">Location <span class="optional">(optional)</span></label>
+          <input id="event-location" type="text" maxlength="120" placeholder="Anywhere">
+        </div>
+        <div class="calendar-field"><label for="event-description">Notes <span class="optional">(optional)</span></label>
+          <textarea id="event-description" rows="3" maxlength="1000" placeholder="Extra details about your plans"></textarea>
+          <span class="field-counter"><span id="description-count">0</span>/1000</span>
+        </div>
+        <p class="dialog-feedback" id="event-feedback" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button class="button-secondary delete-event-button" id="event-delete" type="button" hidden><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete</button>
+          <div class="dialog-actions-right">
+            <button class="button-secondary" id="event-cancel" type="button">Cancel</button>
+            <button class="button-primary" id="event-save" type="submit"><i class="fas fa-check" aria-hidden="true"></i> Save event</button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+  </main>
+  <footer class="site-footer"><span>© 2026 My Website</span>
+    <label class="theme-toggle theme-toggle-footer" title="Switch light / dark mode">
+      <span class="theme-symbol" aria-hidden="true"><i class="fas fa-moon"></i></span>
+      <span class="theme-label">Theme</span>
+      <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
+      <span class="toggle-track" aria-hidden="true"></span>
+    </label>
+  </footer>
+  <script type="module" src="auth-nav.js?v=calendar-1"></script>
+  <script type="module" src="calendar.js?v=calendar-1"></script>
+</body>
+</html>
