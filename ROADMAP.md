@@ -25,6 +25,16 @@ one-time setup. Merely committing the files does not change Firebase permissions
 | 7 | User Search | ✅ | Prefix search over explicitly public usernames only |
 | 8 | Activity History | ✅ | Personal client-authored events, not a trusted security audit |
 
+## Bonus feature 9 — Calendar ✅ code implemented
+
+- `calendar.html`, `calendar.css`, `calendar.js`
+- Personal monthly calendar, event creation/editing/deletion, day and upcoming views
+- All-day or timed events, categories, location and notes; export visible events as `.ics`
+- Events stored only under the authenticated user's private Firestore calendar collection
+- Activity History labels for calendar changes, retaining existing user/admin privacy rules
+- **Activation:** Publish the new `firestore.rules` manually in Firebase Console
+- This is a personal calendar, not a shared calendar or background reminder service.
+
 ## The five new features
 
 ### 4. Admin Panel
