@@ -7,7 +7,7 @@ import {renderAvatar} from "./avatar.js?v=mascot-1";
 const $=id=>document.getElementById(id);
 let db,user,mode="friends",selectedGroup=null,selectedChannel=null,recipient=null,threadId=null;
 let friends=[],requests=[],groups=[],groupInvites=[],threads=[],channels=[],channelStreams=[],chatStop=null;
-let stops=[],channelStop=[],pending=false,dialogSubmit=null,selectionSeq=0;
+let stops=[],channelStop=[],pending=false,dialogSubmit=null,selectionSeq=0,blocked=false;
 const friendNames=new Map();
 function status(message,error=false){$("social-status").textContent=message;$("social-status").className="work-feedback"+(error?" error":"");}
 function blank(message){const p=document.createElement("p");p.className="social-placeholder";p.textContent=message;return p;}
@@ -27,7 +27,8 @@ function sideButton(text,icon,callback,selected=false){
 }
 function clearChat(){
  if(chatStop){chatStop();chatStop=null;}
- recipient=null;threadId=null;selectedChannel=null;
+ recipient=null;threadId=null;selectedChannel=null;blocked=false;
+ $("social-block").hidden=true;
  $("social-chat-body").replaceChildren(blank("Select a conversation or group channel."));
  $("social-message-text").value="";$("social-message-text").disabled=true;$("social-send").disabled=true;
 }
@@ -77,8 +78,32 @@ async function selectDm(targetUid,existingThread=null){
       err=>status("Couldn't load this conversation: "+err.message,true));
   }else $("social-chat-body").replaceChildren(blank("No conversation yet. Write a message to start."));
  }catch(error){status(error.message,true);}
- compose(true);
+ await refreshBlock(targetUid);
 }
+async function refreshBlock(uid){
+ if(!user||recipient!==uid)return;
+ try{
+  const result=await getDoc(doc(db,"blocks",user.uid,"targets",uid));
+  if(recipient!==uid)return;
+  blocked=result.exists();
+  $("social-block").hidden=false;
+  $("social-block").title=blocked?"Unblock member":"Block member";
+  $("social-block").setAttribute("aria-label",blocked?"Unblock member":"Block member");
+  compose(!blocked);
+  if(blocked)status("You blocked this user. Unblock them to send messages.");
+ }catch(error){blocked=true;compose(false);status("Couldn't check your block list.",true);}
+}
+$("social-block").addEventListener("click",async()=>{
+ if(!recipient||!user||pending)return;
+ const uid=recipient;pending=true;
+ try{
+  if(blocked)await deleteDoc(doc(db,"blocks",user.uid,"targets",uid));
+  else await setDoc(doc(db,"blocks",user.uid,"targets",uid),{blockedAt:serverTimestamp()});
+  await refreshBlock(uid);
+  status(blocked?"Member blocked.":"Member unblocked.");
+ }catch(error){status("Couldn't change block status: "+error.message,true);}
+ finally{pending=false;}
+});
 function clearChannelWatch(){
  channelStop.forEach(fn=>fn());channelStop=[];channels=[];
  $("social-channel-add").hidden=true;$("social-invite-member").hidden=true;
@@ -359,7 +384,7 @@ $("social-report").addEventListener("click",()=>showModal("Send a private report
 }));
 $("social-compose").addEventListener("submit",async e=>{
  e.preventDefault();
- if(pending||!user)return;
+ if(pending||!user||blocked)return;
  const body=$("social-message-text").value.trim();if(!body||body.length>700)return;
  pending=true;$("social-send").disabled=true;
  try{
