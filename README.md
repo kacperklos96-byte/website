@@ -16,7 +16,7 @@ All pages below have been committed to the GitHub Pages repository. Website UI c
 
 The Community page preserves the existing `threads/{id}/messages` data and the old `messages.html?thread=...` notification links. Group messages use their own collection at `groups/{groupId}/channels/{channelId}/posts` and do **not** overwrite existing DMs. Group creation automatically creates `#general` and owner-only `#incident-reports`. An owner can create additional private or public channels, and grant access to current members by UID. A private channel is not visible to unapproved members.
 
-**Incident reports** sent via the flag button are stored in `reports`, readable only by the reporting member and trusted staff. **Channel messages** are visible to anyone who can access that channel, so use the private report form for sensitive reports. Report review messages stored in `staffNote` are readable by the reporter too; never put staff-only secrets there.
+**Incident reports** sent via the flag button are stored in `reports`, readable only by the reporting member and moderators/administrators. **Channel messages** are visible to anyone who can access that channel, so use the private report form for sensitive reports. Report review messages stored in `staffNote` are readable by the reporter too and appear in the Support Center; never put staff-only secrets there. Support-only staff cannot review incident reports.
 
 The **Tasks** page stores data at `taskBoards/{uid}/items`. Browser reminders and desktop notifications run only while that page is open. They **do not** send background push, SMS, or email. Notification permission is requested only if the user clicks Enable browser alerts.
 
@@ -39,7 +39,7 @@ From a copy of this repo on your own PC, with your service-account JSON stored o
 
 ```powershell
 npm.cmd install --no-save firebase-admin
-$env:GOOGLE_APPLICATION_CREDENTIALS = "D:\\your-private-service-account.json"
+$env:GOOGLE_APPLICATION_CREDENTIALS = "D:\your-private-service-account.json"
 node scripts/admin-tools.mjs role TARGET_UID moderator
 node scripts/admin-tools.mjs role TARGET_UID owner
 node scripts/admin-tools.mjs suspend TARGET_UID "Reason"
@@ -47,7 +47,7 @@ node scripts/admin-tools.mjs unsuspend TARGET_UID
 node scripts/admin-tools.mjs revoke-sessions TARGET_UID
 ```
 
-The script supports `owner`, `admin`, `moderator`, `support` and `none` roles. Only `owner` and `admin` receive the `admin:true` claim, which grants access to the private roster and site configuration. Moderator and Support roles can review reports and support tickets but not manage other admin claims from the browser. The trusted script appends immutable-from-the-browser audit entries into `adminAudit`. Actions taken directly from the Firestore client, such as reviewing a report, are **not** independently logged into that trusted audit trail.
+The script supports `owner`, `admin`, `moderator`, `support` and `none` roles. Only `owner` and `admin` receive the `admin:true` claim, which grants access to the private roster and site configuration. Moderator can review incident reports and support tickets. Support can review tickets only. Neither can manage admin claims from the browser. The trusted script appends immutable-from-the-browser audit entries into `adminAudit`. Actions taken directly from the Firestore client, such as reviewing a report, are **not** independently logged into that trusted audit trail.
 
 Firebase Auth can revoke an account's **refresh tokens**, but there is no complete per-device session listing built into this browser panel. Existing ID tokens may remain valid until expiry after revocation. `suspend` disables the account in Firebase Auth and revokes refresh tokens.
 
