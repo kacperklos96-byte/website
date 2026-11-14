@@ -136,7 +136,7 @@ html[data-theme="dark"] .dashboard-error { color: #ffb0a5; border-color: #75473f
 .dash-heading-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 
 /* Dashboard shortcuts for the community tools */
-.quick-tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 19px}
+.quick-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:0 0 19px}
 .quick-tools>a{padding:17px 17px 16px;display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--text);border:1px solid var(--line);border-radius:11px;background:var(--surface);transition:border-color .14s ease,transform .14s ease;min-width:0}
 .quick-tools>a:hover{border-color:var(--blue);transform:translateY(-2px)}
 .quick-tools .tool-symbol{color:var(--blue);font-size:21px;line-height:1.1;margin-bottom:4px}
