@@ -414,3 +414,11 @@ html[data-theme="dark"] .nav-links a.nav-notification:hover {color:#fff;}
   .site-footer .theme-toggle-footer{position:static;transform:none}
   .site-footer .theme-symbol{display:grid}
 }
+
+/* Site-wide notices and feature-flag navigation visibility. */
+.site-notice-stack{display:flex;flex-direction:column;gap:1px}
+.site-notice{display:flex;gap:14px;flex-wrap:wrap;align-items:center;padding:9px max(20px,calc((100% - 1120px)/2));border-bottom:1px solid var(--line);background:var(--surface);font-size:12px;line-height:1.55}
+.site-notice strong{font-weight:750;color:var(--blue)}
+.site-notice span{color:var(--muted)}
+.site-notice.maintenance{background:var(--bg)}
+[hidden]{display:none!important}
