@@ -240,7 +240,8 @@ service cloud.firestore {
           'session_opened','profile_updated','theme_changed',
           'password_changed','message_sent','message_read',
           'calendar_created','calendar_updated','calendar_deleted',
-          'task_created','task_updated','task_deleted','group_joined'
+          'task_created','task_updated','task_deleted','group_joined',
+          'support_ticket_created'
         ]
         && request.resource.data.details is string
         && request.resource.data.details.size() <= 120
