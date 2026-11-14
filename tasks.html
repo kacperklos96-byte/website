@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f3f3f1"><title>Tasks & Boards | My Website</title>
+<script src="theme.js"></script><link rel="stylesheet" href="styles.css?v=platform-1">
+<link rel="stylesheet" href="community.css?v=platform-1"><link rel="stylesheet" href="platform.css?v=platform-1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"></head>
+<body data-page="tasks"><header><nav><a class="logo" href="index.html">My Website</a><div class="nav-links"><a href="dashboard.html">Home</a><a class="nav-auth nav-login" id="nav-auth-link" href="login.html">Log in</a></div></nav></header>
+<main class="work-shell">
+<div class="work-heading"><div><p class="community-eyebrow">YOUR WORKSPACE</p><h1>Tasks & Boards<span>.</span></h1><p>To-do lists, Kanban, deadlines, and reminders — all saved privately to your account.</p></div><button class="button-primary" id="new-task" disabled><i class="fas fa-plus"></i> New task</button></div>
+<div class="work-topbar"><div class="tab-bar"><button class="tab active" data-view="board">Kanban board</button><button class="tab" data-view="list">To-do list</button><button class="tab" data-view="reminders">Reminders</button></div><button class="community-button" id="notify-request" type="button">Enable browser alerts</button></div>
+<p class="work-feedback" id="tasks-status" role="status">Checking your account…</p>
+<section class="board-grid" id="board" aria-label="Kanban board">
+<div class="board-column" data-column="todo"><div class="board-column-heading"><h2><i class="fas fa-circle"></i> To do</h2><span id="todo-count">0</span></div><div class="board-drop" id="todo-items" data-drop="todo"></div></div>
+<div class="board-column" data-column="doing"><div class="board-column-heading"><h2><i class="fas fa-spinner"></i> In progress</h2><span id="doing-count">0</span></div><div class="board-drop" id="doing-items" data-drop="doing"></div></div>
+<div class="board-column" data-column="done"><div class="board-column-heading"><h2><i class="fas fa-check-circle"></i> Done</h2><span id="done-count">0</span></div><div class="board-drop" id="done-items" data-drop="done"></div></div>
+</section>
+<section id="list" class="work-list" hidden aria-label="To-do list"></section>
+<section id="reminders" class="work-list" hidden aria-label="Reminders"></section>
+<p class="work-footer-note">Drag cards between columns, or use the status selector on each card. Browser reminders work while this page is open; background reminders require a deployed backend.</p>
+<dialog id="task-dialog" class="work-dialog"><form id="task-form">
+<div class="work-dialog-head"><h2 id="task-dialog-title">New task</h2><button type="button" class="community-button" id="task-cancel">Close</button></div>
+<label>Title <input class="community-input" id="task-title" type="text" maxlength="120" required placeholder="What needs doing?"></label>
+<label>Description <textarea class="community-textarea" id="task-description" maxlength="1000" rows="3" placeholder="Optional notes"></textarea></label>
+<div class="work-field-row"><label>Status <select class="community-select" id="task-state"><option value="todo">To do</option><option value="doing">In progress</option><option value="done">Done</option></select></label>
+<label>Priority <select class="community-select" id="task-priority"><option value="medium">Medium</option><option value="low">Low</option><option value="high">High</option></select></label></div>
+<div class="work-field-row"><label>Due date <input class="community-input" id="task-due" type="date"></label><label>Reminder time <input class="community-input" id="task-reminder" type="datetime-local"></label></div>
+<p class="work-feedback" id="task-error" role="alert"></p>
+<div class="work-dialog-actions"><button type="button" class="community-button danger" id="task-delete" hidden>Delete</button><button type="submit" class="community-button primary" id="task-save">Save task</button></div>
+</form></dialog></main>
+<footer class="site-footer"><span>© 2026 My Website</span><label class="theme-toggle theme-toggle-footer" title="Switch light / dark mode"><span class="theme-symbol"><i class="fas fa-moon"></i></span><span class="theme-label">Theme</span><input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode"><span class="toggle-track"></span></label></footer>
+<script type="module" src="auth-nav.js?v=platform-1"></script><script type="module" src="tasks.js?v=platform-1"></script>
+</body></html>
