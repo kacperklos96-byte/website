@@ -5,8 +5,8 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Admin Panel | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=nav-refresh-2">
-  <link rel="stylesheet" href="community.css?v=nav-refresh-2">
+  <link rel="stylesheet" href="styles.css?v=platform-1">
+  <link rel="stylesheet" href="community.css?v=platform-1"><link rel="stylesheet" href="platform.css?v=platform-1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body data-page="admin">
@@ -41,6 +41,66 @@
 </div>
 <p class="community-hint">Admin access requires a Firebase Auth custom claim set from a trusted Admin SDK environment. Merely editing this page cannot grant admin privileges.</p>
 </div>
+<section class="platform-admin-panel" id="admin-extensions" hidden aria-labelledby="staff-heading">
+  <div class="community-head"><div><p class="community-eyebrow">STAFF WORKSPACE</p><h2 id="staff-heading">Moderation & management</h2>
+    <p>Private incident reports, support tickets, site announcements, settings and trusted-backend utilities.</p></div></div>
+  <div class="platform-admin-grid">
+    <section class="platform-admin-card">
+      <div class="community-table-controls"><h2><i class="fas fa-flag"></i> Reports & incidents</h2><button id="admin-reload-reports" class="community-button" type="button">Refresh</button></div>
+      <p class="platform-admin-note">Reports are private to the reporter and staff. Resolving a report is not an account suspension.</p>
+      <div id="admin-report-list"></div>
+    </section>
+    <section class="platform-admin-card">
+      <div class="community-table-controls"><h2><i class="fas fa-life-ring"></i> Support tickets</h2><button id="admin-reload-tickets" class="community-button" type="button">Refresh</button></div>
+      <div id="admin-ticket-list"></div>
+    </section>
+  </div>
+  <div class="platform-admin-grid" id="admin-owner-tools">
+    <section class="platform-admin-card">
+      <h2><i class="fas fa-bullhorn"></i> Announcements</h2>
+      <form id="admin-announcement-form">
+        <div class="community-field"><label for="admin-announcement-title">Title</label><input id="admin-announcement-title" class="community-input" required maxlength="100" minlength="2"></div>
+        <div class="community-field"><label for="admin-announcement-body">Announcement</label><textarea id="admin-announcement-body" class="community-textarea" rows="3" required minlength="2" maxlength="1000"></textarea></div>
+        <button type="submit" class="community-button primary">Publish announcement</button>
+      </form>
+      <div id="admin-announcements"></div>
+    </section>
+    <section class="platform-admin-card">
+      <h2><i class="fas fa-sliders-h"></i> Site configuration</h2>
+      <p class="platform-admin-note">Maintenance and feature flags control visible UI notices and navigation. They do not disable Firebase Auth or secure underlying features.</p>
+      <form id="admin-site-form">
+        <label class="community-field"><span>Maintenance notice</span><select id="admin-maintenance" class="community-select"><option value="false">Off</option><option value="true">On</option></select></label>
+        <div class="community-field"><label for="admin-maintenance-message">Maintenance message</label><input id="admin-maintenance-message" class="community-input" maxlength="300" placeholder="We're updating the website."></div>
+        <label><input id="admin-flag-social" type="checkbox" checked> Show community shortcut</label>
+        <label><input id="admin-flag-tasks" type="checkbox" checked> Show tasks shortcut</label>
+        <label><input id="admin-flag-calendar" type="checkbox" checked> Show calendar shortcut</label>
+        <div class="platform-admin-actions"><button type="submit" class="community-button primary">Save site settings</button></div>
+      </form>
+    </section>
+  </div>
+  <div class="platform-admin-grid" id="admin-backend-tools">
+    <section class="platform-admin-card">
+      <h2><i class="fas fa-shield-alt"></i> Roles & account actions</h2>
+      <p class="platform-admin-note">Role assignment, suspensions and token revocation need the trusted Firebase Admin SDK script. Copy the command and run it locally with your private service-account credentials.</p>
+      <div class="community-field"><label for="admin-action-uid">Target user UID</label><input id="admin-action-uid" class="community-input" placeholder="Firebase Auth UID" maxlength="128"></div>
+      <div class="community-field"><label for="admin-action-type">Action</label><select id="admin-action-type" class="community-select">
+      <option value="role">Set role</option><option value="suspend">Suspend account</option><option value="unsuspend">Unsuspend account</option>
+      <option value="revoke-sessions">Revoke all refresh tokens</option></select></div>
+      <div class="community-field"><label for="admin-role-value">Staff role (for Set role)</label><select id="admin-role-value" class="community-select">
+      <option value="owner">Owner</option><option value="admin">Admin</option><option value="moderator">Moderator</option><option value="support">Support</option><option value="none">Normal member</option></select></div>
+      <div class="platform-admin-actions"><button type="button" id="admin-copy-command" class="community-button primary">Copy local command</button></div>
+      <p class="platform-admin-note"><a href="https://github.com/kacperklos96-byte/website/blob/main/scripts/admin-tools.mjs">Trusted Admin SDK script</a>. Secure actions cannot be executed from GitHub Pages. Firebase Auth doesn't provide a complete list of active device sessions; this command revokes existing refresh tokens.</p>
+    </section>
+    <section class="platform-admin-card">
+      <div class="community-table-controls"><h2><i class="fas fa-history"></i> Trusted audit log</h2><button id="admin-reload-audit" type="button" class="community-button">Refresh</button></div>
+      <p class="platform-admin-note">Entries created by the trusted Admin SDK command script. Client-side moderation actions are not independently audited by this log.</p>
+      <div id="admin-audit-list"></div>
+      <h3>Security status</h3>
+      <div id="admin-security-status" class="community-muted">Trusted roles are verified using Firebase custom claims.</div>
+    </section>
+  </div>
+  <p id="admin-extended-status" class="community-state" role="status"></p>
+</section>
 </main>
 <footer class="site-footer"><span>© 2026 My Website</span>
   <label class="theme-toggle theme-toggle-footer" title="Switch light / dark mode">
@@ -49,6 +109,7 @@
     <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
     <span class="toggle-track" aria-hidden="true"></span>
   </label></footer>
-<script type="module" src="auth-nav.js?v=nav-refresh-2"></script>
-<script type="module" src="admin.js?v=nav-refresh-2"></script>
+<script type="module" src="auth-nav.js?v=platform-1"></script>
+<script type="module" src="admin.js?v=platform-1"></script>
+<script type="module" src="admin-extensions.js?v=platform-1"></script>
 </body></html>
