@@ -297,6 +297,10 @@ service cloud.firestore {
       return admin() || (signedIn()
         && request.auth.token.get('staffRole','') in ['owner','admin','moderator','support']);
     }
+    function moderator() {
+      return admin() || (signedIn()
+        && request.auth.token.get('staffRole','') in ['owner','admin','moderator']);
+    }
     function groupPath(gid) { return /databases/$(database)/documents/groups/$(gid); }
     function channelPath(gid,cid) {
       return /databases/$(database)/documents/groups/$(gid)/channels/$(cid);
@@ -489,9 +493,9 @@ service cloud.firestore {
     // Reports: reporter and trusted staff only; no group-wide visibility.
     match /reports/{rid} {
       allow get: if signedIn()
-        && (staff() || request.auth.uid == resource.data.reporterUid);
+        && (moderator() || request.auth.uid == resource.data.reporterUid);
       allow list: if signedIn() && request.query.limit <= 40
-        && (staff() || request.auth.uid == resource.data.reporterUid);
+        && (moderator() || request.auth.uid == resource.data.reporterUid);
       allow create: if signedIn()
         && request.resource.data.keys().hasAll([
           'kind','title','details','targetUid','reporterUid','groupId',
@@ -514,7 +518,7 @@ service cloud.firestore {
         && request.resource.data.staffNote == '' && request.resource.data.handledBy == ''
         && request.resource.data.createdAt == request.time
         && request.resource.data.updatedAt == request.time;
-      allow update: if staff()
+      allow update: if moderator()
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
           'status','staffNote','handledBy','updatedAt'
         ])
@@ -646,7 +650,7 @@ service cloud.firestore {
     // Suspension flags and tamper-resistant audit entries are written by the
     // trusted Admin SDK only. No browser can forge or erase them.
     match /userModeration/{uid} {
-      allow get: if owner(uid) || staff();
+      allow get: if owner(uid) || moderator();
       allow list: if admin() && request.query.limit <= 50;
       allow create, update, delete: if false;
     }
