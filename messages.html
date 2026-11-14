@@ -24,13 +24,14 @@
   <section class="social-chat">
     <div class="social-chat-top"><div><strong id="social-chat-title">Your community</strong><small id="social-chat-subtitle">Select a friend, DM, group channel or invitation</small></div>
     <div class="community-actions"><button id="social-invite-member" class="social-mini-button" title="Invite a friend" aria-label="Invite a friend" hidden><i class="fas fa-user-plus"></i></button>
+    <button id="social-block" class="social-mini-button" title="Block member" aria-label="Block member" type="button" hidden><i class="fas fa-ban"></i></button>
     <button id="social-report" class="social-mini-button" title="Report a problem" aria-label="Report a problem" type="button"><i class="fas fa-flag"></i></button></div></div>
     <div id="social-chat-body" class="social-chat-body" aria-live="polite"><p class="social-placeholder">Select a conversation or open a group channel.</p></div>
     <form id="social-compose" class="social-chat-compose"><input id="social-message-text" type="text" class="community-input" maxlength="700" required disabled placeholder="Write a message…" aria-label="Message">
     <button id="social-send" class="community-button primary" type="submit" disabled>Send</button></form>
   </section>
 </div>
-<p class="work-footer-note">Private channels are readable only by the group members explicitly allowed into them. Incident reports sent through Report are visible to the reporter and authorized staff, not to the entire group.</p>
+<p class="work-footer-note">Private channels are readable only by the group members explicitly allowed into them. Incident reports sent through Report are visible to the reporter and authorized staff, not to the entire group. <a href="support.html">Track your reports and support tickets</a>.</p>
 <dialog id="social-dialog" class="work-dialog"><form id="social-dialog-form">
 <div class="work-dialog-head"><h2 id="social-dialog-title">New group</h2><button type="button" class="community-button" id="social-dialog-cancel">Close</button></div>
 <div id="social-dialog-fields"></div><p class="work-feedback" id="social-dialog-error" role="alert"></p><div class="work-dialog-actions"><button type="submit" id="social-dialog-save" class="community-button primary">Save</button></div>
