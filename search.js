@@ -1,5 +1,5 @@
 import {
-  collection, getDocs, limit, orderBy, query, startAt, endAt
+  collection, doc, getDocs, limit, orderBy, query, serverTimestamp, setDoc, startAt, endAt
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
 import { firebaseClient, routeProfile, safeUid } from "./community-data.js";
@@ -58,7 +58,27 @@ async function searchMembers() {
       text.append(name,handle,bio);
       const actions=document.createElement("div");actions.className="member-actions";
       actions.appendChild(buttonLink("View",routeProfile(s.id)));
-      if (user?.uid !== s.id) actions.appendChild(buttonLink("Message",user?"messages.html?to="+encodeURIComponent(s.id):"login.html",true));
+      if (user?.uid !== s.id) {
+        actions.appendChild(buttonLink("Message",user?"messages.html?to="+encodeURIComponent(s.id):"login.html",true));
+        if(user){
+          const addFriend=document.createElement("button");
+          addFriend.type="button";addFriend.className="community-button";addFriend.textContent="Add friend";
+          addFriend.addEventListener("click",async()=>{
+            addFriend.disabled=true;addFriend.textContent="Sending…";
+            try{
+              await setDoc(doc(db,"friendRequests",user.uid+"_"+s.id),{
+                fromUid:user.uid,toUid:s.id,status:"pending",
+                createdAt:serverTimestamp(),updatedAt:serverTimestamp()
+              });
+              addFriend.textContent="Request sent";
+            }catch(error){
+              console.error(error);
+              addFriend.textContent=error.code==="permission-denied"?"Already requested / unavailable":"Failed — retry";
+              addFriend.disabled=false;
+            }
+          });actions.append(addFriend);
+        }
+      }
       row.append(avatar,text,actions);results.appendChild(row);
     });
   } catch(error) {
@@ -74,6 +94,6 @@ document.getElementById("clear-search").addEventListener("click",()=>{input.valu
 input.addEventListener("input",()=>{clearTimeout(timer);timer=setTimeout(searchMembers,280);});
 try {
   const client=firebaseClient(); db=client.db;
-  onAuthStateChanged(client.auth,u=>{user=u;});
+  onAuthStateChanged(client.auth,u=>{user=u;searchMembers();});
   searchMembers();
 } catch(error) {count.textContent="Unavailable";message(error.message);}
