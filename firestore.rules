@@ -269,7 +269,7 @@ service cloud.firestore {
           ? (e.startTime == '' && e.endTime == '')
           : (e.startTime.matches('^([01][0-9]|2[0-3]):[0-5][0-9]$')
             && e.endTime.matches('^([01][0-9]|2[0-3]):[0-5][0-9]$')
-            && e.endTime > e.startTime))
+            ))
         && e.category in ['personal','school','work','other']
         && e.location is string && e.location.size() <= 120
         && e.description is string && e.description.size() <= 1000
@@ -302,7 +302,8 @@ service cloud.firestore {
       return /databases/$(database)/documents/groups/$(gid)/channels/$(cid);
     }
     function invitePath(gid,uid) {
-      return /databases/$(database)/documents/groupInvites/$(gid + '_' + uid);
+      let inviteId = gid + '_' + uid;
+      return /databases/$(database)/documents/groupInvites/$(inviteId);
     }
     function groupMember(gid) {
       return signedIn() && exists(groupPath(gid))
@@ -325,9 +326,11 @@ service cloud.firestore {
     // One directional record is maintained for each friend request.
     match /friendRequests/{rid} {
       allow get: if signedIn()
-        && request.auth.uid in [resource.data.fromUid,resource.data.toUid];
+        && (request.auth.uid == resource.data.fromUid
+          || request.auth.uid == resource.data.toUid);
       allow list: if signedIn() && request.query.limit <= 50
-        && request.auth.uid in [resource.data.fromUid,resource.data.toUid];
+        && (request.auth.uid == resource.data.fromUid
+          || request.auth.uid == resource.data.toUid);
       allow create: if signedIn()
         && request.resource.data.keys().hasAll(['fromUid','toUid','status','createdAt','updatedAt'])
         && request.resource.data.keys().hasOnly(['fromUid','toUid','status','createdAt','updatedAt'])
@@ -346,7 +349,8 @@ service cloud.firestore {
         && request.resource.data.updatedAt == request.time
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt']);
       allow delete: if signedIn()
-        && request.auth.uid in [resource.data.fromUid,resource.data.toUid];
+        && (request.auth.uid == resource.data.fromUid
+          || request.auth.uid == resource.data.toUid);
     }
 
     // Groups are private; only members can enumerate groups or their channels.
@@ -454,9 +458,11 @@ service cloud.firestore {
     // Invites are created by the owner and accepted by the invitee only.
     match /groupInvites/{iid} {
       allow get: if signedIn()
-        && request.auth.uid in [resource.data.toUid,resource.data.fromUid];
+        && (request.auth.uid == resource.data.toUid
+          || request.auth.uid == resource.data.fromUid);
       allow list: if signedIn() && request.query.limit <= 40
-        && request.auth.uid in [resource.data.toUid,resource.data.fromUid];
+        && (request.auth.uid == resource.data.toUid
+          || request.auth.uid == resource.data.fromUid);
       allow create: if signedIn()
         && request.resource.data.keys().hasAll([
           'groupId','toUid','fromUid','groupName','createdAt'
@@ -476,7 +482,8 @@ service cloud.firestore {
         && request.resource.data.createdAt == request.time;
       allow update: if false;
       allow delete: if signedIn()
-        && request.auth.uid in [resource.data.toUid,resource.data.fromUid];
+        && (request.auth.uid == resource.data.toUid
+          || request.auth.uid == resource.data.fromUid);
     }
 
     // Reports: reporter and trusted staff only; no group-wide visibility.
