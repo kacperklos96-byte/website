@@ -164,8 +164,11 @@ try{
    $("admin-owner-tools").hidden=!isAdmin;
    $("admin-backend-tools").hidden=!isAdmin;
    $("admin-reload-audit").disabled=!isAdmin;
+   const canModerate=isAdmin||["owner","admin","moderator"].includes(staffRole);
+   $("admin-reports-panel").hidden=!canModerate;
+   $("admin-reload-reports").disabled=!canModerate;
    $("admin-security-status").textContent=isAdmin?"Administrator verified with server-issued custom claim.":"Staff role: "+staffRole;
-   await Promise.all([loadReports(),loadTickets()]);
+   await Promise.all([...(canModerate?[loadReports()]:[]),loadTickets()]);
    if(isAdmin)await Promise.all([loadSettings(),loadAnnouncements(),loadAudit()]);
    status("");
   }catch(error){status(error.message,true);}
