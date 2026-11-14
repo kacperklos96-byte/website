@@ -247,6 +247,98 @@ service cloud.firestore {
       allow delete: if owner(uid);
     }
 
+    // Personal calendar: private to the signed-in account that owns it.
+    // Events live in calendars/{uid}/events/{eventId}. No cross-user access.
+    function validCalendarEvent() {
+      let e = request.resource.data;
+      return e.keys().hasAll([
+          'title','day','allDay','startTime','endTime','category',
+          'location','description','createdAt','updatedAt'
+        ])
+        && e.keys().hasOnly([
+          'title','day','allDay','startTime','endTime','category',
+          'location','description','createdAt','updatedAt'
+        ])
+        && e.title is string && e.title.size() >= 1 && e.title.size() <= 90
+        && e.day is string && e.day.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}
+    // Reviews are non-destructive annotations; this is NOT account suspension.
+    match /adminReviews/{uid} {
+      allow get: if admin();
+      allow list: if admin() && request.query.limit <= 30;
+      allow create, update: if admin()
+        && request.resource.data.keys().hasOnly(['status','note','updatedBy','updatedAt'])
+        && request.resource.data.keys().hasAll(['status','note','updatedBy','updatedAt'])
+        && request.resource.data.status in ['clear','reviewed','flagged']
+        && request.resource.data.note is string
+        && request.resource.data.note.size() <= 300
+        && request.resource.data.updatedBy == request.auth.uid
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if false;
+    }
+  }
+}
+)
+        && e.allDay is bool
+        && e.startTime is string && e.endTime is string
+        && (e.allDay
+          ? (e.startTime == '' && e.endTime == '')
+          : (e.startTime.matches('^([01][0-9]|2[0-3]):[0-5][0-9]
+    // Reviews are non-destructive annotations; this is NOT account suspension.
+    match /adminReviews/{uid} {
+      allow get: if admin();
+      allow list: if admin() && request.query.limit <= 30;
+      allow create, update: if admin()
+        && request.resource.data.keys().hasOnly(['status','note','updatedBy','updatedAt'])
+        && request.resource.data.keys().hasAll(['status','note','updatedBy','updatedAt'])
+        && request.resource.data.status in ['clear','reviewed','flagged']
+        && request.resource.data.note is string
+        && request.resource.data.note.size() <= 300
+        && request.resource.data.updatedBy == request.auth.uid
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if false;
+    }
+  }
+}
+)
+            && e.endTime.matches('^([01][0-9]|2[0-3]):[0-5][0-9]
+    // Reviews are non-destructive annotations; this is NOT account suspension.
+    match /adminReviews/{uid} {
+      allow get: if admin();
+      allow list: if admin() && request.query.limit <= 30;
+      allow create, update: if admin()
+        && request.resource.data.keys().hasOnly(['status','note','updatedBy','updatedAt'])
+        && request.resource.data.keys().hasAll(['status','note','updatedBy','updatedAt'])
+        && request.resource.data.status in ['clear','reviewed','flagged']
+        && request.resource.data.note is string
+        && request.resource.data.note.size() <= 300
+        && request.resource.data.updatedBy == request.auth.uid
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if false;
+    }
+  }
+}
+)))
+        && e.category in ['personal','school','work','other']
+        && e.location is string && e.location.size() <= 120
+        && e.description is string && e.description.size() <= 1000
+        && e.createdAt is timestamp && e.updatedAt is timestamp;
+    }
+    match /calendars/{uid}/events/{eventId} {
+      allow get: if owner(uid);
+      allow list: if owner(uid) && request.query.limit <= 250;
+      allow create: if owner(uid) && validCalendarEvent()
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+      allow update: if owner(uid) && validCalendarEvent()
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'title','day','allDay','startTime','endTime',
+          'category','location','description','updatedAt'
+        ]);
+      allow delete: if owner(uid);
+    }
+
     // Real admin permission is a server-issued Firebase Auth custom claim.
     // Reviews are non-destructive annotations; this is NOT account suspension.
     match /adminReviews/{uid} {
