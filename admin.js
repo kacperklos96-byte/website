@@ -101,7 +101,12 @@ try{
       // Force-refresh a token to check the server-issued role, not a client flag.
       const token=await u.getIdTokenResult(true);
       if(token.claims.admin!==true){
-        status("This page is restricted to administrators. The site owner must assign the Firebase Auth admin custom claim from a trusted server or local Admin SDK script.",true);
+        const staffRole=String(token.claims.staffRole||"");
+        if(["moderator","support"].includes(staffRole)){
+          status("Staff role verified. The reports and support queues are available below; account rosters require administrator access.");
+        } else {
+          status("This page is restricted to verified staff. Ask the owner to grant a role using the trusted Firebase Admin SDK.",true);
+        }
         return;
       }
       adminUser=u;
