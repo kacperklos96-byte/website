@@ -16,6 +16,7 @@ function alertRow(title,details,kind){
  row.append(strong,span);
  return row;
 }
+window.addEventListener("workspace-layout-ready",()=>render());
 function render(){
  notice.replaceChildren();
  if(settings.maintenance)notice.append(alertRow("Maintenance",settings.message||"The website is being updated.","maintenance"));
