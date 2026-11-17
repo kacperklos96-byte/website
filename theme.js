@@ -9,7 +9,7 @@
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.content = theme === "dark" ? "#222428" : "#f3f3f1";
+    if (meta) meta.content = theme === "dark" ? "#111318" : "#f6f7f9";
     const toggle = document.getElementById("theme-toggle");
     if (toggle) toggle.checked = theme === "dark";
     const themeIcon = document.querySelector(".theme-symbol i");
