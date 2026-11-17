@@ -11,6 +11,7 @@ const pages = {
   notifications:["Notifications","bell"],
   activity:["Activity","history"],
   profile:["Your profile","user-round"],
+  "profile-editor":["Edit profile","user-round"],
   "public-profile":["Member profile","user-round"],
   settings:["Settings","sliders-horizontal"],
   admin:["Administration","shield"],
@@ -104,7 +105,7 @@ function buildWorkspace() {
       link.className="workspace-nav-item";
       link.href=href;
       link.dataset.feature=id;
-      if(id===page || (id==="profile"&&page==="public-profile")){
+      if(id===page || (id==="profile"&&(page==="public-profile"||page==="profile-editor"))){
         link.classList.add("is-active");
         link.setAttribute("aria-current","page");
       }
@@ -185,6 +186,6 @@ function buildWorkspace() {
 function iconFor(id){
   const icons={dashboard:"th-large",calendar:"calendar-alt",tasks:"tasks",messages:"comments",
     search:"user-friends",notifications:"bell",activity:"history",profile:"user-circle",
-    "public-profile":"user-circle",settings:"cog",admin:"shield-alt",support:"life-ring"};
+    "public-profile":"user-circle","profile-editor":"user-circle",settings:"cog",admin:"shield-alt",support:"life-ring"};
   return icons[id]||"th-large";
 }
