@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Dashboard | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=design-2">
-  <link rel="stylesheet" href="dashboard.css?v=design-2">
+  <link rel="stylesheet" href="styles.css?v=design-3">
+  <link rel="stylesheet" href="dashboard.css?v=design-3">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="design.css?v=design-2">
+  <link rel="stylesheet" href="design.css?v=design-3">
 </head>
 <body data-page="dashboard">
   <header>
@@ -31,28 +31,23 @@
     <section id="dashboard-content" hidden>
       <div class="dash-heading">
         <div>
-          <p class="eyebrow">YOUR SPACE</p>
           <h1>Welcome back, <span id="dash-first-name">there</span><span class="blue-period">.</span></h1>
-          <p class="intro">Your people, your plans, and your space — all in one place.</p>
-        </div>
-        <div class="dash-heading-actions">
-          <a class="button-primary dash-heading-action" href="profile.html">Edit profile <span aria-hidden="true"><i class="fas fa-external-link-alt" aria-hidden="true"></i></span></a>
-          <a class="button-secondary dash-heading-action" href="settings.html">Settings <span aria-hidden="true"><i class="fas fa-external-link-alt" aria-hidden="true"></i></span></a>
+          <p class="intro">A simple place to keep everything together.</p>
         </div>
       </div>
 
       <div class="dashboard-tools-heading">
-        <div><h2>Pick up where you left off</h2><p>Everything you need, without the clutter.</p></div>
+        <div><h2>Your workspace</h2><p>Everything you need, without the clutter.</p></div>
         <a href="settings.html">Customize <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
       </div>
       <section class="quick-tools" aria-label="Your website tools">
         <a href="messages.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-comments"></i></span><strong>Community</strong><small>Friends, messages and groups</small></a>
-        <a href="tasks.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-check-square"></i></span><strong>Tasks & boards</strong><small>Organize what needs doing</small></a>
-        <a href="calendar.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-calendar-alt"></i></span><strong>Calendar</strong><small>Keep your plans together</small></a>
-        <a href="search.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-user-friends"></i></span><strong>Find people</strong><small>Meet someone new</small></a>
-        <a href="notifications.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-bell"></i></span><strong>Notifications</strong><small>What's happened since last time</small></a>
-        <a href="support.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-life-ring"></i></span><strong>Support</strong><small>Help, tickets and reports</small></a>
+        <a href="tasks.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-check-square"></i></span><strong>Tasks</strong><small>To-dos and boards</small></a>
+        <a href="calendar.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-calendar-alt"></i></span><strong>Calendar</strong><small>Your plans and events</small></a>
+        <a href="search.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-user-friends"></i></span><strong>Find people</strong><small>Discover other members</small></a>
       </section>
+      <details class="dashboard-account-details">
+        <summary>Account details and activity</summary>
       <div class="dash-columns">
         <section class="dash-panel profile-panel" aria-labelledby="profile-heading">
           <div class="panel-top"><h2 id="profile-heading">Your profile</h2><span class="small-tag">ACCOUNT</span></div>
@@ -99,6 +94,7 @@
           </div>
         </section>
       </div>
+      </details>
       <p class="dashboard-error" id="dash-error" role="alert" hidden></p>
     </section>
   </main>
@@ -109,7 +105,7 @@
     <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
     <span class="toggle-track" aria-hidden="true"></span>
   </label></footer>
-  <script type="module" src="auth-nav.js?v=design-2"></script>
-  <script type="module" src="dashboard.js?v=design-2"></script>
+  <script type="module" src="auth-nav.js?v=design-3"></script>
+  <script type="module" src="dashboard.js?v=design-3"></script>
 </body>
 </html>
