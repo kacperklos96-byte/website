@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#f3f3f1">
   <title>Dashboard | My Website</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=platform-2">
-  <link rel="stylesheet" href="dashboard.css?v=platform-2">
+  <link rel="stylesheet" href="styles.css?v=design-2">
+  <link rel="stylesheet" href="dashboard.css?v=design-2">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body data-page="dashboard">
@@ -32,7 +32,7 @@
         <div>
           <p class="eyebrow">YOUR SPACE</p>
           <h1>Welcome back, <span id="dash-first-name">there</span><span class="blue-period">.</span></h1>
-          <p class="intro">Here's a quick overview of your account and what's happening.</p>
+          <p class="intro">Your people, your plans, and your space — all in one place.</p>
         </div>
         <div class="dash-heading-actions">
           <a class="button-primary dash-heading-action" href="profile.html">Edit profile <span aria-hidden="true"><i class="fas fa-external-link-alt" aria-hidden="true"></i></span></a>
@@ -40,6 +40,10 @@
         </div>
       </div>
 
+      <div class="dashboard-tools-heading">
+        <div><h2>Pick up where you left off</h2><p>Everything you need, without the clutter.</p></div>
+        <a href="settings.html">Customize <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
       <section class="quick-tools" aria-label="Your website tools">
         <a href="calendar.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span><strong>Calendar</strong><small>Plan your days and events</small></a>
         <a href="search.html"><span class="tool-symbol" aria-hidden="true"><i class="fas fa-search" aria-hidden="true"></i></span><strong>Find people</strong><small>Discover public profiles</small></a>
@@ -88,23 +92,12 @@
         </section>
       </div>
 
-      <div class="dash-columns lower">
+      <div class="dash-columns lower single">
         <section class="dash-panel" aria-labelledby="activity-heading">
-          <div class="panel-top"><h2 id="activity-heading">Recent account events</h2><span class="small-tag">ACTIVITY</span></div>
+          <div class="panel-top"><h2 id="activity-heading">Recent account activity</h2><a class="dash-text-link" href="activity.html">View all <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
           <div class="activity-list" id="dash-activity" aria-live="polite">
-            <p class="subtle">Loading account activity…</p>
+            <p class="subtle">Loading your recent activity…</p>
           </div>
-          <p class="panel-footnote">Showing events available from Firebase; a full activity log is planned.</p>
-        </section>
-        <section class="dash-panel roadmap-panel" aria-labelledby="roadmap-heading">
-          <div class="panel-top"><h2 id="roadmap-heading">Recently built</h2><span class="small-tag">ROADMAP</span></div>
-          <div class="roadmap-row"><span class="roadmap-number">02</span><div><strong>Profile system</strong><p>Customize your username, bio and public profile.</p></div><span class="phase-label">Built</span></div>
-          <div class="roadmap-row"><span class="roadmap-number">03</span><div><strong>Account settings</strong><p>Appearance, privacy, verification and password management.</p></div><span class="phase-label">Built</span></div>
-          <div class="roadmap-row"><span class="roadmap-number">09</span><div><strong>Personal calendar</strong><p>Private events, schedules and export.</p></div><span class="phase-label">Built</span></div>
-          <div class="roadmap-row"><span class="roadmap-number">10</span><div><strong>Community</strong><p>Friends, group invitations, channels and incident reports.</p></div><span class="phase-label">Built</span></div>
-          <div class="roadmap-row"><span class="roadmap-number">11</span><div><strong>Tasks & boards</strong><p>To-do lists, Kanban and reminders.</p></div><span class="phase-label">Built</span></div>
-
-
         </section>
       </div>
       <p class="dashboard-error" id="dash-error" role="alert" hidden></p>
@@ -117,7 +110,7 @@
     <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
     <span class="toggle-track" aria-hidden="true"></span>
   </label></footer>
-  <script type="module" src="auth-nav.js?v=platform-2"></script>
-  <script type="module" src="dashboard.js?v=platform-2"></script>
+  <script type="module" src="auth-nav.js?v=design-2"></script>
+  <script type="module" src="dashboard.js?v=design-2"></script>
 </body>
 </html>
