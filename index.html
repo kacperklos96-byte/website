@@ -1,50 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f3f3f1">
-  <title>Home | My Website</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f9">
+  <meta name="description" content="Your corner of the internet. Friends, conversations, plans, and everything in between.">
+  <title>My Website — Your space, simplified.</title>
   <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css?v=platform-2">
+  <link rel="stylesheet" href="styles.css?v=design-2">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="design.css?v=design-2">
 </head>
 <body data-page="home">
   <header>
     <nav aria-label="Main navigation">
       <a class="logo" href="index.html">My Website</a>
       <div class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        
-        
-        <a class="nav-auth nav-login" id="nav-auth-link" href="login.html" aria-label="Log in">Log in</a>
+        <a href="#about">What's inside</a>
+        <a href="dashboard.html" class="nav-dashboard">Workspace</a>
+        <a class="nav-auth nav-login" id="nav-auth-link" href="login.html">Log in</a>
       </div>
     </nav>
   </header>
   <main>
     <section class="hero" id="home">
-      <div class="content">
-        <h1>Welcome to my website.</h1>
-        <p>A simple, clean website. No clutter, no unnecessary effects — just the basics.</p>
-        <a class="button-primary" href="#about">Learn more</a>
+      <div class="content home-hero-inner">
+        <div class="home-hero-copy">
+          <p class="home-kicker">A place for your everyday</p>
+          <h1>Your corner of the internet<span style="color:var(--blue)">.</span></h1>
+          <p>Talk with friends. Keep your plans in order. Build a little community. Everything you need, in one simple place.</p>
+          <div class="home-hero-actions">
+            <a class="button-primary" href="dashboard.html">Open workspace <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+            <a class="button-secondary" href="#about">Explore what's inside</a>
+          </div>
+        </div>
+        <div class="home-demo" aria-hidden="true">
+          <div class="home-demo-top"><span><i class="fas fa-layer-group" style="color:var(--blue);margin-right:8px"></i> My workspace</span><small>JUST THE ESSENTIALS</small></div>
+          <div class="home-demo-body">
+            <div class="home-demo-side"><span></span><span></span><span></span><span></span></div>
+            <div class="home-demo-main">
+              <h3>Good to see you again.</h3>
+              <p>Pick up where you left off.</p>
+              <div class="home-demo-item"><span class="home-demo-square"><i class="fas fa-comments"></i></span><span class="home-demo-copy"><strong>Community</strong><small>Conversations and friends</small></span></div>
+              <div class="home-demo-item"><span class="home-demo-square"><i class="fas fa-check-square"></i></span><span class="home-demo-copy"><strong>Tasks &amp; boards</strong><small>Your work, organized</small></span></div>
+              <div class="home-demo-item"><span class="home-demo-square"><i class="fas fa-calendar-alt"></i></span><span class="home-demo-copy"><strong>Calendar</strong><small>What's coming up next</small></span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     <section class="about" id="about">
       <div class="content">
-        <h2>About</h2>
-        <p>This is a space where you can write a little about yourself, your project, or anything you like.</p>
+        <p class="home-section-eyebrow">A LITTLE BIT OF EVERYTHING</p>
+        <h2>All the good stuff, together.</h2>
+        <p>You don't need ten different pages to feel at home. Your tools and conversations belong in one connected space.</p>
+        <div class="home-feature-grid">
+          <article class="home-feature">
+            <i class="fas fa-comments" aria-hidden="true"></i>
+            <h3>Stay connected</h3>
+            <p>Find people, add friends, send private messages, and make groups with channels for everyone who belongs there.</p>
+          </article>
+          <article class="home-feature">
+            <i class="fas fa-calendar-check" aria-hidden="true"></i>
+            <h3>Make a plan</h3>
+            <p>Keep track of events, organize tasks on a board, and set reminders for the things you don't want to forget.</p>
+          </article>
+          <article class="home-feature">
+            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+            <h3>Make it yours</h3>
+            <p>Set up your profile, choose your preferred theme, and keep private things private with account-based access.</p>
+          </article>
+        </div>
       </div>
     </section>
   </main>
-  <footer class="site-footer"><span>© 2026 My Website</span>
-  <label class="theme-toggle theme-toggle-footer" title="Switch light / dark mode">
-    <span class="theme-symbol" aria-hidden="true"><i class="fas fa-moon"></i></span>
-    <span class="theme-label">Theme</span>
-    <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
-    <span class="toggle-track" aria-hidden="true"></span>
-  </label></footer>
-  
-  <script type="module" src="auth-nav.js?v=platform-2"></script>
+  <footer class="site-footer">
+    <span>© 2026 My Website</span>
+    <label class="theme-toggle theme-toggle-footer" title="Switch light / dark mode">
+      <span class="theme-symbol" aria-hidden="true"><i class="fas fa-moon"></i></span>
+      <span class="theme-label">Theme</span>
+      <input id="theme-toggle" type="checkbox" role="switch" aria-label="Dark mode">
+      <span class="toggle-track" aria-hidden="true"></span>
+    </label>
+  </footer>
+  <script type="module" src="auth-nav.js?v=design-2"></script>
 </body>
 </html>
