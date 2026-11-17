@@ -1,5 +1,26 @@
 # My Website — Authentication, Firestore and custom avatars
 
+## Complete visual redesign — November 2026
+
+The entire website now uses a coordinated, restrained light/dark workspace interface:
+
+- A responsive **workspace sidebar** on dashboard, community, calendar, Kanban, admin, account, settings, profile editor, support, activity, notifications, public member profiles, and search
+- A unified sticky page-title topbar that preserves the existing account avatar and notification bell
+- Accessible mobile menu toggle, dismiss overlay, Escape-key close, active navigation state, and verified staff-only navigation shortcut
+- A rebuilt editorial home page with a simple CSS-only workspace preview and three feature summaries
+- Six deliberately organized dashboard shortcuts with a less repetitive layout and the existing private profile, account status, and activity data
+- Flat charcoal/white surfaces, more legible typography, consistent form controls, quiet borders and no gradients
+- All existing Firebase auth, Firestore schema, security rules, messaging, calendar, tasks, and admin behavior retained
+
+Files: `design.css` (global override), `app-shell.js` (sidebar/topbar), `index.html`, `dashboard.html`, `theme.js`, `auth-nav.js` plus the CSS linkage on other HTML pages.
+
+**Design-only update:** No Firestore rule publication or data migration is required for this redesign. Existing app features still require the rules documented elsewhere in the README.
+
+Open the [homepage](https://kacperklos96-byte.github.io/website/) or [dashboard](https://kacperklos96-byte.github.io/website/dashboard.html) to view it. If an older version is cached, hard refresh with Ctrl+F5.
+
+---
+
+
 ## Major platform expansion — November 2026
 
 All pages below have been committed to the GitHub Pages repository. Website UI code deploys automatically through GitHub Actions, but **Firestore rules are not deployed by GitHub Pages**.
