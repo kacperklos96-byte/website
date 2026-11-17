@@ -1,4 +1,5 @@
-import "./site-notices.js?v=platform-1";
+import "./site-notices.js?v=design-2";
+import "./app-shell.js?v=design-2";
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, collection, onSnapshot, orderBy, limit, query } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
